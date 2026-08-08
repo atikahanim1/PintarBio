@@ -87,7 +87,7 @@
         </div>
         <div>
           <h1 class="text-xl font-bold bg-gradient-to-r from-bio-700 via-bio-600 to-teal-500 bg-clip-text text-transparent leading-tight">PintarBio</h1>
-          <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Biologi KSSM Tingkatan 4 & 5</p>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium" id="headerSubtitle">Biologi KSSM Tingkatan 4 & 5</p>
         </div>
       </div>
 
@@ -190,6 +190,7 @@
     // Translations Dictionary
     const translations = {
       bm: {
+        header_sub: "Biologi KSSM Tingkatan 4 & 5",
         nav_home: "Utama",
         nav_f4: "Ting. 4",
         nav_f5: "Ting. 5",
@@ -199,11 +200,14 @@
         welcome_sub: "Aplikasi pembelajaran Biologi KSSM berteraskan teknik Active Recall untuk persediaan cemerlang SPM.",
         form4_title: "Tingkatan 4 (KSSM)",
         form5_title: "Tingkatan 5 (KSSM)",
+        form4_desc: "Mengandungi Bab 1 hingga Bab 15 merangkumi Biologi Sel, Asas Kehidupan, dan Fisiologi Manusia.",
+        form5_desc: "Mengandungi Bab 1 hingga Bab 11 merangkumi Fisiologi Tumbuhan, Genetik, Ekosistem dan Kelestarian.",
         chapters_count: "Bab",
         progress: "Kemajuan",
         start_flashcard: "Mula Hafalan Flashcard",
         start_quiz: "Terus ke Kuiz",
         active_recall_notice: "⚠️ Mod Active Recall: Anda TIDAK Boleh kembali ke flashcard/soalan sebelumnya. Hafal fakta ini sepenuhnya!",
+        quiz_recall_notice: "❌ Mod Kuiz Active Recall: Jawapan tidak boleh diubah selepas dihantar dan tiada butang Kembali!",
         next_card: "Seterusnya ➔",
         home_button: "Utama",
         question: "Soalan",
@@ -211,21 +215,40 @@
         next_question: "Soalan Seterusnya ➔",
         results_title: "Keputusan Kuiz",
         score: "Markah",
+        correct: "Betul",
         time_taken: "Masa Diambil",
         recommendation: "Cadangan Ulang Kaji",
         revise_flashcards: "Ulang Semula Flashcard",
         continue_learning: "Teruskan Pembelajaran",
         search_placeholder: "Cari bab, subtopik, istilah saintifik...",
         no_bookmarks: "Tiada penanda buku disimpan lagi.",
+        bookmark_desc: "Tekan ikon bookmark semasa membaca flashcard untuk menyimpan nota penting di sini.",
         stats_completed_topics: "Subtopik Selesai",
         stats_cards_read: "Flashcard Dibaca",
         stats_quizzes: "Kuiz Diselesaikan",
         stats_avg_score: "Purata Markah",
         stats_streak: "Streak Belajar",
+        stats_last_quiz: "Kuiz Terakhir",
         badge_locked: "Terkunci",
         badge_unlocked: "Dibuka",
+        keywords_label: "Kata Kunci:",
+        terms_label: "Istilah Saintifik:",
+        select_chapter: "Pilih Bab ➔",
+        back_btn: "Kembali",
+        search_prompt: "Taip kata kunci untuk membuat carian bab, subtopik, atau istilah saintifik...",
+        no_matches: "Tiada padanan ditemui untuk",
+        delete: "Padam",
+        bookmarks_saved: "Penanda Buku Simpanan",
+        days: "Hari",
+        completed: "Selesai",
+        true_label: "BENAR (TRUE)",
+        false_label: "SALAH (FALSE)",
+        type_answer_ph: "Taip jawapan anda di sini...",
+        score_below_60: "⚠️ Markah di bawah 60%",
+        revise_advice: "Cadangan: Sila ulang semula sesi Flashcard untuk mengukuhkan memori hafalan sebelum mencuba kuiz sekali lagi.",
       },
       en: {
+        header_sub: "KSSM Biology Form 4 & 5",
         nav_home: "Home",
         nav_f4: "Form 4",
         nav_f5: "Form 5",
@@ -235,11 +258,14 @@
         welcome_sub: "KSSM Biology learning app powered by Active Recall techniques for SPM excellence.",
         form4_title: "Form 4 (KSSM)",
         form5_title: "Form 5 (KSSM)",
+        form4_desc: "Contains Chapters 1 to 15 covering Cell Biology, Fundamentals of Life, and Human Physiology.",
+        form5_desc: "Contains Chapters 1 to 11 covering Plant Physiology, Genetics, Ecosystems, and Sustainability.",
         chapters_count: "Chapters",
         progress: "Progress",
         start_flashcard: "Start Flashcard Memorization",
         start_quiz: "Direct to Quiz",
         active_recall_notice: "⚠️ Active Recall Mode: You CANNOT go back to previous flashcards or questions. Memorize carefully!",
+        quiz_recall_notice: "❌ Active Recall Quiz Mode: Answers cannot be changed after submission and there is no Back button!",
         next_card: "Next ➔",
         home_button: "Home",
         question: "Question",
@@ -247,19 +273,37 @@
         next_question: "Next Question ➔",
         results_title: "Quiz Results",
         score: "Score",
+        correct: "Correct",
         time_taken: "Time Taken",
         recommendation: "Revision Advice",
         revise_flashcards: "Revise Flashcards Again",
         continue_learning: "Continue Learning",
         search_placeholder: "Search chapters, subtopics, scientific terms...",
         no_bookmarks: "No bookmarks saved yet.",
+        bookmark_desc: "Click the bookmark icon while reading flashcards to save important notes here.",
         stats_completed_topics: "Topics Completed",
         stats_cards_read: "Cards Read",
         stats_quizzes: "Quizzes Solved",
         stats_avg_score: "Average Score",
         stats_streak: "Study Streak",
+        stats_last_quiz: "Last Quiz",
         badge_locked: "Locked",
         badge_unlocked: "Unlocked",
+        keywords_label: "Keywords:",
+        terms_label: "Scientific Terms:",
+        select_chapter: "Select Chapter ➔",
+        back_btn: "Back",
+        search_prompt: "Type keywords to search for chapters, subtopics, or scientific terms...",
+        no_matches: "No matches found for",
+        delete: "Delete",
+        bookmarks_saved: "Saved Bookmarks",
+        days: "Days",
+        completed: "Completed",
+        true_label: "TRUE",
+        false_label: "FALSE",
+        type_answer_ph: "Type your answer here...",
+        score_below_60: "⚠️ Score below 60%",
+        revise_advice: "Advice: Please revise the Flashcards again to strengthen memory retention before retrying the quiz.",
       }
     };
 
@@ -289,7 +333,7 @@
         { id: 'f5_b4', num: 4, title: { bm: 'Pengangkutan dalam Tumbuhan', en: 'Transport in Plants' }, icon: 'fa-droplet' },
         { id: 'f5_b5', num: 5, title: { bm: 'Variasi', en: 'Variation' }, icon: 'fa-fingerprint' },
         { id: 'f5_b6', num: 6, title: { bm: 'Pewarisan', en: 'Inheritance' }, icon: 'fa-dna' },
-        { id: 'f5_b7', num: 7, title: { bm: 'Adaptasi Tumbuhan', en: 'Adaptation' }, icon: 'fa-tree' },
+        { id: 'f5_b7', num: 7, title: { bm: 'Adaptasi Tumbuhan', en: 'Adaptation in Plants' }, icon: 'fa-tree' },
         { id: 'f5_b8', num: 8, title: { bm: 'Teknologi dalam Genetik', en: 'Technology in Genetics' }, icon: 'fa-atom' },
         { id: 'f5_b9', num: 9, title: { bm: 'Ekosistem', en: 'Ecosystem' }, icon: 'fa-earth-americas' },
         { id: 'f5_b10', num: 10, title: { bm: 'Kelestarian Alam Sekitar', en: 'Environmental Sustainability' }, icon: 'fa-recycle' },
@@ -297,76 +341,216 @@
       ]
     };
 
-    // Sample database of Flashcards & Quiz Questions for subtopics
+    // Detailed Database for Flashcards & Quizzes (FULLY BILINGUAL SUPPORT)
     const topicDetailsData = {
       'f4_b2': {
         title: { bm: "2.1 Biologi Sel & Organel", en: "2.1 Cell Biology & Organelles" },
         cards: [
           {
-            title: "Mitokondria (Mitochondrion)",
-            desc: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
-            keywords: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
-            terms: ["Mitochondria", "Cristae", "Adenosine Triphosphate (ATP)"],
-            tip: "💡 Tip Ingat: Mitokondria = 'Powerhouse' sel! Tempat bakar glukosa hasilkan tenaga.",
-            comparison: "Sel otot & sel sperma ada bilangan mitokondria yang sangat tinggi."
+            title: { bm: "Mitokondria", en: "Mitochondrion" },
+            desc: { 
+              bm: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
+              en: "Rod-shaped or spherical organelle with two layers of membrane. The inner membrane is folded into cristae."
+            },
+            keywords: {
+              bm: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
+              en: ["Energy site", "ATP", "Cellular respiration", "Aerobic"]
+            },
+            terms: {
+              bm: ["Mitokondria", "Krista", "Adenosina Trifosfat (ATP)"],
+              en: ["Mitochondria", "Cristae", "Adenosine Triphosphate (ATP)"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Mitokondria = 'Powerhouse' sel! Tempat membakar glukosa untuk menghasilkan tenaga.",
+              en: "💡 Memory Tip: Mitochondria = 'Powerhouse' of the cell! Burns glucose to generate ATP energy."
+            },
+            comparison: {
+              bm: "Sel otot dan sel sperma mempunyai bilangan mitokondria yang sangat tinggi.",
+              en: "Muscle cells and sperm cells contain a very high density of mitochondria."
+            }
           },
           {
-            title: "Jasad Golgi (Golgi Apparatus)",
-            desc: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal.",
-            keywords: ["Ubah suai protein", "Bungkus protein", "Rembesan vesikel"],
-            terms: ["Golgi body", "Secretory vesicle", "Glycoprotein"],
-            tip: "💡 Tip Ingat: Jasad Golgi umpama Pejabat Pos! Mengubah suai, membungkus dan mengangkut protein.",
-            comparison: "Sangat aktif dalam sel kelenjar perembesan."
+            title: { bm: "Jasad Golgi", en: "Golgi Apparatus" },
+            desc: {
+              bm: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal. Memproses dan membungkus bahan.",
+              en: "Consists of a stack of parallel flattened sacs enclosed by single membranes. Processes and packages substances."
+            },
+            keywords: {
+              bm: ["Ubah suai protein", "Bungkus protein", "Vesikel rembesan"],
+              en: ["Modify proteins", "Package proteins", "Secretory vesicles"]
+            },
+            terms: {
+              bm: ["Jasad Golgi", "Vesikel Rembesan", "Glikoprotein"],
+              en: ["Golgi body", "Secretory vesicle", "Glycoprotein"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Jasad Golgi umpama Pejabat Pos! Mengubah suai, membungkus dan mengangkut protein.",
+              en: "💡 Memory Tip: Golgi apparatus is like a Post Office! Modifies, packages, and transports proteins."
+            },
+            comparison: {
+              bm: "Sangat aktif dan banyak ditemui dalam sel kelenjar perembesan.",
+              en: "Highly active and abundant in secretory gland cells."
+            }
           },
           {
-            title: "Jalinan Endoplasma Kasar (RER)",
-            desc: "Sistem membran berlipat yang mempunyai ribosom melekat pada permukaannya.",
-            keywords: ["Sintesis protein", "Pengangkutan protein"],
-            terms: ["Rough Endoplasmic Reticulum", "Ribosome"],
-            tip: "💡 Tip Ingat: Kasar (Rough) sebab ada bintik Ribosom!",
-            comparison: "Berbeza dengan JEL (Jalinan Endoplasma Licin) yang menyintesis lipid."
+            title: { bm: "Jalinan Endoplasma Kasar (JEK)", en: "Rough Endoplasmic Reticulum (RER)" },
+            desc: {
+              bm: "Sistem membran berlipat yang mempunyai ribosom melekat pada permukaannya untuk menyintesis protein.",
+              en: "System of folded membranes with ribosomes attached to its surface for protein synthesis."
+            },
+            keywords: {
+              bm: ["Sintesis protein", "Pengangkutan protein", "Ribosom"],
+              en: ["Protein synthesis", "Protein transport", "Ribosomes"]
+            },
+            terms: {
+              bm: ["Jalinan Endoplasma Kasar", "Ribosom"],
+              en: ["Rough Endoplasmic Reticulum", "Ribosome"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Kasar (Rough) sebab ada bintik-bintik Ribosom!",
+              en: "💡 Memory Tip: 'Rough' because it is studded with Ribosomes!"
+            },
+            comparison: {
+              bm: "JEK mempunyai ribosom manakala JEL (Jalinan Endoplasma Licin) tiada ribosom dan menyintesis lipid.",
+              en: "RER has ribosomes whereas SER (Smooth Endoplasmic Reticulum) lacks ribosomes and synthesises lipids."
+            }
           },
           {
-            title: "Kloroplas (Chloroplast)",
-            desc: "Organel berbentuk bujur yang mengandungi pigmen klorofil untuk menyerap cahaya matahari.",
-            keywords: ["Fotosintesis", "Klorofil", "Tylakoid", "Stroma"],
-            terms: ["Chloroplast", "Thylakoid", "Stroma", "Granum"],
-            tip: "💡 Tip Ingat: Kloroplas hanya ada pada sel tumbuhan untuk buat makanan sendiri.",
-            comparison: "Sel haiwan TIDAK mempunyai kloroplas."
+            title: { bm: "Kloroplas", en: "Chloroplast" },
+            desc: {
+              bm: "Organel berbentuk bujur yang mengandungi pigmen klorofil untuk menyerap cahaya matahari semasa fotosintesis.",
+              en: "Oval-shaped organelle containing chlorophyll pigments to absorb sunlight during photosynthesis."
+            },
+            keywords: {
+              bm: ["Fotosintesis", "Klorofil", "Tilakoid", "Stroma"],
+              en: ["Photosynthesis", "Chlorophyll", "Thylakoid", "Stroma"]
+            },
+            terms: {
+              bm: ["Kloroplas", "Tilakoid", "Stroma", "Granum"],
+              en: ["Chloroplast", "Thylakoid", "Stroma", "Granum"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Kloroplas hanya terdapat pada sel tumbuhan untuk membuat makanan sendiri.",
+              en: "💡 Memory Tip: Chloroplasts are found in plant cells to produce food independently."
+            },
+            comparison: {
+              bm: "Sel haiwan TIDAK mempunyai kloroplas.",
+              en: "Animal cells DO NOT possess chloroplasts."
+            }
           }
         ],
         quiz: [
           {
             type: 'mcq',
-            question: "Apakah fungsi utama mitokondria dalam sel haiwan dan tumbuhan?",
-            options: [
-              "Menyintesis protein untuk pembentukan sel baru",
-              "Menjana tenaga dalam bentuk ATP melalui respirasi sel",
-              "Mengubah suai dan membungkus glikoprotein",
-              "Mengawal pergerakan bahan keluar dan masuk sel"
-            ],
+            question: {
+              bm: "Apakah fungsi utama mitokondria dalam sel haiwan dan tumbuhan?",
+              en: "What is the primary function of mitochondria in animal and plant cells?"
+            },
+            options: {
+              bm: [
+                "Menyintesis protein untuk pembentukan sel baru",
+                "Menjana tenaga dalam bentuk ATP melalui respirasi sel",
+                "Mengubah suai dan membungkus glikoprotein",
+                "Mengawal pergerakan bahan keluar dan masuk sel"
+              ],
+              en: [
+                "Synthesise proteins for new cell formation",
+                "Generate energy in the form of ATP via cellular respiration",
+                "Modify and package glycoproteins",
+                "Control movement of substances in and out of the cell"
+              ]
+            },
             answer: 1
           },
           {
             type: 'mcq',
-            question: "Organel manakah yang bertindak mengangkut dan mengubah suai protein yang disintesis oleh ribosom?",
-            options: [
-              "Jasad Golgi",
-              "Lisosom",
-              "Sentriol",
-              "Vakuol"
-            ],
+            question: {
+              bm: "Organel manakah yang bertindak mengangkut dan mengubah suai protein yang disintesis oleh ribosom?",
+              en: "Which organelle functions to modify and package proteins synthesised by ribosomes?"
+            },
+            options: {
+              bm: [
+                "Jasad Golgi",
+                "Lisosom",
+                "Sentriol",
+                "Vakuol"
+              ],
+              en: [
+                "Golgi apparatus",
+                "Lysosome",
+                "Centriole",
+                "Vacuole"
+              ]
+            },
             answer: 0
           },
           {
             type: 'tf',
-            question: "Jalinan Endoplasma Licin (JEL) mengandungi ribosom pada permukaannya untuk menyintesis lipid.",
+            question: {
+              bm: "Jalinan Endoplasma Licin (JEL) mengandungi ribosom pada permukaannya untuk menyintesis lipid.",
+              en: "Smooth Endoplasmic Reticulum (SER) contains ribosomes on its surface to synthesise lipids."
+            },
             answer: false
           },
           {
             type: 'blank',
-            question: "Pigmen hijau dalam kloroplas yang menyerap tenaga cahaya matahari dinamakan __________.",
+            question: {
+              bm: "Pigmen hijau dalam kloroplas yang menyerap tenaga cahaya matahari dinamakan __________.",
+              en: "The green pigment in chloroplasts that absorbs sunlight energy is called __________."
+            },
             answer: "klorofil"
+          }
+        ]
+      },
+      'f4_b3': {
+        title: { bm: "3.1 Struktur Membran Plasma", en: "3.1 Plasma Membrane Structure" },
+        cards: [
+          {
+            title: { bm: "Model Mozek Bendalir", en: "Fluid Mosaic Model" },
+            desc: {
+              bm: "Membran plasma terdiri daripada dwilapisan fosfolipid dengan molekul protein yang terapung atau terbenam di dalamnya.",
+              en: "The plasma membrane consists of a phospholipid bilayer with protein molecules embedded or floating in it."
+            },
+            keywords: {
+              bm: ["Dwilapisan fosfolipid", "Protein pembawa", "Protein liang", "Ketelapan memilih"],
+              en: ["Phospholipid bilayer", "Carrier protein", "Pore protein", "Selective permeability"]
+            },
+            terms: {
+              bm: ["Hidrofilik", "Hidrofobik", "Glikolipid"],
+              en: ["Hydrophilic", "Hydrophobic", "Glycolipid"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Kepala fosfolipid suka air (hidrofilik), ekor takut air (hidrofobik).",
+              en: "💡 Memory Tip: Phospholipid head loves water (hydrophilic), tail fears water (hydrophobic)."
+            },
+            comparison: {
+              bm: "Bahan tidak larut lipid memerlukan protein pembawa/liang untuk merentasi membran.",
+              en: "Lipid-insoluble substances require carrier/pore proteins to cross the membrane."
+            }
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: {
+              bm: "Apakah sifat bahagian kepala fosfolipid pada membran plasma?",
+              en: "What is the characteristic of the phospholipid head in the plasma membrane?"
+            },
+            options: {
+              bm: [
+                "Hidrofilik (Suka air)",
+                "Hidrofobik (Benci air)",
+                "Tidak bertindak balas dengan air",
+                "Larut dalam lipid sahaja"
+              ],
+              en: [
+                "Hydrophilic (Water-attracting)",
+                "Hydrophobic (Water-repelling)",
+                "Non-reactive to water",
+                "Soluble only in lipids"
+              ]
+            },
+            answer: 0
           }
         ]
       },
@@ -374,83 +558,224 @@
         title: { bm: "5.1 Mekanisme Tindakan Enzim", en: "5.1 Mechanism of Enzyme Action" },
         cards: [
           {
-            title: "Definisi Enzim",
-            desc: "Mangkin organik yang terdiri daripada protein dan dihasilkan oleh sel hidup untuk mempercepatkan tindak balas biokimia.",
-            keywords: ["Mangkin organik", "Spesifik", "Tidak terhad", "Tenaga pengaktifan"],
-            terms: ["Enzyme", "Substrate", "Active site"],
-            tip: "💡 Tip Ingat: Model 'Mangga dan Kunci' (Lock and Key Hypothesis). Substrat = Kunci, Enzim = Mangga.",
-            comparison: "Enzim tidak musnah dalam tindak balas dan boleh digunakan semula."
+            title: { bm: "Definisi Enzim", en: "Enzyme Definition" },
+            desc: {
+              bm: "Mangkin organik yang terdiri daripada protein dan dihasilkan oleh sel hidup untuk mempercepatkan tindak balas biokimia.",
+              en: "Organic catalysts consisting of proteins produced by living cells to speed up biochemical reactions."
+            },
+            keywords: {
+              bm: ["Mangkin organik", "Spesifik", "Tenaga pengaktifan"],
+              en: ["Organic catalyst", "Specific", "Activation energy"]
+            },
+            terms: {
+              bm: ["Enzim", "Substrat", "Tapak Aktif"],
+              en: ["Enzyme", "Substrate", "Active site"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Model 'Mangga dan Kunci' (Lock and Key Hypothesis). Substrat = Kunci, Enzim = Mangga.",
+              en: "💡 Memory Tip: 'Lock and Key' Hypothesis. Substrate = Key, Enzyme = Lock."
+            },
+            comparison: {
+              bm: "Enzim tidak musnah dalam tindak balas dan boleh digunakan semula.",
+              en: "Enzymes are not destroyed in the reaction and can be reused."
+            }
           },
           {
-            title: "Faktor Mempengaruhi Enzim: Suhu",
-            desc: "Kadar tindak balas enzim meningkat dengan suhu sehingga mencapai suhu optimum (37°C bagi manusia).",
-            keywords: ["Suhu optimum", "Penyahaslian (Denaturation)", "Tenaga kinetik"],
-            terms: ["Optimum temperature", "Denaturation"],
-            tip: "💡 Tip Ingat: Di atas suhu optimum (>60°C), ikatan enzim terputus dan Tapak Aktif terurai (Nyahasli).",
-            comparison: "Pada suhu 0°C, enzim tidak aktif tetapi tidak rosak."
+            title: { bm: "Faktor Mempengaruhi Enzim: Suhu", en: "Factors Affecting Enzymes: Temperature" },
+            desc: {
+              bm: "Kadar tindak balas enzim meningkat dengan suhu sehingga mencapai suhu optimum (~37°C bagi manusia). Suhu terlalu tinggi merosakkan enzim.",
+              en: "Reaction rate increases with temperature up to an optimum (~37°C in humans). Excessive heat denatures the enzyme."
+            },
+            keywords: {
+              bm: ["Suhu optimum", "Penyahaslian (Denaturation)", "Tenaga kinetik"],
+              en: ["Optimum temperature", "Denaturation", "Kinetic energy"]
+            },
+            terms: {
+              bm: ["Suhu optimum", "Nyahasli"],
+              en: ["Optimum temperature", "Denatured"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Di atas suhu optimum (>60°C), ikatan enzim terputus dan Tapak Aktif terurai (Nyahasli).",
+              en: "💡 Memory Tip: Above optimum temp (>60°C), bonds break and the Active Site unravels (Denatures)."
+            },
+            comparison: {
+              bm: "Pada suhu 0°C, enzim tidak aktif tetapi TIDAK rosak.",
+              en: "At 0°C, enzymes become inactive but ARE NOT damaged."
+            }
           }
         ],
         quiz: [
           {
             type: 'mcq',
-            question: "Hipotesis manakah yang digunakan untuk menerangkan spesifisiti tindakan enzim dengan substrat?",
-            options: [
-              "Hipotesis Induksi",
-              "Hipotesis Mangga dan Kunci",
-              "Hipotesis Rantaian Makanan",
-              "Hipotesis Resapan Terbimbing"
-            ],
+            question: {
+              bm: "Hipotesis manakah yang digunakan untuk menerangkan spesifisiti tindakan enzim dengan substrat?",
+              en: "Which hypothesis is used to explain the specificity of enzyme-substrate action?"
+            },
+            options: {
+              bm: [
+                "Hipotesis Induksi",
+                "Hipotesis Mangga dan Kunci",
+                "Hipotesis Rantaian Makanan",
+                "Hipotesis Resapan Terbimbing"
+              ],
+              en: [
+                "Induced Fit Hypothesis",
+                "Lock and Key Hypothesis",
+                "Food Chain Hypothesis",
+                "Facilitated Diffusion Hypothesis"
+              ]
+            },
             answer: 1
           },
           {
             type: 'tf',
-            question: "Enzim dinyahaslikan (denatured) apabila didedahkan pada suhu yang sangat rendah (0°C).",
+            question: {
+              bm: "Enzim dinyahaslikan (denatured) apabila didedahkan pada suhu yang sangat rendah (0°C).",
+              en: "Enzymes are denatured when exposed to extremely low temperatures (0°C)."
+            },
             answer: false
+          }
+        ]
+      },
+      'f5_b6': {
+        title: { bm: "6.1 Hukum Mendel & Pewarisan", en: "6.1 Mendel's Law & Inheritance" },
+        cards: [
+          {
+            title: { bm: "Hukum Mendel Pertama", en: "Mendel's First Law" },
+            desc: {
+              bm: "Hukum Segregasi: Ciri sesuatu organisma dikawal oleh sepasang alel yang berasing semasa pembentukan gamet.",
+              en: "Law of Segregation: Characteristics of an organism are controlled by pairs of alleles that segregate during gamete formation."
+            },
+            keywords: {
+              bm: ["Dominan", "Resesif", "Alel", "Gamet"],
+              en: ["Dominant", "Recessive", "Allele", "Gamete"]
+            },
+            terms: {
+              bm: ["Fenotip", "Genotip", "Homozigot", "Heterozigot"],
+              en: ["Phenotype", "Genotype", "Homozygous", "Heterozygous"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Alel dominan diwakili huruf BESAR (T), alel resesif huruf kecil (t).",
+              en: "💡 Memory Tip: Dominant allele uses CAPITAL letters (T), recessive uses lowercase (t)."
+            },
+            comparison: {
+              bm: "Homozigot = Alel sama (TT/tt). Heterozigot = Alel berbeza (Tt).",
+              en: "Homozygous = Same alleles (TT/tt). Heterozygous = Different alleles (Tt)."
+            }
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: {
+              bm: "Apakah nisbah fenotip bagi kacukan monohibrid F2 mengikut Hukum Mendel Pertama?",
+              en: "What is the phenotypic ratio of an F2 monohybrid cross according to Mendel's First Law?"
+            },
+            options: {
+              bm: ["1:1", "3:1", "9:3:3:1", "1:2:1"],
+              en: ["1:1", "3:1", "9:3:3:1", "1:2:1"]
+            },
+            answer: 1
           }
         ]
       }
     };
 
-    // Generic fallback for any chapter without custom flashcards/quizzes
+    // Generic fallback helper generator for any chapter without custom flashcards/quizzes
     function getTopicData(topicId) {
       if (topicDetailsData[topicId]) {
         return topicDetailsData[topicId];
       }
+
+      // Generate localized fallback data automatically for empty chapters
       return {
-        title: { bm: `Subtopik & Pembelajaran Utama`, en: `Subtopics & Core Knowledge` },
+        title: { 
+          bm: `Subtopik & Pembelajaran Utama (${topicId.toUpperCase()})`, 
+          en: `Subtopics & Core Knowledge (${topicId.toUpperCase()})` 
+        },
         cards: [
           {
-            title: "Konsep & Definisi Asas",
-            desc: "Subtopik ini merangkumi fakta-fakta penting KSSM yang direka khas untuk pemahaman pantas dan daya ingatan active recall.",
-            keywords: ["Fakta KSSM", "Konsep Kunci", "Istilah SPM"],
-            terms: ["Scientific Terms", "Key Principles"],
-            tip: "💡 Tip Ingat: Hafal setiap istilah saintifik dan perkaitannya dengan proses biologi.",
-            comparison: "Bandingkan struktur dan fungsi untuk kefahaman menyeluruh."
+            title: { 
+              bm: "Konsep & Definisi Asas KSSM", 
+              en: "Core Concepts & KSSM Definitions" 
+            },
+            desc: {
+              bm: "Subtopik ini merangkumi fakta-fakta penting KSSM yang direka khas untuk pemahaman pantas dan daya ingatan active recall.",
+              en: "This subtopic encompasses key KSSM facts designed specifically for rapid understanding and active recall retention."
+            },
+            keywords: {
+              bm: ["Fakta KSSM", "Konsep Kunci", "Istilah SPM"],
+              en: ["KSSM Facts", "Key Concepts", "SPM Terms"]
+            },
+            terms: {
+              bm: ["Istilah Saintifik", "Prinsip Biologi"],
+              en: ["Scientific Terms", "Biological Principles"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Hafal setiap istilah saintifik dan perkaitannya dengan proses biologi.",
+              en: "💡 Memory Tip: Memorise every scientific term and its relation to biological processes."
+            },
+            comparison: {
+              bm: "Bandingkan struktur dan fungsi untuk kefahaman menyeluruh.",
+              en: "Compare structures and functions for comprehensive mastery."
+            }
           },
           {
-            title: "Fungsi & Mekanisme Biologi",
-            desc: "Memahami urutan proses biologi adalah kunci utama untuk menjawab soalan struktur dan esei SPM.",
-            keywords: ["Mekanisme", "Proses Utama", "Keseimbangan"],
-            terms: ["Biological Process", "Homeostatic Control"],
-            tip: "💡 Tip Ingat: Susun proses mengikut carta alir untuk mengelakkan daripada tertukar langkah.",
-            comparison: "Perhatikan perbezaan antara keadaan normal dan abnormal."
+            title: { 
+              bm: "Fungsi & Mekanisme Biologi", 
+              en: "Biological Functions & Mechanisms" 
+            },
+            desc: {
+              bm: "Memahami urutan proses biologi adalah kunci utama untuk menjawab soalan struktur dan esei SPM dengan tepat.",
+              en: "Understanding the sequence of biological processes is essential to answer SPM structured and essay questions accurately."
+            },
+            keywords: {
+              bm: ["Mekanisme", "Proses Utama", "Homeostasis"],
+              en: ["Mechanism", "Core Process", "Homeostasis"]
+            },
+            terms: {
+              bm: ["Proses Biologi", "Kawalan Fisiologi"],
+              en: ["Biological Process", "Physiological Control"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Susun proses mengikut carta alir untuk mengelakkan daripada tertukar langkah.",
+              en: "💡 Memory Tip: Arrange processes in a flowchart format to prevent mixing up steps."
+            },
+            comparison: {
+              bm: "Perhatikan perbezaan antara keadaan normal dan abnormal.",
+              en: "Note differences between normal and abnormal conditions."
+            }
           }
         ],
         quiz: [
           {
             type: 'mcq',
-            question: "Apakah keutamaan utama pembelajaran tajuk ini mengikut silibus KSSM?",
-            options: [
-              "Menguasai istilah saintifik dan mekanisme fungsi",
-              "Menghafal soalan tanpa memahami fakta",
-              "Abaikan gambar rajah dan tumpukan pada jawapan ringkas",
-              "Membaca sekali sahaja tanpa latihan Active Recall"
-            ],
+            question: {
+              bm: "Apakah keutamaan utama pembelajaran tajuk ini mengikut silibus KSSM?",
+              en: "What is the main priority when mastering this topic under the KSSM syllabus?"
+            },
+            options: {
+              bm: [
+                "Menguasai istilah saintifik dan mekanisme fungsi",
+                "Menghafal soalan tanpa memahami fakta",
+                "Abaikan gambar rajah dan tumpukan pada jawapan ringkas",
+                "Membaca sekali sahaja tanpa latihan Active Recall"
+              ],
+              en: [
+                "Mastering scientific terms and functional mechanisms",
+                "Memorising questions without understanding facts",
+                "Ignoring diagrams and focusing on short answers",
+                "Reading once without Active Recall practice"
+              ]
+            },
             answer: 0
           },
           {
             type: 'tf',
-            question: "Teknik Active Recall terbukti meningkatkan ingatan jangka panjang bagi mata pelajaran Biologi.",
+            question: {
+              bm: "Teknik Active Recall terbukti meningkatkan ingatan jangka panjang bagi mata pelajaran Biologi.",
+              en: "Active Recall techniques are proven to boost long-term memory for Biology."
+            },
             answer: true
           }
         ]
@@ -474,6 +799,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       applyTheme();
       updateBookmarkBadge();
+      updateStaticTranslations();
       navigateTo('home');
     });
 
@@ -500,17 +826,27 @@
       currentLang = currentLang === 'bm' ? 'en' : 'bm';
       localStorage.setItem('pintarbio_lang', currentLang);
       document.getElementById('langLabel').textContent = currentLang.toUpperCase();
-      renderCurrentView();
+      updateStaticTranslations();
+      renderCurrentView(activeTopic ? activeTopic.id : null);
     }
 
     function t(key) {
       return translations[currentLang][key] || key;
     }
 
+    function updateStaticTranslations() {
+      document.getElementById('headerSubtitle').textContent = t('header_sub');
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (translations[currentLang][k]) {
+          el.textContent = translations[currentLang][k];
+        }
+      });
+    }
+
     // Navigation Router
     function navigateTo(view, param = null) {
       currentView = view;
-      const app = document.getElementById('appContainer');
 
       // Update active nav button state
       ['navHome', 'navF4', 'navF5', 'navStats', 'navBadges'].forEach(id => {
@@ -576,17 +912,17 @@
           <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-bio-700 via-bio-600 to-teal-600 text-white p-6 sm:p-8 shadow-xl">
             <div class="relative z-10 max-w-2xl">
               <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider text-bio-100 mb-3 inline-block">
-                ✨ Teknik Active Recall
+                ✨ Active Recall Technique
               </span>
               <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">${t('welcome_title')}</h2>
               <p class="text-bio-50 text-sm sm:text-base leading-relaxed opacity-95">${t('welcome_sub')}</p>
               
               <div class="mt-6 flex flex-wrap gap-3">
                 <button onclick="navigateTo('f4')" class="px-5 py-2.5 bg-white text-bio-800 rounded-xl font-bold shadow-md hover:bg-bio-50 transition flex items-center gap-2 text-sm">
-                  <i class="fa-solid fa-book-open"></i> Tingkatan 4
+                  <i class="fa-solid fa-book-open"></i> ${t('form4_title')}
                 </button>
                 <button onclick="navigateTo('f5')" class="px-5 py-2.5 bg-bio-900/40 backdrop-blur-md border border-white/30 text-white rounded-xl font-bold shadow-md hover:bg-bio-900/60 transition flex items-center gap-2 text-sm">
-                  <i class="fa-solid fa-graduation-cap"></i> Tingkatan 5
+                  <i class="fa-solid fa-graduation-cap"></i> ${t('form5_title')}
                 </button>
               </div>
             </div>
@@ -612,7 +948,7 @@
               </div>
               <div>
                 <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('stats_streak')}</p>
-                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${userStats.streak} Hari</h4>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${userStats.streak} ${t('days')}</h4>
               </div>
             </div>
 
@@ -631,7 +967,7 @@
                 <i class="fa-solid fa-award"></i>
               </div>
               <div>
-                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Lencana</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('nav_badges')}</p>
                 <h4 class="text-lg font-bold text-slate-800 dark:text-white">${badgesList.filter(b => b.req(userStats)).length} / ${badgesList.length}</h4>
               </div>
             </div>
@@ -650,10 +986,10 @@
                 </span>
               </div>
               <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-bio-600 dark:group-hover:text-bio-400 transition">${t('form4_title')}</h3>
-              <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Mengandungi Bab 1 hingga Bab 15 merangkumi Biologi Sel, Asas Kehidupan, dan Sistem Manusia.</p>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">${t('form4_desc')}</p>
               <div class="flex items-center justify-between text-xs font-medium text-bio-600 dark:text-bio-400">
-                <span>Pilih Bab ➔</span>
-                <span>${userStats.completedTopics.filter(id => id.startsWith('f4_')).length} / 15 Selesai</span>
+                <span>${t('select_chapter')}</span>
+                <span>${userStats.completedTopics.filter(id => id.startsWith('f4_')).length} / 15 ${t('completed')}</span>
               </div>
             </div>
 
@@ -668,10 +1004,10 @@
                 </span>
               </div>
               <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">${t('form5_title')}</h3>
-              <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Mengandungi Bab 1 hingga Bab 11 merangkumi Fisiologi Tumbuhan, Genetik, dan Ekosistem.</p>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">${t('form5_desc')}</p>
               <div class="flex items-center justify-between text-xs font-medium text-teal-600 dark:text-teal-400">
-                <span>Pilih Bab ➔</span>
-                <span>${userStats.completedTopics.filter(id => id.startsWith('f5_')).length} / 11 Selesai</span>
+                <span>${t('select_chapter')}</span>
+                <span>${userStats.completedTopics.filter(id => id.startsWith('f5_')).length} / 11 ${t('completed')}</span>
               </div>
             </div>
           </div>
@@ -692,7 +1028,7 @@
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pilih bab untuk memulakan sesi Active Recall Flashcard & Kuiz.</p>
             </div>
             <button onclick="navigateTo('home')" class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-              <i class="fa-solid fa-arrow-left"></i> Kembali
+              <i class="fa-solid fa-arrow-left"></i> ${t('back_btn')}
             </button>
           </div>
 
@@ -708,7 +1044,7 @@
                         <i class="fa-solid ${ch.icon}"></i>
                       </div>
                       <div>
-                        <span class="text-[11px] font-semibold uppercase tracking-wider text-bio-600 dark:text-bio-400">Bab ${ch.num}</span>
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-bio-600 dark:text-bio-400">${t('chapters_count')} ${ch.num}</span>
                         <h3 class="text-base font-bold text-slate-800 dark:text-white leading-snug">${chapterTitle}</h3>
                       </div>
                     </div>
@@ -746,8 +1082,18 @@
         return '';
       }
 
-      const card = activeCards[activeCardIndex];
+      const rawCard = activeCards[activeCardIndex];
       const total = activeCards.length;
+
+      // Extract localized content
+      const cardTitle = typeof rawCard.title === 'object' ? (rawCard.title[currentLang] || rawCard.title.bm) : rawCard.title;
+      const cardDesc = typeof rawCard.desc === 'object' ? (rawCard.desc[currentLang] || rawCard.desc.bm) : rawCard.desc;
+      const cardTip = typeof rawCard.tip === 'object' ? (rawCard.tip[currentLang] || rawCard.tip.bm) : rawCard.tip;
+      const cardComp = rawCard.comparison ? (typeof rawCard.comparison === 'object' ? (rawCard.comparison[currentLang] || rawCard.comparison.bm) : rawCard.comparison) : null;
+      
+      const keywordsList = rawCard.keywords ? (rawCard.keywords[currentLang] || rawCard.keywords.bm || []) : [];
+      const termsList = rawCard.terms ? (rawCard.terms[currentLang] || rawCard.terms.bm || []) : [];
+
       const topicTitle = activeTopic.title[currentLang] || activeTopic.title.bm;
       const isBookmarked = bookmarks.some(b => b.topicId === activeTopic.id && b.cardIndex === activeCardIndex);
 
@@ -779,35 +1125,42 @@
           <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-bio-500/30 p-6 sm:p-8 card-shadow space-y-6 min-h-[360px] flex flex-col justify-between">
             <div class="space-y-4">
               <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-100 dark:border-slate-700/80 pb-3 flex items-center justify-between">
-                <span>${card.title}</span>
+                <span>${cardTitle}</span>
                 <i class="fa-solid fa-lightbulb text-amber-400 text-xl"></i>
               </h3>
 
-              <p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">${card.desc}</p>
+              <p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">${cardDesc}</p>
 
               <!-- Keywords & Terms -->
               <div class="space-y-2 pt-2">
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">Kata Kunci:</span>
-                  ${card.keywords.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
-                </div>
-                <div class="flex flex-wrap gap-1.5">
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">Istilah Saintifik:</span>
-                  ${card.terms.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
-                </div>
+                ${keywordsList.length > 0 ? `
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">${t('keywords_label')}</span>
+                    ${keywordsList.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
+                  </div>
+                ` : ''}
+
+                ${termsList.length > 0 ? `
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">${t('terms_label')}</span>
+                    ${termsList.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
+                  </div>
+                ` : ''}
               </div>
 
               <!-- Comparison / Extra -->
-              ${card.comparison ? `
+              ${cardComp ? `
                 <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl text-xs text-slate-600 dark:text-slate-300 border-l-4 border-bio-500">
-                  ${card.comparison}
+                  ${cardComp}
                 </div>
               ` : ''}
 
               <!-- Tip Hafalan -->
-              <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-medium">
-                ${card.tip}
-              </div>
+              ${cardTip ? `
+                <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-medium">
+                  ${cardTip}
+                </div>
+              ` : ''}
             </div>
 
             <!-- Action Controls (Strict Active Recall: NO Back Button) -->
@@ -858,13 +1211,14 @@
       const q = activeQuiz[activeQuestionIndex];
       const total = activeQuiz.length;
       const topicTitle = activeTopic.title[currentLang] || activeTopic.title.bm;
+      const questionText = typeof q.question === 'object' ? (q.question[currentLang] || q.question.bm) : q.question;
 
       return `
         <div class="max-w-2xl mx-auto space-y-6 no-select">
           <!-- Active Recall Banner -->
           <div class="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
             <i class="fa-solid fa-lock text-red-500 text-base flex-shrink-0"></i>
-            <span>❌ Mod Kuiz Active Recall: Jawapan tidak boleh diubah selepas dihantar dan tiada butang Kembali!</span>
+            <span>${t('quiz_recall_notice')}</span>
           </div>
 
           <!-- Quiz Header -->
@@ -882,7 +1236,7 @@
 
           <!-- Question Card -->
           <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 card-shadow space-y-6">
-            <h3 class="text-lg sm:text-xl font-bold text-slate-800 dark:text-white leading-snug">${q.question}</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-slate-800 dark:text-white leading-snug">${questionText}</h3>
 
             <!-- Answer Options according to type -->
             <div id="quizOptionsContainer" class="space-y-3">
@@ -902,7 +1256,11 @@
 
     function renderQuizOptions(q) {
       if (q.type === 'mcq') {
-        return q.options.map((opt, idx) => `
+        const optionsList = typeof q.options === 'object' && !Array.isArray(q.options) 
+          ? (q.options[currentLang] || q.options.bm) 
+          : q.options;
+
+        return optionsList.map((opt, idx) => `
           <label onclick="enableSubmit()" class="flex items-center gap-3 p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 dark:hover:border-bio-400 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition">
             <input type="radio" name="quiz_opt" value="${idx}" class="w-4 h-4 text-bio-600 focus:ring-bio-500">
             <span class="text-sm font-medium text-slate-700 dark:text-slate-200">${opt}</span>
@@ -913,18 +1271,18 @@
           <div class="grid grid-cols-2 gap-4">
             <label onclick="enableSubmit()" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-center">
               <input type="radio" name="quiz_opt" value="true" class="mb-2 w-4 h-4 text-bio-600">
-              <span class="text-base font-bold text-bio-600 dark:text-bio-400">BENAR (TRUE)</span>
+              <span class="text-base font-bold text-bio-600 dark:text-bio-400">${t('true_label')}</span>
             </label>
             <label onclick="enableSubmit()" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-red-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-center">
               <input type="radio" name="quiz_opt" value="false" class="mb-2 w-4 h-4 text-red-600">
-              <span class="text-base font-bold text-red-600 dark:text-red-400">SALAH (FALSE)</span>
+              <span class="text-base font-bold text-red-600 dark:text-red-400">${t('false_label')}</span>
             </label>
           </div>
         `;
       } else if (q.type === 'blank') {
         return `
           <div class="space-y-2">
-            <input type="text" id="blankAnswerInput" oninput="enableSubmit()" placeholder="Taip jawapan anda di sini..." class="w-full p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm focus:border-bio-500 outline-none transition">
+            <input type="text" id="blankAnswerInput" oninput="enableSubmit()" placeholder="${t('type_answer_ph')}" class="w-full p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm focus:border-bio-500 outline-none transition">
           </div>
         `;
       }
@@ -932,8 +1290,10 @@
 
     function enableSubmit() {
       const btn = document.getElementById('btnSubmitAnswer');
-      btn.disabled = false;
-      btn.className = "px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition cursor-pointer flex items-center gap-2";
+      if (btn) {
+        btn.disabled = false;
+        btn.className = "px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition cursor-pointer flex items-center gap-2";
+      }
     }
 
     function submitQuizAnswer() {
@@ -968,7 +1328,6 @@
         activeQuestionIndex++;
         navigateTo('quiz', activeTopic.id);
       } else {
-        // Quiz completed
         finishQuiz();
       }
     }
@@ -1027,7 +1386,7 @@
                 <h4 class="text-2xl font-black text-slate-800 dark:text-white">${percentage}%</h4>
               </div>
               <div>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Betul</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">${t('correct')}</p>
                 <h4 class="text-2xl font-black text-bio-600 dark:text-bio-400">${correctCount} / ${total}</h4>
               </div>
               <div>
@@ -1038,8 +1397,8 @@
 
             ${needsRevision ? `
               <div class="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-2xl text-red-800 dark:text-red-200 text-xs font-semibold space-y-1">
-                <p class="text-sm">⚠️ Markah di bawah 60%</p>
-                <p>Cadangan: Sila ulang semula sesi Flashcard untuk mengukuhkan memori hafalan sebelum mencuba kuiz sekali lagi.</p>
+                <p class="text-sm">${t('score_below_60')}</p>
+                <p>${t('revise_advice')}</p>
               </div>
             ` : ''}
 
@@ -1095,12 +1454,12 @@
             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
               <i class="fa-solid fa-fire text-amber-500 text-2xl mb-2"></i>
               <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_streak')}</p>
-              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.streak} Hari</h3>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.streak} ${t('days')}</h3>
             </div>
 
             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
               <i class="fa-solid fa-star text-yellow-500 text-2xl mb-2"></i>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Kuiz Terakhir</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_last_quiz')}</p>
               <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.lastScore !== null ? userStats.lastScore + '%' : '-'}</h3>
             </div>
           </div>
@@ -1113,7 +1472,7 @@
       return `
         <div class="max-w-3xl mx-auto space-y-6">
           <h2 class="text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-3">
-            <i class="fa-solid fa-award text-amber-500"></i> ${t('nav_badges')} Pencapaian
+            <i class="fa-solid fa-award text-amber-500"></i> ${t('nav_badges')}
           </h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -1147,7 +1506,7 @@
           </div>
 
           <div id="searchResults" class="space-y-3">
-            <p class="text-center text-slate-400 text-xs py-8">Taip kata kunci untuk membuat carian bab, subtopik, atau istilah saintifik...</p>
+            <p class="text-center text-slate-400 text-xs py-8">${t('search_prompt')}</p>
           </div>
         </div>
       `;
@@ -1158,7 +1517,7 @@
       const resultsContainer = document.getElementById('searchResults');
 
       if (!query) {
-        resultsContainer.innerHTML = `<p class="text-center text-slate-400 text-xs py-8">Taip kata kunci untuk membuat carian bab, subtopik, atau istilah saintifik...</p>`;
+        resultsContainer.innerHTML = `<p class="text-center text-slate-400 text-xs py-8">${t('search_prompt')}</p>`;
         return;
       }
 
@@ -1167,14 +1526,14 @@
         syllabusData[form].forEach(ch => {
           const titleBM = ch.title.bm.toLowerCase();
           const titleEN = ch.title.en.toLowerCase();
-          if (titleBM.includes(query) || titleEN.includes(query) || `bab ${ch.num}`.includes(query)) {
+          if (titleBM.includes(query) || titleEN.includes(query) || `bab ${ch.num}`.includes(query) || `chapter ${ch.num}`.includes(query)) {
             matches.push({ ...ch, form });
           }
         });
       });
 
       if (matches.length === 0) {
-        resultsContainer.innerHTML = `<p class="text-center text-slate-400 text-xs py-8">Tiada padanan ditemui untuk "${query}".</p>`;
+        resultsContainer.innerHTML = `<p class="text-center text-slate-400 text-xs py-8">${t('no_matches')} "${query}".</p>`;
         return;
       }
 
@@ -1185,7 +1544,7 @@
               <i class="fa-solid ${m.icon}"></i>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-bio-600">${m.form.toUpperCase()} - Bab ${m.num}</span>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-bio-600">${m.form.toUpperCase()} - ${t('chapters_count')} ${m.num}</span>
               <h4 class="text-sm font-bold text-slate-800 dark:text-white">${m.title[currentLang] || m.title.bm}</h4>
             </div>
           </div>
@@ -1223,7 +1582,7 @@
           <div class="max-w-md mx-auto text-center py-12 space-y-3">
             <i class="fa-solid fa-bookmark text-4xl text-slate-300 dark:text-slate-600"></i>
             <h3 class="text-lg font-bold text-slate-700 dark:text-slate-300">${t('no_bookmarks')}</h3>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Tekan ikon bookmark semasa membaca flashcard untuk menyimpan nota penting di sini.</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">${t('bookmark_desc')}</p>
           </div>
         `;
       }
@@ -1231,7 +1590,7 @@
       return `
         <div class="max-w-2xl mx-auto space-y-4">
           <h2 class="text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-3">
-            <i class="fa-solid fa-bookmark text-amber-500"></i> Penanda Buku Simpanan (${bookmarks.length})
+            <i class="fa-solid fa-bookmark text-amber-500"></i> ${t('bookmarks_saved')} (${bookmarks.length})
           </h2>
 
           <div class="space-y-3">
@@ -1240,14 +1599,17 @@
               const card = topicData.cards[bm.cardIndex];
               if (!card) return '';
 
+              const cardTitle = typeof card.title === 'object' ? (card.title[currentLang] || card.title.bm) : card.title;
+              const cardDesc = typeof card.desc === 'object' ? (card.desc[currentLang] || card.desc.bm) : card.desc;
+
               return `
                 <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow space-y-2">
                   <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase tracking-wider">${topicData.title[currentLang] || topicData.title.bm}</span>
-                    <button onclick="toggleBookmark('${bm.topicId}', ${bm.cardIndex})" class="text-xs text-red-500 hover:underline">Padam</button>
+                    <button onclick="toggleBookmark('${bm.topicId}', ${bm.cardIndex})" class="text-xs text-red-500 hover:underline">${t('delete')}</button>
                   </div>
-                  <h4 class="text-base font-bold text-slate-800 dark:text-white">${card.title}</h4>
-                  <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">${card.desc}</p>
+                  <h4 class="text-base font-bold text-slate-800 dark:text-white">${cardTitle}</h4>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">${cardDesc}</p>
                 </div>
               `;
             }).join('')}
