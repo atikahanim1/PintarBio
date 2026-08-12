@@ -148,7 +148,7 @@
     </div>
   </nav>
 
-  <!-- FIREBASE & APPLICATION SCRIPT -->
+  <!-- APPLICATION SCRIPT -->
   <script>
     // Global Application State
     let currentLang = localStorage.getItem('pintarbio_lang') || 'bm';
@@ -174,7 +174,7 @@
     let quizUserAnswers = [];
     let quizStartTime = 0;
 
-    // Translations Dictionary
+    // Translations Dictionary UI
     const translations = {
       bm: {
         nav_home: "Utama",
@@ -212,6 +212,8 @@
         stats_streak: "Streak Belajar",
         badge_locked: "Terkunci",
         badge_unlocked: "Dibuka",
+        lbl_keywords: "Kata Kunci",
+        lbl_terms: "Istilah Saintifik",
         true_lbl: "BENAR (TRUE)",
         false_lbl: "SALAH (FALSE)",
         type_placeholder: "Taip jawapan anda di sini..."
@@ -252,6 +254,8 @@
         stats_streak: "Study Streak",
         badge_locked: "Locked",
         badge_unlocked: "Unlocked",
+        lbl_keywords: "Keywords",
+        lbl_terms: "Scientific Terms",
         true_lbl: "TRUE",
         false_lbl: "FALSE",
         type_placeholder: "Type your answer here..."
@@ -298,20 +302,26 @@
         title: { bm: "2.1 Biologi Sel & Organel", en: "2.1 Cell Biology & Organelles" },
         cards: [
           {
-            title: { bm: "Mitokondria", en: "Mitochondria" },
+            title: { bm: "Mitokondria", en: "Mitochondrion" },
             desc: {
               bm: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
-              en: "Rod-shaped or spherical organelle with double membranes. The inner membrane is folded into cristae."
+              en: "Rod-shaped or spherical organelle bounded by two layers of membrane. The inner membrane is folded to form cristae."
             },
-            keywords: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
-            terms: ["Mitochondria", "Cristae", "Adenosine Triphosphate (ATP)"],
+            keywords: {
+              bm: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
+              en: ["Site of energy production", "ATP", "Cellular respiration", "Aerobic"]
+            },
+            terms: {
+              bm: ["Mitokondria", "Krista", "Adenosina Trifosfat (ATP)"],
+              en: ["Mitochondrion", "Cristae", "Adenosine Triphosphate (ATP)"]
+            },
             tip: {
               bm: "💡 Tip Ingat: Mitokondria = 'Powerhouse' sel! Tempat bakar glukosa hasilkan tenaga.",
-              en: "💡 Memory Tip: Mitochondria = 'Powerhouse' of the cell! Burns glucose to generate energy."
+              en: "💡 Memory Tip: Mitochondria = 'Powerhouse' of the cell! Site of glucose breakdown to generate energy."
             },
             comparison: {
               bm: "Sel otot & sel sperma ada bilangan mitokondria yang sangat tinggi.",
-              en: "Muscle cells & sperm cells contain a very high number of mitochondria."
+              en: "Muscle cells & sperm cells contain a very high density of mitochondria."
             }
           },
           {
@@ -320,8 +330,14 @@
               bm: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal.",
               en: "Consists of a stack of parallel flattened sacs bounded by a single membrane."
             },
-            keywords: ["Ubah suai protein", "Bungkus protein", "Rembesan vesikel"],
-            terms: ["Golgi body", "Secretory vesicle", "Glycoprotein"],
+            keywords: {
+              bm: ["Ubah suai protein", "Bungkus protein", "Rembesan vesikel"],
+              en: ["Modify proteins", "Package proteins", "Secretory vesicles"]
+            },
+            terms: {
+              bm: ["Jasad Golgi", "Vesikel Rembesan", "Glikoprotein"],
+              en: ["Golgi apparatus", "Secretory vesicle", "Glycoprotein"]
+            },
             tip: {
               bm: "💡 Tip Ingat: Jasad Golgi umpama Pejabat Pos! Mengubah suai, membungkus dan mengangkut protein.",
               en: "💡 Memory Tip: Golgi apparatus is like a Post Office! Modifies, packages, and transports proteins."
@@ -394,8 +410,14 @@
               bm: "Mangkin organik yang terdiri daripada protein dan dihasilkan oleh sel hidup untuk mempercepatkan tindak balas biokimia.",
               en: "Organic catalyst composed of protein produced by living cells to speed up biochemical reactions."
             },
-            keywords: ["Mangkin organik", "Spesifik", "Tenaga pengaktifan"],
-            terms: ["Enzyme", "Substrate", "Active site"],
+            keywords: {
+              bm: ["Mangkin organik", "Spesifik", "Tenaga pengaktifan"],
+              en: ["Organic catalyst", "Specific", "Activation energy"]
+            },
+            terms: {
+              bm: ["Enzim", "Substrat", "Tapak aktif"],
+              en: ["Enzyme", "Substrate", "Active site"]
+            },
             tip: {
               bm: "💡 Tip Ingat: Model 'Mangga dan Kunci' (Lock and Key Hypothesis). Substrat = Kunci, Enzim = Mangga.",
               en: "💡 Memory Tip: 'Lock and Key' Hypothesis. Substrate = Key, Enzyme = Lock."
@@ -455,8 +477,14 @@
               bm: "Subtopik ini merangkumi fakta-fakta penting KSSM yang direka khas untuk pemahaman pantas dan daya ingatan active recall.",
               en: "This subtopic covers essential KSSM facts tailored for quick understanding and active recall memorization."
             },
-            keywords: ["Fakta KSSM", "Konsep Kunci", "Istilah SPM"],
-            terms: ["Scientific Terms", "Key Principles"],
+            keywords: {
+              bm: ["Fakta KSSM", "Konsep Kunci", "Istilah SPM"],
+              en: ["KSSM Facts", "Key Concepts", "SPM Terms"]
+            },
+            terms: {
+              bm: ["Istilah Saintifik", "Prinsip Utama"],
+              en: ["Scientific Terms", "Key Principles"]
+            },
             tip: {
               bm: "💡 Tip Ingat: Hafal setiap istilah saintifik dan perkaitannya dengan proses biologi.",
               en: "💡 Memory Tip: Memorize each scientific term and its relation to biological processes."
@@ -724,7 +752,7 @@
       `;
     }
 
-    // FLASHCARD VIEW
+    // FLASHCARD VIEW (Bilingual fix for keywords, terms, tip & comparison)
     function startFlashcards(topicId) {
       const data = getTopicData(topicId);
       activeTopic = { id: topicId, ...data };
@@ -748,6 +776,14 @@
       const cardDesc = typeof card.desc === 'object' ? (card.desc[currentLang] || card.desc.bm) : card.desc;
       const cardTip = typeof card.tip === 'object' ? (card.tip[currentLang] || card.tip.bm) : card.tip;
       const cardComp = card.comparison ? (typeof card.comparison === 'object' ? (card.comparison[currentLang] || card.comparison.bm) : card.comparison) : '';
+
+      const cardKeywords = typeof card.keywords === 'object' && !Array.isArray(card.keywords) 
+        ? (card.keywords[currentLang] || card.keywords.bm) 
+        : card.keywords;
+
+      const cardTerms = typeof card.terms === 'object' && !Array.isArray(card.terms) 
+        ? (card.terms[currentLang] || card.terms.bm) 
+        : card.terms;
 
       return `
         <div class="max-w-2xl mx-auto space-y-6 no-select">
@@ -781,8 +817,12 @@
 
               <div class="space-y-2 pt-2">
                 <div class="flex flex-wrap gap-1.5">
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">Kata Kunci:</span>
-                  ${card.keywords.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">${t('lbl_keywords')}:</span>
+                  ${cardKeywords.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">${t('lbl_terms')}:</span>
+                  ${cardTerms.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
                 </div>
               </div>
 
