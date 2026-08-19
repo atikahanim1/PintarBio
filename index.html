@@ -1,155 +1,17 @@
-<!DOCTYPE html>
-<html lang="ms" class="light">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PintarBio - Aplikasi Pembelajaran Biologi SPM (KSSM)</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<!-- FIREBASE & APPLICATION SCRIPT -->
   <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            bio: {
-              50: '#f0fdf4',
-              100: '#dcfce7',
-              200: '#bbf7d0',
-              300: '#86efac',
-              400: '#4ade80',
-              500: '#22c55e',
-              600: '#16a34a',
-              700: '#15803d',
-              800: '#166534',
-              900: '#14532d',
-            },
-            accent: {
-              blue: '#2563eb',
-              cyan: '#06b6d4',
-            }
-          },
-          fontFamily: {
-            sans: ['Poppins', 'Inter', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      user-select: none;
-    }
-    .card-shadow {
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 9999px;
-    }
-    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #475569;
-    }
-    .no-select {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-  </style>
-</head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAtOfjb1ww3H76YL93hdMBQkXa7aZB3jQ4",
+      authDomain: "pintarbio.firebaseapp.com",
+      databaseURL: "https://pintarbio-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "pintarbio",
+      storageBucket: "pintarbio.firebasestorage.app",
+      messagingSenderId: "961265011684",
+      appId: "1:961265011684:web:3fdad6904f350bcd0a55f1",
+      measurementId: "G-ZWV3WDDC94"
+    };
 
-  <!-- TOP HEADER / NAVBAR -->
-  <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-bio-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-bio-500/20">
-          <i class="fa-solid fa-dna text-xl"></i>
-        </div>
-        <div>
-          <h1 class="text-xl font-bold bg-gradient-to-r from-bio-700 via-bio-600 to-teal-500 bg-clip-text text-transparent leading-tight">PintarBio</h1>
-          <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Biologi KSSM Tingkatan 4 & 5</p>
-        </div>
-      </div>
-
-      <!-- Quick Nav Controls -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Language Switcher -->
-        <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition">
-          <i class="fa-solid fa-globe text-bio-600 dark:text-bio-400"></i>
-          <span id="langLabel">BM</span>
-        </button>
-
-        <!-- Search Button -->
-        <button onclick="navigateTo('search')" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
-          <i class="fa-solid fa-magnifying-glass text-sm"></i>
-        </button>
-
-        <!-- Bookmark Button -->
-        <button onclick="navigateTo('bookmarks')" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-amber-500 transition relative">
-          <i class="fa-solid fa-bookmark text-sm"></i>
-          <span id="bookmarkBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">0</span>
-        </button>
-
-        <!-- Dark Mode Toggle -->
-        <button onclick="toggleDarkMode()" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-amber-400 transition">
-          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN APP CONTAINER -->
-  <main id="appContainer" class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
-    <!-- Dynamic Content -->
-  </main>
-
-  <!-- BOTTOM NAVIGATION BAR -->
-  <nav class="sticky bottom-0 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-700 z-40">
-    <div class="max-w-md mx-auto flex justify-around py-2 px-3">
-      <button onclick="navigateTo('home')" id="navHome" class="flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-medium">
-        <i class="fa-solid fa-house text-lg"></i>
-        <span class="text-[11px]" data-i18n="nav_home">Utama</span>
-      </button>
-      <button onclick="navigateTo('f4')" id="navF4" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
-        <i class="fa-solid fa-graduation-cap text-lg"></i>
-        <span class="text-[11px]" data-i18n="nav_f4">Ting. 4</span>
-      </button>
-      <button onclick="navigateTo('f5')" id="navF5" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
-        <i class="fa-solid fa-seedling text-lg"></i>
-        <span class="text-[11px]" data-i18n="nav_f5">Ting. 5</span>
-      </button>
-      <button onclick="navigateTo('stats')" id="navStats" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
-        <i class="fa-solid fa-chart-pie text-lg"></i>
-        <span class="text-[11px]" data-i18n="nav_stats">Statistik</span>
-      </button>
-      <button onclick="navigateTo('badges')" id="navBadges" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
-        <i class="fa-solid fa-award text-lg"></i>
-        <span class="text-[11px]" data-i18n="nav_badges">Lencana</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- APPLICATION SCRIPT -->
-  <script>
     // Global Application State
     let currentLang = localStorage.getItem('pintarbio_lang') || 'bm';
     let isDarkMode = localStorage.getItem('pintarbio_theme') === 'dark';
@@ -165,6 +27,7 @@
       completedTopics: []
     }));
 
+    // Active session state for Flashcard & Quiz flow
     let activeTopic = null;
     let activeCards = [];
     let activeCardIndex = 0;
@@ -173,6 +36,7 @@
     let quizUserAnswers = [];
     let quizStartTime = 0;
 
+    // Translations Dictionary
     const translations = {
       bm: {
         nav_home: "Utama",
@@ -189,7 +53,6 @@
         start_flashcard: "Mula Hafalan Flashcard",
         start_quiz: "Terus ke Kuiz",
         active_recall_notice: "⚠️ Mod Active Recall: Anda TIDAK Boleh kembali ke flashcard/soalan sebelumnya. Hafal fakta ini sepenuhnya!",
-        quiz_warning: "❌ Mod Kuiz Active Recall: Jawapan tidak boleh diubah selepas dihantar dan tiada butang Kembali!",
         next_card: "Seterusnya ➔",
         home_button: "Utama",
         question: "Soalan",
@@ -210,8 +73,6 @@
         stats_streak: "Streak Belajar",
         badge_locked: "Terkunci",
         badge_unlocked: "Dibuka",
-        lbl_keywords: "Kata Kunci",
-        lbl_terms: "Istilah Saintifik"
       },
       en: {
         nav_home: "Home",
@@ -228,7 +89,6 @@
         start_flashcard: "Start Flashcard Memorization",
         start_quiz: "Direct to Quiz",
         active_recall_notice: "⚠️ Active Recall Mode: You CANNOT go back to previous flashcards or questions. Memorize carefully!",
-        quiz_warning: "❌ Active Recall Quiz Mode: Answers cannot be changed after submission!",
         next_card: "Next ➔",
         home_button: "Home",
         question: "Question",
@@ -249,246 +109,353 @@
         stats_streak: "Study Streak",
         badge_locked: "Locked",
         badge_unlocked: "Unlocked",
-        lbl_keywords: "Keywords",
-        lbl_terms: "Scientific Terms"
       }
     };
 
+    // Full KSSM Biology Syllabus Data (Form 4 & Form 5)
     const syllabusData = {
       f4: [
         { id: 'f4_b1', num: 1, title: { bm: 'Pengenalan kepada Biologi dan Peraturan Makmal', en: 'Introduction to Biology and Laboratory Rules' }, icon: 'fa-vial' },
         { id: 'f4_b2', num: 2, title: { bm: 'Biologi Sel dan Organisasi Sel', en: 'Cell Biology and Organisation' }, icon: 'fa-microscope' },
         { id: 'f4_b3', num: 3, title: { bm: 'Pergerakan Bahan Merentasi Membran Plasma', en: 'Movement of Substances Across Plasma Membrane' }, icon: 'fa-arrows-split-up-and-left' },
         { id: 'f4_b4', num: 4, title: { bm: 'Komposisi Kimia dalam Sel', en: 'Chemical Composition in Cells' }, icon: 'fa-flask-vial' },
-        { id: 'f4_b5', num: 5, title: { bm: 'Metabolisme dan Enzim', en: 'Metabolism and Enzymes' }, icon: 'fa-bolt' }
+        { id: 'f4_b5', num: 5, title: { bm: 'Metabolisme dan Enzim', en: 'Metabolism and Enzymes' }, icon: 'fa-bolt' },
+        { id: 'f4_b6', num: 6, title: { bm: 'Pembahagian Sel', en: 'Cell Division' }, icon: 'fa-dharmachakra' },
+        { id: 'f4_b7', num: 7, title: { bm: 'Respirasi Sel', en: 'Cellular Respiration' }, icon: 'fa-wind' },
+        { id: 'f4_b8', num: 8, title: { bm: 'Sistem Respirasi dalam Manusia dan Haiwan', en: 'Respiratory System in Humans and Animals' }, icon: 'fa-lungs' },
+        { id: 'f4_b9', num: 9, title: { bm: 'Nutrisi dan Sistem Pencernaan Manusia', en: 'Nutrition and Human Digestive System' }, icon: 'fa-utensils' },
+        { id: 'f4_b10', num: 10, title: { bm: 'Pengangkutan dalam Manusia dan Haiwan', en: 'Transport in Humans and Animals' }, icon: 'fa-heart-pulse' },
+        { id: 'f4_b11', num: 11, title: { bm: 'Keimunan dalam Manusia', en: 'Immunity in Humans' }, icon: 'fa-shield-halved' },
+        { id: 'f4_b12', num: 12, title: { bm: 'Koordinasi dan Gerak Balas', en: 'Coordination and Response' }, icon: 'fa-brain' },
+        { id: 'f4_b13', num: 13, title: { bm: 'Homeostasis dan Sistem Keapungan', en: 'Homeostasis' }, icon: 'fa-scale-balanced' },
+        { id: 'f4_b14', num: 14, title: { bm: 'Sokongan dan Pergerakan dalam Manusia dan Haiwan', en: 'Support and Movement' }, icon: 'fa-bone' },
+        { id: 'f4_b15', num: 15, title: { bm: 'Pembiakan Seks, Kehamilan dan Tumbesaran', en: 'Sexual Reproduction, Pregnancy and Growth' }, icon: 'fa-baby' }
       ],
       f5: [
         { id: 'f5_b1', num: 1, title: { bm: 'Organisasi Tisu Tumbuhan dan Tumbesaran', en: 'Organisation of Plant Tissues and Growth' }, icon: 'fa-seedling' },
-        { id: 'f5_b2', num: 2, title: { bm: 'Struktur dan Fungsi Daun', en: 'Leaf Structure and Function' }, icon: 'fa-leaf' }
+        { id: 'f5_b2', num: 2, title: { bm: 'Struktur dan Fungsi Daun', en: 'Leaf Structure and Function' }, icon: 'fa-leaf' },
+        { id: 'f5_b3', num: 3, title: { bm: 'Nutrisi dalam Tumbuhan', en: 'Nutrition in Plants' }, icon: 'fa-sun' },
+        { id: 'f5_b4', num: 4, title: { bm: 'Pengangkutan dalam Tumbuhan', en: 'Transport in Plants' }, icon: 'fa-droplet' },
+        { id: 'f5_b5', num: 5, title: { bm: 'Variasi', en: 'Variation' }, icon: 'fa-fingerprint' },
+        { id: 'f5_b6', num: 6, title: { bm: 'Pewarisan', en: 'Inheritance' }, icon: 'fa-dna' },
+        { id: 'f5_b7', num: 7, title: { bm: 'Adaptasi Tumbuhan', en: 'Adaptation' }, icon: 'fa-tree' },
+        { id: 'f5_b8', num: 8, title: { bm: 'Teknologi dalam Genetik', en: 'Technology in Genetics' }, icon: 'fa-atom' },
+        { id: 'f5_b9', num: 9, title: { bm: 'Ekosistem', en: 'Ecosystem' }, icon: 'fa-earth-americas' },
+        { id: 'f5_b10', num: 10, title: { bm: 'Kelestarian Alam Sekitar', en: 'Environmental Sustainability' }, icon: 'fa-recycle' },
+        { id: 'f5_b11', num: 11, title: { bm: 'Impak Manusia terhadap Alam Sekitar', en: 'Human Impact on Environment' }, icon: 'fa-smog' }
       ]
     };
 
-    // FUNGSI SVG DIAGRAM DINAMIK DENGAN SOKONGAN TUKAR BAHASA
-    const svgDiagrams = {
-      mitochondria: (lang) => {
-        const outerMem = lang === 'en' ? "Outer Membrane" : "Membran Luar";
-        const innerMem = lang === 'en' ? "Inner Membrane" : "Membran Dalam";
-        const cristae = lang === 'en' ? "Cristae (Folds)" : "Krista (Lipatan)";
-        const matrix = lang === 'en' ? "Matrix" : "Matriks";
-        return `
-          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-emerald-500/30 p-2">
-            <ellipse cx="160" cy="80" rx="140" ry="65" fill="#15803d" stroke="#4ade80" stroke-width="3"/>
-            <ellipse cx="160" cy="80" rx="130" ry="55" fill="#166534" stroke="#86efac" stroke-width="2"/>
-            <path d="M 45 80 Q 65 50, 75 80 T 105 80 T 135 50 T 165 110 T 195 60 T 225 100 T 275 80" fill="none" stroke="#facc15" stroke-width="4" stroke-linecap="round"/>
-            <text x="160" y="28" fill="#ffffff" font-size="10" text-anchor="middle" font-weight="bold">${outerMem}</text>
-            <text x="60" y="142" fill="#86efac" font-size="9" text-anchor="middle">${innerMem}</text>
-            <text x="160" y="145" fill="#facc15" font-size="10" text-anchor="middle" font-weight="bold">${cristae}</text>
-            <text x="250" y="142" fill="#4ade80" font-size="9" text-anchor="middle">${matrix}</text>
-          </svg>
-        `;
-      },
-      golgi: (lang) => {
-        const labelSacs = lang === 'en' ? "Flattened Sacs" : "Kantung Pipih Selari";
-        const labelVesicle = lang === 'en' ? "Secretory Vesicles" : "Vesikel Rembesan";
-        return `
-          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-amber-500/30 p-2">
-            <path d="M 60 40 Q 160 20, 260 40" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round"/>
-            <path d="M 50 70 Q 160 50, 270 70" fill="none" stroke="#d97706" stroke-width="14" stroke-linecap="round"/>
-            <path d="M 60 100 Q 160 80, 260 100" fill="none" stroke="#b45309" stroke-width="12" stroke-linecap="round"/>
-            <circle cx="35" cy="70" r="8" fill="#fbbf24"/>
-            <circle cx="285" cy="70" r="10" fill="#fbbf24"/>
-            <circle cx="295" cy="100" r="7" fill="#fbbf24"/>
-            <text x="160" y="140" fill="#fbbf24" font-size="10" text-anchor="middle" font-weight="bold">${labelSacs}</text>
-            <text x="280" y="45" fill="#f59e0b" font-size="9" text-anchor="middle">${labelVesicle}</text>
-          </svg>
-        `;
-      },
-      chloroplast: (lang) => {
-        const granum = lang === 'en' ? "Granum (Thylakoid Stack)" : "Granum (Timbunan Tilakoid)";
-        const stroma = lang === 'en' ? "Stroma (Fluid)" : "Stroma (Cairan)";
-        return `
-          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-green-500/30 p-2">
-            <ellipse cx="160" cy="80" rx="140" ry="65" fill="#14532d" stroke="#22c55e" stroke-width="3"/>
-            <g fill="#4ade80">
-              <rect x="75" y="50" width="30" height="8" rx="2"/><rect x="75" y="62" width="30" height="8" rx="2"/><rect x="75" y="74" width="30" height="8" rx="2"/><rect x="75" y="86" width="30" height="8" rx="2"/>
-              <rect x="145" y="45" width="30" height="8" rx="2"/><rect x="145" y="57" width="30" height="8" rx="2"/><rect x="145" y="69" width="30" height="8" rx="2"/><rect x="145" y="81" width="30" height="8" rx="2"/><rect x="145" y="93" width="30" height="8" rx="2"/>
-              <rect x="215" y="55" width="30" height="8" rx="2"/><rect x="215" y="67" width="30" height="8" rx="2"/><rect x="215" y="79" width="30" height="8" rx="2"/>
-            </g>
-            <line x1="105" y1="70" x2="145" y2="70" stroke="#86efac" stroke-width="2"/>
-            <line x1="175" y1="80" x2="215" y2="80" stroke="#86efac" stroke-width="2"/>
-            <text x="90" y="125" fill="#86efac" font-size="9" text-anchor="middle" font-weight="bold">${granum}</text>
-            <text x="230" y="125" fill="#86efac" font-size="9" text-anchor="middle" font-weight="bold">${stroma}</text>
-          </svg>
-        `;
-      }
-    };
-
-    // DATA FLASHCARD & KUIZ DWIBAHASA
+    // Database Flashcard & Kuiz Khusus Mengikut Bab KSSM
     const topicDetailsData = {
-      'f4_b2': {
-        title: { bm: "2.1 Biologi Sel & Organel", en: "2.1 Cell Biology & Organelles" },
+      'f4_b1': {
+        title: { bm: "1.1 Bidang Biologi & Peraturan Makmal", en: "1.1 Fields of Biology & Lab Rules" },
         cards: [
           {
-            title: { bm: "Mitokondria", en: "Mitochondrion" },
-            image: svgDiagrams.mitochondria,
-            desc: {
-              bm: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
-              en: "Rod-shaped or spherical organelle bounded by two layers of membrane. The inner membrane is folded to form cristae."
-            },
-            keywords: {
-              bm: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
-              en: ["Site of energy production", "ATP", "Cellular respiration", "Aerobic"]
-            },
-            terms: {
-              bm: ["Mitokondria", "Krista", "Adenosina Trifosfat (ATP)"],
-              en: ["Mitochondrion", "Cristae", "Adenosine Triphosphate (ATP)"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Mitokondria = 'Powerhouse' sel! Tempat bakar glukosa hasilkan tenaga.",
-              en: "💡 Memory Tip: Mitochondria = 'Powerhouse' of the cell! Site of glucose breakdown to generate energy."
-            },
-            comparison: {
-              bm: "Sel otot & sel sperma mengandungi bilangan mitokondria yang sangat tinggi.",
-              en: "Muscle cells & sperm cells contain a very high number of mitochondria."
-            }
+            title: "Peralatan Perlindungan Diri",
+            desc: "Stesen pencuci mata digunakan untuk membilas mata yang terkena bahan kimia. Kebuk wasap digunakan untuk mengendalikan bahan kimia mudah meruap.",
+            keywords: ["Kebuk Wasap", "Pencuci Mata", "Keselamatan Makmal"],
+            terms: ["Eyewash Station", "Fume Chamber"],
+            tip: "💡 Tip Ingat: Kebuk Wasap = Bahan beracun/bau menyengat; Pencuci Mata = Bahan kimia terkena mata."
           },
           {
-            title: { bm: "Jasad Golgi", en: "Golgi Apparatus" },
-            image: svgDiagrams.golgi,
-            desc: {
-              bm: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal.",
-              en: "Consists of a stack of parallel flattened sacs bounded by a single membrane."
-            },
-            keywords: {
-              bm: ["Ubah suai protein", "Bungkus protein", "Rembesan vesikel"],
-              en: ["Modify proteins", "Package proteins", "Secretory vesicles"]
-            },
-            terms: {
-              bm: ["Jasad Golgi", "Vesikel Rembesan", "Glikoprotein"],
-              en: ["Golgi apparatus", "Secretory vesicle", "Glycoprotein"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Jasad Golgi umpama Pejabat Pos! Mengubah suai, membungkus dan mengangkut protein.",
-              en: "💡 Memory Tip: Golgi apparatus is like a Post Office! Modifies, packages, and transports proteins."
-            },
-            comparison: {
-              bm: "Sangat aktif dalam sel kelenjar perembesan.",
-              en: "Highly active in secretory gland cells."
-            }
-          },
-          {
-            title: { bm: "Kloroplas", en: "Chloroplast" },
-            image: svgDiagrams.chloroplast,
-            desc: {
-              bm: "Organel berbentuk bujur yang mengandungi pigmen klorofil untuk menyerap cahaya matahari bagi proses fotosintesis.",
-              en: "Oval-shaped organelle containing chlorophyll pigment to absorb sunlight for photosynthesis."
-            },
-            keywords: {
-              bm: ["Fotosintesis", "Klorofil", "Tilakoid", "Stroma"],
-              en: ["Photosynthesis", "Chlorophyll", "Thylakoid", "Stroma"]
-            },
-            terms: {
-              bm: ["Kloroplas", "Granum", "Stroma"],
-              en: ["Chloroplast", "Granum", "Stroma"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Kloroplas hanya wujud dalam sel tumbuhan!",
-              en: "💡 Memory Tip: Chloroplasts exist only in plant cells!"
-            },
-            comparison: {
-              bm: "Sel haiwan tidak mempunyai kloroplas.",
-              en: "Animal cells do not have chloroplasts."
-            }
+            title: "Pengurusan Bahan Sisa Makmal",
+            desc: "Kategori A (Sisa tajam) dibuang dalam bekas sisa tajam. Kategori B (Sisa tidak tajam) dibungkus dalam beg plastik autoklaf.",
+            keywords: ["Autoklaf", "Sisa Tajam", "Biobahaya"],
+            terms: ["Autoclave", "Sharps container", "Biohazard"],
+            tip: "💡 Tip Ingat: Jarum/Bilah skalpel = Kategori A (Sisa Tajam)."
           }
         ],
         quiz: [
           {
             type: 'mcq',
-            image: svgDiagrams.mitochondria,
-            question: {
-              bm: "Berdasarkan gambar rajah di atas, apakah fungsi utama organel ini dalam sel haiwan dan tumbuhan?",
-              en: "Based on the diagram above, what is the primary function of this organelle in animal and plant cells?"
-            },
-            options: {
-              bm: [
-                "Menyintesis protein untuk pembentukan sel baru",
-                "Menjana tenaga dalam bentuk ATP melalui respirasi sel",
-                "Mengubah suai dan membungkus glikoprotein",
-                "Mengawal pergerakan bahan keluar dan masuk sel"
-              ],
-              en: [
-                "Synthesise proteins for new cell formation",
-                "Generate energy in the form of ATP via cellular respiration",
-                "Modify and package glycoproteins",
-                "Control the movement of substances into and out of the cell"
-              ]
-            },
+            question: "Peralatan manakah yang sesuai digunakan apabila mengendalikan bahan kimia yang mudah meruap dan beracun?",
+            options: ["Stesen Pencuci Mata", "Kebuk Wasap", "Kabinet Keselamatan Biologi", "Penyiram Kecemasan"],
+            answer: 1
+          },
+          {
+            type: 'tf',
+            question: "Sisa tajam seperti jarum dan bilah skalpel mesti dibuang ke dalam beg plastik autoklaf biasa.",
+            answer: false
+          }
+        ]
+      },
+      'f4_b2': {
+        title: { bm: "2.1 Biologi Sel & Organel", en: "2.1 Cell Biology & Organelles" },
+        cards: [
+          {
+            title: "Mitokondria (Mitochondrion)",
+            desc: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
+            keywords: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
+            terms: ["Mitochondria", "Cristae", "Adenosine Triphosphate (ATP)"],
+            tip: "💡 Tip Ingat: Mitokondria = 'Powerhouse' sel! Tempat bakar glukosa hasilkan tenaga.",
+            comparison: "Sel otot & sel sperma ada bilangan mitokondria yang sangat tinggi."
+          },
+          {
+            title: "Jasad Golgi (Golgi Apparatus)",
+            desc: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal.",
+            keywords: ["Ubah suai protein", "Bungkus protein", "Rembesan vesikel"],
+            terms: ["Golgi body", "Secretory vesicle", "Glycoprotein"],
+            tip: "💡 Tip Ingat: Jasad Golgi umpama Pejabat Pos! Mengubah suai, membungkus dan mengangkut protein.",
+            comparison: "Sangat aktif dalam sel kelenjar perembesan."
+          },
+          {
+            title: "Jalinan Endoplasma Kasar (RER)",
+            desc: "Sistem membran berlipat yang mempunyai ribosom melekat pada permukaannya.",
+            keywords: ["Sintesis protein", "Pengangkutan protein"],
+            terms: ["Rough Endoplasmic Reticulum", "Ribosome"],
+            tip: "💡 Tip Ingat: Kasar (Rough) sebab ada bintik Ribosom!",
+            comparison: "Berbeza dengan JEL (Jalinan Endoplasma Licin) yang menyintesis lipid."
+          },
+          {
+            title: "Kloroplas (Chloroplast)",
+            desc: "Organel berbentuk bujur yang mengandungi pigmen klorofil untuk menyerap cahaya matahari.",
+            keywords: ["Fotosintesis", "Klorofil", "Tylakoid", "Stroma"],
+            terms: ["Chloroplast", "Thylakoid", "Stroma", "Granum"],
+            tip: "💡 Tip Ingat: Kloroplas hanya ada pada sel tumbuhan untuk buat makanan sendiri.",
+            comparison: "Sel haiwan TIDAK mempunyai kloroplas."
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: "Apakah fungsi utama mitokondria dalam sel haiwan dan tumbuhan?",
+            options: [
+              "Menyintesis protein untuk pembentukan sel baru",
+              "Menjana tenaga dalam bentuk ATP melalui respirasi sel",
+              "Mengubah suai dan membungkus glikoprotein",
+              "Mengawal pergerakan bahan keluar dan masuk sel"
+            ],
             answer: 1
           },
           {
             type: 'mcq',
-            image: svgDiagrams.golgi,
-            question: {
-              bm: "Gambar rajah di atas menunjukkan Jasad Golgi. Apakah tugas utamanya?",
-              en: "The diagram above shows the Golgi apparatus. What is its main function?"
-            },
-            options: {
-              bm: [
-                "Mengubah suai, membungkus dan mengangkut protein",
-                "Membakar glukosa untuk menghasilkan tenaga",
-                "Menyerap tenaga cahaya matahari",
-                "Memecahkan organel yang rosak"
-              ],
-              en: [
-                "Modify, package, and transport proteins",
-                "Burn glucose to produce energy",
-                "Absorb sunlight energy",
-                "Break down damaged organelles"
-              ]
-            },
+            question: "Organel manakah yang bertindak mengangkut dan mengubah suai protein yang disintesis oleh ribosom?",
+            options: ["Jasad Golgi", "Lisosom", "Sentriol", "Vakuol"],
             answer: 0
+          },
+          {
+            type: 'tf',
+            question: "Jalinan Endoplasma Licin (JEL) mengandungi ribosom pada permukaannya untuk menyintesis lipid.",
+            answer: false
+          },
+          {
+            type: 'blank',
+            question: "Pigmen hijau dalam kloroplas yang menyerap tenaga cahaya matahari dinamakan __________.",
+            answer: "klorofil"
           }
         ]
-      }
-    };
-
-    function getTopicData(topicId) {
-      if (topicDetailsData[topicId]) return topicDetailsData[topicId];
-      return {
-        title: { bm: `Subtopik & Pembelajaran Utama`, en: `Subtopics & Core Knowledge` },
+      },
+      'f4_b3': {
+        title: { bm: "3.1 Pergerakan Bahan Merentasi Membran Plasma", en: "3.1 Movement Across Plasma Membrane" },
         cards: [
           {
-            title: { bm: "Konsep & Definisi Asas", en: "Basic Concepts & Definitions" },
-            desc: {
-              bm: "Subtopik ini merangkumi fakta-fakta penting KSSM yang direka khas untuk pemahaman pantas.",
-              en: "This subtopic covers essential KSSM facts tailored for quick understanding."
-            },
-            keywords: { bm: ["Fakta KSSM", "Konsep Kunci"], en: ["KSSM Facts", "Key Concepts"] },
-            terms: { bm: ["Istilah Saintifik"], en: ["Scientific Terms"] },
-            tip: { bm: "💡 Tip Ingat: Hafal setiap istilah saintifik.", en: "💡 Memory Tip: Memorize each scientific term." }
+            title: "Membran Plasma (Dwikapisan Phospholipid)",
+            desc: "Binaannya terdiri daripada dua lapisan fosfolipid dengan kepala hidrofilik (suka air) menghadap ke luar dan ekor hidrofobik (benci air) menghadap ke dalam.",
+            keywords: ["Fosfolipid", "Hidrofilik", "Hidrofobik", "Ketelapan Membran"],
+            terms: ["Phospholipid bilayer", "Hydrophilic", "Hydrophobic"],
+            tip: "💡 Tip Ingat: Kepala suka air (hidrofilik), Ekor takut air (hidrofobik)."
+          },
+          {
+            title: "Pengangkutan Pasif vs Aktif",
+            desc: "Pengangkutan pasif tidak memerlukan tenaga (ATP) dan mengikut kecerunan kepekatan. Pengangkutan aktif memerlukan tenaga (ATP) dan menentang kecerunan kepekatan.",
+            keywords: ["Resapan Ringkas", "Osmosis", "Pam Natrium-Kalium", "ATP"],
+            terms: ["Passive transport", "Active transport", "Concentration gradient"],
+            tip: "💡 Tip Ingat: Pasif = Kayuh basikal turun bukit (tak guna tenaga). Aktif = Kayuh naik bukit (guna ATP!)."
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: "Proses manakah yang memerlukan tenaga dalam bentuk ATP?",
+            options: ["Resapan Ringkas", "Osmosis", "Resapan Terbimbing", "Pengangkutan Aktif"],
+            answer: 3
+          },
+          {
+            type: 'tf',
+            question: "Ekor fosfolipid pada membran plasma bersifat hidrofilik dan tertarik kepada air.",
+            answer: false
+          }
+        ]
+      },
+      'f4_b4': {
+        title: { bm: "4.1 Komposisi Kimia dalam Sel", en: "4.1 Chemical Composition in Cells" },
+        cards: [
+          {
+            title: "Karatokristal & Karbohidrat",
+            desc: "Monosakarida ialah unit asas karbohidrat (Glukosa, Fruktosa, Galaktosa). Disakarida terbentuk melalui kondensasi dua monosakarida.",
+            keywords: ["Monosakarida", "Disakarida", "Maltosa", "Kondensasi"],
+            terms: ["Monosaccharides", "Disaccharides", "Condensation", "Hydrolysis"],
+            tip: "💡 Tip Ingat: Glukosa + Glukosa = Maltosa. Glukosa + Fruktosa = Sukrosa."
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: "Kondensasi antara glukosa dan fruktosa menghasilkan disakarida apakah?",
+            options: ["Maltosa", "Laktosa", "Sukrosa", "Selulosa"],
+            answer: 2
+          }
+        ]
+      },
+      'f4_b5': {
+        title: { bm: "5.1 Mekanisme Tindakan Enzim", en: "5.1 Mechanism of Enzyme Action" },
+        cards: [
+          {
+            title: "Definisi Enzim",
+            desc: "Mangkin organik yang terdiri daripada protein dan dihasilkan oleh sel hidup untuk mempercepatkan tindak balas biokimia.",
+            keywords: ["Mangkin organik", "Spesifik", "Tidak terhad", "Tenaga pengaktifan"],
+            terms: ["Enzyme", "Substrate", "Active site"],
+            tip: "💡 Tip Ingat: Model 'Mangga dan Kunci' (Lock and Key Hypothesis). Substrat = Kunci, Enzim = Mangga.",
+            comparison: "Enzim tidak musnah dalam tindak balas dan boleh digunakan semula."
+          },
+          {
+            title: "Faktor Mempengaruhi Enzim: Suhu",
+            desc: "Kadar tindak balas enzim meningkat dengan suhu sehingga mencapai suhu optimum (37°C bagi manusia).",
+            keywords: ["Suhu optimum", "Penyahaslian (Denaturation)", "Tenaga kinetik"],
+            terms: ["Optimum temperature", "Denaturation"],
+            tip: "💡 Tip Ingat: Di atas suhu optimum (>60°C), ikatan enzim terputus dan Tapak Aktif terurai (Nyahasli).",
+            comparison: "Pada suhu 0°C, enzim tidak aktif tetapi tidak rosak."
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: "Hipotesis manakah yang digunakan untuk menerangkan spesifisiti tindakan enzim dengan substrat?",
+            options: [
+              "Hipotesis Induksi",
+              "Hipotesis Mangga dan Kunci",
+              "Hipotesis Rantaian Makanan",
+              "Hipotesis Resapan Terbimbing"
+            ],
+            answer: 1
+          },
+          {
+            type: 'tf',
+            question: "Enzim dinyahaslikan (denatured) apabila didedahkan pada suhu yang sangat rendah (0°C).",
+            answer: false
+          }
+        ]
+      },
+      'f5_b1': {
+        title: { bm: "1.1 Tisu Tumbuhan & Tumbesaran", en: "1.1 Plant Tissues & Growth" },
+        cards: [
+          {
+            title: "Tisu Meristem & Tumbesaran",
+            desc: "Tisu meristem merat (apeks) terletak di hujung pucuk dan akar untuk tumbesaran primer. Meristem sisi (kambium) bertanggungjawab untuk tumbesaran sekunder.",
+            keywords: ["Meristem Apeks", "Kambium Gabus", "Tumbesaran Primer", "Tumbesaran Sekunder"],
+            terms: ["Apical Meristem", "Vascular Cambium", "Primary Growth"],
+            tip: "💡 Tip Ingat: Meristem Apeks = Tambah Tinggi/Panjang. Meristem Sisi (Kambium) = Tambah Ukur Lilit/Tebal."
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: "Tisu manakah yang bertanggungjawab untuk pertambahan ukur lilit batang tumbuhan berkayu (tumbesaran sekunder)?",
+            options: ["Meristem Apeks Pucuk", "Meristem Apeks Akar", "Kambium Vaskular", "Epidermis"],
+            answer: 2
+          }
+        ]
+      },
+      'f5_b6': {
+        title: { bm: "6.1 Pewarisan & Genetik", en: "6.1 Inheritance & Genetics" },
+        cards: [
+          {
+            title: "Hukum Mendel Pertama",
+            desc: "Hukum Segregasi menyatakan bahawa alel bagi sesuatu gen berpisah semasa pembentukan gamet.",
+            keywords: ["Alel Dominan", "Alel Resesif", "Fenotip", "Genotip"],
+            terms: ["Dominant allele", "Recessive allele", "Phenotype", "Genotype"],
+            tip: "💡 Tip Ingat: Fenotip = Ciri fizikal yang nampak. Genotip = Kandungan genetik (contoh: Tt, TT)."
           }
         ],
         quiz: [
           {
             type: 'tf',
-            question: { bm: "Teknik Active Recall terbukti meningkatkan ingatan jangka panjang.", en: "Active Recall is proven to enhance long-term memory." },
+            question: "Alel resesif hanya akan menonjolkan cirinya jika kedua-dua alel adalah resesif (homozigot resesif).",
+            answer: true
+          }
+        ]
+      }
+    };
+
+    // Dynamic Generator untuk mana-mana bab yang tidak disenaraikan dalam topicDetailsData
+    function getTopicData(topicId) {
+      if (topicDetailsData[topicId]) {
+        return topicDetailsData[topicId];
+      }
+
+      // Cari tajuk bab asal daripada syllabusData
+      let chapterInfo = null;
+      ['f4', 'f5'].forEach(form => {
+        const found = syllabusData[form].find(item => item.id === topicId);
+        if (found) chapterInfo = found;
+      });
+
+      const bmTitle = chapterInfo ? `Bab ${chapterInfo.num}: ${chapterInfo.title.bm}` : "Subtopik Biologi KSSM";
+      const enTitle = chapterInfo ? `Chapter ${chapterInfo.num}: ${chapterInfo.title.en}` : "KSSM Biology Subtopic";
+
+      return {
+        title: { bm: bmTitle, en: enTitle },
+        cards: [
+          {
+            title: `Konsep Utama: ${chapterInfo ? chapterInfo.title.bm : 'Fakta KSSM'}`,
+            desc: `Nota padat dan fakta penting bagi ${bmTitle}. Mengandungi istilah saintifik dan konsep KSSM untuk cemerlang SPM.`,
+            keywords: ["Fakta KSSM", "Konsep Utama", "Istilah SPM"],
+            terms: ["Key Concepts", "SPM Syllabus"],
+            tip: "💡 Tip Ingat: Fahami istilah saintifik dan perkaitannya dalam proses fisiologi biologi.",
+            comparison: "Pastikan anda dapat membezakan struktur dan fungsi utama."
+          },
+          {
+            title: "Mekanisme & Aplikasi Biologi",
+            desc: "Memahami urutan proses biologi adalah kunci utama untuk menjawab soalan struktur dan esei SPM dengan tepat.",
+            keywords: ["Mekanisme", "Proses Biologi", "Aplikasi"],
+            terms: ["Biological Mechanism", "Homeostasis"],
+            tip: "💡 Tip Ingat: Susun proses mengikut carta alir untuk memelihara ketepatan fakta.",
+            comparison: "Bandingkan keadaan normal dan abnormal dalam fisiologi."
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: `Apakah keutamaan pemahaman bagi bab ${bmTitle}?`,
+            options: [
+              "Menguasai istilah saintifik dan fungsi mekanisme",
+              "Menghafal tanpa memahami konsep biologi",
+              "Mengabaikan rajah dan skema jawapan SPM",
+              "Membaca sekali sahaja tanpa latihan Active Recall"
+            ],
+            answer: 0
+          },
+          {
+            type: 'tf',
+            question: "Teknik Active Recall dapat membantu meningkatkan ingatan jangka panjang bagi fakta Biologi SPM.",
             answer: true
           }
         ]
       };
     }
 
+    // Badges definitions
     const badgesList = [
       { id: 'b1', name: 'Biology Beginner', desc: 'Selesaikan 1 subtopik pertama', icon: 'fa-seedling', color: 'bg-green-500', req: stats => stats.completedTopics.length >= 1 },
-      { id: 'b2', name: 'Cell Master', desc: 'Selesaikan Bab 2 Tingkatan 4', icon: 'fa-microscope', color: 'bg-blue-500', req: stats => stats.completedTopics.includes('f4_b2') }
+      { id: 'b2', name: 'Cell Master', desc: 'Selesaikan Bab 2 Tingkatan 4', icon: 'fa-microscope', color: 'bg-blue-500', req: stats => stats.completedTopics.includes('f4_b2') },
+      { id: 'b3', name: 'Enzyme Expert', desc: 'Selesaikan Bab 5 Tingkatan 4', icon: 'fa-bolt', color: 'bg-amber-500', req: stats => stats.completedTopics.includes('f4_b5') },
+      { id: 'b4', name: 'Transport Genius', desc: 'Selesaikan Bab 10 Tingkatan 4', icon: 'fa-heart-pulse', color: 'bg-red-500', req: stats => stats.completedTopics.includes('f4_b10') },
+      { id: 'b5', name: 'Respiration Master', desc: 'Selesaikan Bab 7 Tingkatan 4', icon: 'fa-wind', color: 'bg-cyan-500', req: stats => stats.completedTopics.includes('f4_b7') },
+      { id: 'b6', name: 'Plant Expert', desc: 'Selesaikan Bab 1 Tingkatan 5', icon: 'fa-leaf', color: 'bg-emerald-600', req: stats => stats.completedTopics.includes('f5_b1') },
+      { id: 'b7', name: 'Genetics Master', desc: 'Selesaikan Bab 6 Tingkatan 5', icon: 'fa-dna', color: 'bg-purple-600', req: stats => stats.completedTopics.includes('f5_b6') },
+      { id: 'b8', name: 'Ecology Master', desc: 'Selesaikan Bab 9 Tingkatan 5', icon: 'fa-earth-americas', color: 'bg-teal-600', req: stats => stats.completedTopics.includes('f5_b9') },
+      { id: 'b9', name: 'SPM Ready', desc: 'Selesaikan sekurang-kurangnya 10 subtopik', icon: 'fa-trophy', color: 'bg-amber-400', req: stats => stats.completedTopics.length >= 10 }
     ];
 
+    // Initialization Function
     window.addEventListener('DOMContentLoaded', () => {
       applyTheme();
       updateBookmarkBadge();
       navigateTo('home');
     });
 
+    // Theme Switcher
     function toggleDarkMode() {
       isDarkMode = !isDarkMode;
       localStorage.setItem('pintarbio_theme', isDarkMode ? 'dark' : 'light');
@@ -499,13 +466,14 @@
       const icon = document.getElementById('themeIcon');
       if (isDarkMode) {
         document.documentElement.classList.add('dark');
-        if (icon) icon.className = 'fa-solid fa-sun text-amber-400';
+        icon.className = 'fa-solid fa-sun text-amber-400';
       } else {
         document.documentElement.classList.remove('dark');
-        if (icon) icon.className = 'fa-solid fa-moon text-slate-600';
+        icon.className = 'fa-solid fa-moon text-slate-600';
       }
     }
 
+    // Language Toggle
     function toggleLanguage() {
       currentLang = currentLang === 'bm' ? 'en' : 'bm';
       localStorage.setItem('pintarbio_lang', currentLang);
@@ -513,10 +481,27 @@
       renderCurrentView();
     }
 
-    function t(key) { return translations[currentLang][key] || key; }
+    function t(key) {
+      return translations[currentLang][key] || key;
+    }
 
+    // Navigation Router
     function navigateTo(view, param = null) {
       currentView = view;
+      const app = document.getElementById('appContainer');
+
+      // Update active nav button state
+      ['navHome', 'navF4', 'navF5', 'navStats', 'navBadges'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.className = 'flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition';
+      });
+
+      if (view === 'home' && document.getElementById('navHome')) document.getElementById('navHome').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'f4' && document.getElementById('navF4')) document.getElementById('navF4').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'f5' && document.getElementById('navF5')) document.getElementById('navF5').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'stats' && document.getElementById('navStats')) document.getElementById('navStats').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'badges' && document.getElementById('navBadges')) document.getElementById('navBadges').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+
       renderCurrentView(param);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -524,68 +509,207 @@
     function renderCurrentView(param) {
       const app = document.getElementById('appContainer');
       switch (currentView) {
-        case 'home': app.innerHTML = renderHome(); break;
-        case 'f4': app.innerHTML = renderChapters('f4'); break;
-        case 'f5': app.innerHTML = renderChapters('f5'); break;
-        case 'flashcards': app.innerHTML = renderFlashcardView(param); break;
-        case 'quiz': app.innerHTML = renderQuizView(param); break;
-        case 'quiz_results': app.innerHTML = renderQuizResults(); break;
-        case 'stats': app.innerHTML = renderStatsView(); break;
-        case 'badges': app.innerHTML = renderBadgesView(); break;
-        case 'search': app.innerHTML = renderSearchView(); break;
-        case 'bookmarks': app.innerHTML = renderBookmarksView(); break;
+        case 'home':
+          app.innerHTML = renderHome();
+          break;
+        case 'f4':
+          app.innerHTML = renderChapters('f4');
+          break;
+        case 'f5':
+          app.innerHTML = renderChapters('f5');
+          break;
+        case 'flashcards':
+          app.innerHTML = renderFlashcardView(param);
+          break;
+        case 'quiz':
+          app.innerHTML = renderQuizView(param);
+          break;
+        case 'quiz_results':
+          app.innerHTML = renderQuizResults();
+          break;
+        case 'stats':
+          app.innerHTML = renderStatsView();
+          break;
+        case 'badges':
+          app.innerHTML = renderBadgesView();
+          break;
+        case 'search':
+          app.innerHTML = renderSearchView();
+          break;
+        case 'bookmarks':
+          app.innerHTML = renderBookmarksView();
+          break;
       }
     }
 
+    // HOME VIEW
     function renderHome() {
+      const totalF4 = syllabusData.f4.length;
+      const totalF5 = syllabusData.f5.length;
+      const completedCount = userStats.completedTopics.length;
+
       return `
         <div class="space-y-6">
+          <!-- Hero Banner -->
           <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-bio-700 via-bio-600 to-teal-600 text-white p-6 sm:p-8 shadow-xl">
-            <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">${t('welcome_title')}</h2>
-            <p class="text-bio-50 text-sm opacity-95">${t('welcome_sub')}</p>
-            <div class="mt-6 flex gap-3">
-              <button onclick="navigateTo('f4')" class="px-5 py-2.5 bg-white text-bio-800 rounded-xl font-bold shadow-md hover:bg-bio-50 transition text-sm flex items-center gap-2">
-                <i class="fa-solid fa-book-open"></i> ${t('form4_title')}
-              </button>
-              <button onclick="navigateTo('f5')" class="px-5 py-2.5 bg-bio-900/40 border border-white/30 text-white rounded-xl font-bold shadow-md hover:bg-bio-900/60 transition text-sm flex items-center gap-2">
-                <i class="fa-solid fa-graduation-cap"></i> ${t('form5_title')}
-              </button>
+            <div class="relative z-10 max-w-2xl">
+              <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider text-bio-100 mb-3 inline-block">
+                ✨ Teknik Active Recall
+              </span>
+              <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">${t('welcome_title')}</h2>
+              <p class="text-bio-50 text-sm sm:text-base leading-relaxed opacity-95">${t('welcome_sub')}</p>
+              
+              <div class="mt-6 flex flex-wrap gap-3">
+                <button onclick="navigateTo('f4')" class="px-5 py-2.5 bg-white text-bio-800 rounded-xl font-bold shadow-md hover:bg-bio-50 transition flex items-center gap-2 text-sm">
+                  <i class="fa-solid fa-book-open"></i> Tingkatan 4
+                </button>
+                <button onclick="navigateTo('f5')" class="px-5 py-2.5 bg-bio-900/40 backdrop-blur-md border border-white/30 text-white rounded-xl font-bold shadow-md hover:bg-bio-900/60 transition flex items-center gap-2 text-sm">
+                  <i class="fa-solid fa-graduation-cap"></i> Tingkatan 5
+                </button>
+              </div>
+            </div>
+            
+            <i class="fa-solid fa-dna absolute -right-10 -bottom-10 text-[180px] text-white/10 pointer-events-none"></i>
+          </div>
+
+          <!-- Quick Stats Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-bio-100 dark:bg-bio-900/50 text-bio-600 dark:text-bio-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-check-double"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('stats_completed_topics')}</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${completedCount} / ${totalF4 + totalF5}</h4>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-fire"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('stats_streak')}</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${userStats.streak} Hari</h4>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-clone"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('stats_cards_read')}</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${userStats.cardsRead}</h4>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Lencana</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${badgesList.filter(b => b.req(userStats)).length} / ${badgesList.length}</h4>
+              </div>
+            </div>
+          </div>
+
+          <!-- Forms Selection Cards -->
+          <div class="grid sm:grid-cols-2 gap-6">
+            <!-- Form 4 Card -->
+            <div onclick="navigateTo('f4')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 p-6 card-shadow hover:border-bio-500 dark:hover:border-bio-400 transition-all duration-300 transform hover:-translate-y-1">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 rounded-2xl bg-bio-50 dark:bg-bio-950 text-bio-600 dark:text-bio-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+                  <i class="fa-solid fa-microscope"></i>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-bio-100 text-bio-800 dark:bg-bio-900/60 dark:text-bio-300">
+                  15 ${t('chapters_count')}
+                </span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-bio-600 dark:group-hover:text-bio-400 transition">${t('form4_title')}</h3>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Mengandungi Bab 1 hingga Bab 15 merangkumi Biologi Sel, Asas Kehidupan, dan Sistem Manusia.</p>
+              <div class="flex items-center justify-between text-xs font-medium text-bio-600 dark:text-bio-400">
+                <span>Pilih Bab ➔</span>
+                <span>${userStats.completedTopics.filter(id => id.startsWith('f4_')).length} / 15 Selesai</span>
+              </div>
+            </div>
+
+            <!-- Form 5 Card -->
+            <div onclick="navigateTo('f5')" class="group cursor-pointer bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 p-6 card-shadow hover:border-teal-500 dark:hover:border-teal-400 transition-all duration-300 transform hover:-translate-y-1">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 rounded-2xl bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+                  <i class="fa-solid fa-seedling"></i>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-300">
+                  11 ${t('chapters_count')}
+                </span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">${t('form5_title')}</h3>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Mengandungi Bab 1 hingga Bab 11 merangkumi Fisiologi Tumbuhan, Genetik, dan Ekosistem.</p>
+              <div class="flex items-center justify-between text-xs font-medium text-teal-600 dark:text-teal-400">
+                <span>Pilih Bab ➔</span>
+                <span>${userStats.completedTopics.filter(id => id.startsWith('f5_')).length} / 11 Selesai</span>
+              </div>
             </div>
           </div>
         </div>
       `;
     }
 
+    // CHAPTERS VIEW (Form 4 or Form 5)
     function renderChapters(form) {
       const chapters = syllabusData[form];
+      const title = form === 'f4' ? t('form4_title') : t('form5_title');
+
       return `
-        <div class="space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
-            <h2 class="text-2xl font-bold text-slate-800 dark:text-white">${form === 'f4' ? t('form4_title') : t('form5_title')}</h2>
+        <div class="space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-4">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800 dark:text-white">${title}</h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pilih bab untuk memulakan sesi Active Recall Flashcard & Kuiz.</p>
+            </div>
             <button onclick="navigateTo('home')" class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
               <i class="fa-solid fa-arrow-left"></i> Kembali
             </button>
           </div>
+
           <div class="grid gap-4 sm:grid-cols-2">
-            ${chapters.map(ch => `
-              <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 card-shadow">
-                <span class="text-[11px] font-semibold uppercase text-bio-600 dark:text-bio-400">Bab ${ch.num}</span>
-                <h3 class="font-bold text-base text-slate-800 dark:text-white mb-3">${ch.title[currentLang] || ch.title.bm}</h3>
-                <div class="flex gap-2">
-                  <button onclick="startFlashcards('${ch.id}')" class="flex-1 py-2 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-semibold shadow-sm transition">
-                    ${t('start_flashcard')}
-                  </button>
-                  <button onclick="startQuizDirect('${ch.id}')" class="py-2 px-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition">
-                    Kuiz
-                  </button>
+            ${chapters.map(ch => {
+              const isDone = userStats.completedTopics.includes(ch.id);
+              const chapterTitle = ch.title[currentLang] || ch.title.bm;
+              return `
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 p-5 card-shadow hover:border-bio-500 dark:hover:border-bio-400 transition">
+                  <div class="flex items-start justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-bio-100 dark:bg-bio-900/60 text-bio-600 dark:text-bio-400 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid ${ch.icon}"></i>
+                      </div>
+                      <div>
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-bio-600 dark:text-bio-400">Bab ${ch.num}</span>
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white leading-snug">${chapterTitle}</h3>
+                      </div>
+                    </div>
+                    ${isDone ? '<span class="text-bio-500 text-lg" title="Selesai"><i class="fa-solid fa-circle-check"></i></span>' : ''}
+                  </div>
+
+                  <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center gap-2">
+                    <button onclick="startFlashcards('${ch.id}')" class="flex-1 py-2 px-3 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-clone"></i> ${t('start_flashcard')}
+                    </button>
+                    <button onclick="startQuizDirect('${ch.id}')" class="py-2 px-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition">
+                      <i class="fa-solid fa-vial"></i> Kuiz
+                    </button>
+                  </div>
                 </div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </div>
       `;
     }
 
+    // FLASHCARD LOGIC
     function startFlashcards(topicId) {
       const data = getTopicData(topicId);
       activeTopic = { id: topicId, ...data };
@@ -595,66 +719,84 @@
     }
 
     function renderFlashcardView(topicId) {
-      if (!activeCards || activeCards.length === 0) { startFlashcards(topicId); return ''; }
+      if (!activeCards || activeCards.length === 0) {
+        startFlashcards(topicId);
+        return '';
+      }
+
       const card = activeCards[activeCardIndex];
+      const total = activeCards.length;
       const topicTitle = activeTopic.title[currentLang] || activeTopic.title.bm;
-
-      const cardTitle = typeof card.title === 'object' ? (card.title[currentLang] || card.title.bm) : card.title;
-      const cardDesc = typeof card.desc === 'object' ? (card.desc[currentLang] || card.desc.bm) : card.desc;
-      const cardTip = typeof card.tip === 'object' ? (card.tip[currentLang] || card.tip.bm) : card.tip;
-      const cardComp = card.comparison ? (typeof card.comparison === 'object' ? (card.comparison[currentLang] || card.comparison.bm) : card.comparison) : null;
-
-      const keywordsList = card.keywords ? (typeof card.keywords === 'object' && !Array.isArray(card.keywords) ? card.keywords[currentLang] : card.keywords) : [];
-      const termsList = card.terms ? (typeof card.terms === 'object' && !Array.isArray(card.terms) ? card.terms[currentLang] : card.terms) : [];
+      const isBookmarked = bookmarks.some(b => b.topicId === activeTopic.id && b.cardIndex === activeCardIndex);
 
       return `
-        <div class="max-w-2xl mx-auto space-y-4 no-select">
+        <div class="max-w-2xl mx-auto space-y-6 no-select">
+          <!-- Active Recall Banner -->
           <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base flex-shrink-0"></i>
             <span>${t('active_recall_notice')}</span>
           </div>
 
+          <!-- Progress Header -->
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase">${topicTitle}</span>
-            <p class="text-xs font-semibold text-slate-500">Flashcard ${activeCardIndex + 1} / ${activeCards.length}</p>
+            <div>
+              <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase tracking-wider">${topicTitle}</span>
+              <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">Flashcard ${activeCardIndex + 1} / ${total}</p>
+            </div>
+            <button onclick="toggleBookmark('${activeTopic.id}', ${activeCardIndex})" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-amber-500 hover:scale-105 transition">
+              <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark text-lg"></i>
+            </button>
           </div>
 
-          <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-bio-500/30 p-6 card-shadow space-y-4">
-            <h3 class="text-xl font-bold text-slate-800 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2">${cardTitle}</h3>
+          <!-- Progress Bar -->
+          <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+            <div class="bg-bio-500 h-full transition-all duration-300" style="width: ${((activeCardIndex + 1) / total) * 100}%"></div>
+          </div>
 
-            <!-- DYNAMIC SVG DIAGRAM (Passing currentLang into function) -->
-            ${card.image ? `<div class="my-2">${typeof card.image === 'function' ? card.image(currentLang) : card.image}</div>` : ''}
+          <!-- Flashcard Container -->
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-bio-500/30 p-6 sm:p-8 card-shadow space-y-6 min-h-[360px] flex flex-col justify-between">
+            <div class="space-y-4">
+              <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-100 dark:border-slate-700/80 pb-3 flex items-center justify-between">
+                <span>${card.title}</span>
+                <i class="fa-solid fa-lightbulb text-amber-400 text-xl"></i>
+              </h3>
 
-            <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">${cardDesc}</p>
+              <p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">${card.desc}</p>
 
-            <div class="space-y-2 pt-1">
-              ${keywordsList.length ? `
-                <div class="flex flex-wrap gap-1.5 items-center">
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">${t('lbl_keywords')}:</span>
-                  ${keywordsList.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
+              <!-- Keywords & Terms -->
+              <div class="space-y-2 pt-2">
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">Kata Kunci:</span>
+                  ${card.keywords.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
                 </div>
-              ` : ''}
-              ${termsList.length ? `
-                <div class="flex flex-wrap gap-1.5 items-center">
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">${t('lbl_terms')}:</span>
-                  ${termsList.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">Istilah Saintifik:</span>
+                  ${card.terms.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
                 </div>
-              ` : ''}
-            </div>
-
-            ${cardComp ? `
-              <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl text-xs text-slate-600 dark:text-slate-300 border-l-4 border-bio-500">
-                ${cardComp}
               </div>
-            ` : ''}
 
-            <div class="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-200">
-              ${cardTip}
+              <!-- Comparison / Extra -->
+              ${card.comparison ? `
+                <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl text-xs text-slate-600 dark:text-slate-300 border-l-4 border-bio-500">
+                  ${card.comparison}
+                </div>
+              ` : ''}
+
+              <!-- Tip Hafalan -->
+              <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-medium">
+                ${card.tip}
+              </div>
             </div>
 
-            <div class="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-700">
-              <button onclick="navigateTo('home')" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">${t('home_button')}</button>
-              <button onclick="nextFlashcard()" class="px-6 py-2 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-bold shadow-md">${t('next_card')}</button>
+            <!-- Action Controls -->
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-4">
+              <button onclick="navigateTo('home')" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-semibold text-xs hover:bg-slate-100 dark:hover:bg-slate-700 transition flex items-center gap-2">
+                <i class="fa-solid fa-house"></i> ${t('home_button')}
+              </button>
+
+              <button onclick="nextFlashcard()" class="px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2">
+                ${t('next_card')}
+              </button>
             </div>
           </div>
         </div>
@@ -664,6 +806,7 @@
     function nextFlashcard() {
       userStats.cardsRead++;
       localStorage.setItem('pintarbio_stats', JSON.stringify(userStats));
+
       if (activeCardIndex < activeCards.length - 1) {
         activeCardIndex++;
         navigateTo('flashcards', activeTopic.id);
@@ -672,6 +815,7 @@
       }
     }
 
+    // QUIZ LOGIC
     function startQuizDirect(topicId) {
       const data = getTopicData(topicId);
       activeTopic = { id: topicId, ...data };
@@ -683,30 +827,49 @@
     }
 
     function renderQuizView(topicId) {
-      if (!activeQuiz || activeQuiz.length === 0) { startQuizDirect(topicId); return ''; }
+      if (!activeQuiz || activeQuiz.length === 0) {
+        startQuizDirect(topicId);
+        return '';
+      }
+
       const q = activeQuiz[activeQuestionIndex];
-      const qText = typeof q.question === 'object' ? (q.question[currentLang] || q.question.bm) : q.question;
+      const total = activeQuiz.length;
+      const topicTitle = activeTopic.title[currentLang] || activeTopic.title.bm;
 
       return `
-        <div class="max-w-2xl mx-auto space-y-4 no-select">
+        <div class="max-w-2xl mx-auto space-y-6 no-select">
+          <!-- Active Recall Banner -->
           <div class="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
             <i class="fa-solid fa-lock text-red-500 text-base flex-shrink-0"></i>
-            <span>${t('quiz_warning')}</span>
+            <span>❌ Mod Kuiz Active Recall: Jawapan tidak boleh diubah selepas dihantar dan tiada butang Kembali!</span>
           </div>
 
-          <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 card-shadow space-y-4">
-            <!-- DYNAMIC QUIZ SVG DIAGRAM (Passing currentLang) -->
-            ${q.image ? `<div class="my-2">${typeof q.image === 'function' ? q.image(currentLang) : q.image}</div>` : ''}
+          <!-- Quiz Header -->
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase tracking-wider">${topicTitle}</span>
+              <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">${t('question')} ${activeQuestionIndex + 1} / ${total}</p>
+            </div>
+          </div>
 
-            <h3 class="text-base font-bold text-slate-800 dark:text-white leading-snug">${qText}</h3>
-            
-            <div id="quizOptionsContainer" class="space-y-2">
+          <!-- Progress Bar -->
+          <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+            <div class="bg-teal-500 h-full transition-all duration-300" style="width: ${((activeQuestionIndex + 1) / total) * 100}%"></div>
+          </div>
+
+          <!-- Question Card -->
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 card-shadow space-y-6">
+            <h3 class="text-lg sm:text-xl font-bold text-slate-800 dark:text-white leading-snug">${q.question}</h3>
+
+            <!-- Answer Options -->
+            <div id="quizOptionsContainer" class="space-y-3">
               ${renderQuizOptions(q)}
             </div>
 
+            <!-- Submit & Next Button -->
             <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-end">
-              <button onclick="submitQuizAnswer()" id="btnSubmitAnswer" disabled class="px-6 py-2.5 bg-slate-300 dark:bg-slate-700 text-slate-500 rounded-xl font-bold text-xs transition cursor-not-allowed">
-                ${t('submit')}
+              <button onclick="submitQuizAnswer()" id="btnSubmitAnswer" disabled class="px-6 py-2.5 bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-xl font-bold text-xs transition cursor-not-allowed flex items-center gap-2">
+                ${t('submit')} <i class="fa-solid fa-check"></i>
               </button>
             </div>
           </div>
@@ -715,29 +878,67 @@
     }
 
     function renderQuizOptions(q) {
-      const opts = typeof q.options === 'object' && !Array.isArray(q.options) ? (q.options[currentLang] || q.options.bm) : q.options;
-      return opts.map((opt, idx) => `
-        <label onclick="enableSubmit()" class="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-xs font-medium">
-          <input type="radio" name="quiz_opt" value="${idx}" class="w-4 h-4 text-bio-600">
-          <span class="text-slate-700 dark:text-slate-200">${opt}</span>
-        </label>
-      `).join('');
+      if (q.type === 'mcq') {
+        return q.options.map((opt, idx) => `
+          <label onclick="enableSubmit()" class="flex items-center gap-3 p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 dark:hover:border-bio-400 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition">
+            <input type="radio" name="quiz_opt" value="${idx}" class="w-4 h-4 text-bio-600 focus:ring-bio-500">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-200">${opt}</span>
+          </label>
+        `).join('');
+      } else if (q.type === 'tf') {
+        return `
+          <div class="grid grid-cols-2 gap-4">
+            <label onclick="enableSubmit()" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-center">
+              <input type="radio" name="quiz_opt" value="true" class="mb-2 w-4 h-4 text-bio-600">
+              <span class="text-base font-bold text-bio-600 dark:text-bio-400">BENAR (TRUE)</span>
+            </label>
+            <label onclick="enableSubmit()" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-red-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-center">
+              <input type="radio" name="quiz_opt" value="false" class="mb-2 w-4 h-4 text-red-600">
+              <span class="text-base font-bold text-red-600 dark:text-red-400">SALAH (FALSE)</span>
+            </label>
+          </div>
+        `;
+      } else if (q.type === 'blank') {
+        return `
+          <div class="space-y-2">
+            <input type="text" id="blankAnswerInput" oninput="enableSubmit()" placeholder="Taip jawapan anda di sini..." class="w-full p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm focus:border-bio-500 outline-none transition">
+          </div>
+        `;
+      }
     }
 
     function enableSubmit() {
       const btn = document.getElementById('btnSubmitAnswer');
-      if (btn) {
-        btn.disabled = false;
-        btn.className = "px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md cursor-pointer transition";
-      }
+      btn.disabled = false;
+      btn.className = "px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition cursor-pointer flex items-center gap-2";
     }
 
     function submitQuizAnswer() {
       const q = activeQuiz[activeQuestionIndex];
-      const checked = document.querySelector('input[name="quiz_opt"]:checked');
-      const selectedVal = checked ? parseInt(checked.value) : null;
-      
-      quizUserAnswers.push({ isCorrect: selectedVal === q.answer });
+      let selectedVal = null;
+
+      if (q.type === 'mcq') {
+        const checked = document.querySelector('input[name="quiz_opt"]:checked');
+        if (checked) selectedVal = parseInt(checked.value);
+      } else if (q.type === 'tf') {
+        const checked = document.querySelector('input[name="quiz_opt"]:checked');
+        if (checked) selectedVal = checked.value === 'true';
+      } else if (q.type === 'blank') {
+        const val = document.getElementById('blankAnswerInput').value.trim();
+        selectedVal = val.toLowerCase();
+      }
+
+      let isCorrect = false;
+      if (q.type === 'mcq') isCorrect = selectedVal === q.answer;
+      else if (q.type === 'tf') isCorrect = selectedVal === q.answer;
+      else if (q.type === 'blank') isCorrect = selectedVal === q.answer.toLowerCase();
+
+      quizUserAnswers.push({
+        question: q.question,
+        userAnswer: selectedVal,
+        correctAnswer: q.answer,
+        isCorrect: isCorrect
+      });
 
       if (activeQuestionIndex < activeQuiz.length - 1) {
         activeQuestionIndex++;
@@ -764,44 +965,268 @@
       navigateTo('quiz_results');
     }
 
+    // QUIZ RESULTS VIEW
     function renderQuizResults() {
       const correctCount = quizUserAnswers.filter(a => a.isCorrect).length;
       const total = quizUserAnswers.length;
       const percentage = Math.round((correctCount / total) * 100);
+      const timeSpentSec = Math.round((Date.now() - quizStartTime) / 1000);
+
+      let gradeText = "";
+      let gradeColor = "";
+
+      if (percentage >= 90) { gradeText = "Excellent! 🌟"; gradeColor = "text-emerald-500"; }
+      else if (percentage >= 80) { gradeText = "Great Job! 🎉"; gradeColor = "text-bio-600"; }
+      else if (percentage >= 70) { gradeText = "Good! 👍"; gradeColor = "text-blue-500"; }
+      else if (percentage >= 60) { gradeText = "Keep Practising! 💪"; gradeColor = "text-amber-500"; }
+      else { gradeText = "Revise Again! 📚"; gradeColor = "text-red-500"; }
+
+      const needsRevision = percentage < 60;
 
       return `
-        <div class="max-w-xl mx-auto text-center space-y-6 p-8 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-shadow">
-          <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">${t('results_title')}</h2>
-          <div class="text-4xl font-black text-bio-600 dark:text-bio-400">${percentage}%</div>
-          <p class="text-sm text-slate-500">${correctCount} / ${total} Betul</p>
-          <div class="pt-2 flex gap-3">
-            <button onclick="startFlashcards('${activeTopic.id}')" class="flex-1 py-3 bg-bio-600 text-white rounded-xl font-bold text-xs shadow-md">
-              ${t('revise_flashcards')}
-            </button>
-            <button onclick="navigateTo('home')" class="flex-1 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs">
-              ${t('continue_learning')}
-            </button>
+        <div class="max-w-xl mx-auto space-y-6 text-center">
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-8 card-shadow space-y-6">
+            <div class="w-20 h-20 mx-auto rounded-3xl bg-bio-100 dark:bg-bio-950 text-bio-600 dark:text-bio-400 flex items-center justify-center text-3xl shadow-inner">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <div>
+              <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">${t('results_title')}</h2>
+              <p class="text-xl font-bold ${gradeColor} mt-1">${gradeText}</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl">
+              <div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">${t('score')}</p>
+                <h4 class="text-2xl font-black text-slate-800 dark:text-white">${percentage}%</h4>
+              </div>
+              <div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Betul</p>
+                <h4 class="text-2xl font-black text-bio-600 dark:text-bio-400">${correctCount} / ${total}</h4>
+              </div>
+              <div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">${t('time_taken')}</p>
+                <h4 class="text-2xl font-black text-slate-800 dark:text-white">${timeSpentSec}s</h4>
+              </div>
+            </div>
+
+            ${needsRevision ? `
+              <div class="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-2xl text-red-800 dark:text-red-200 text-xs font-semibold space-y-1">
+                <p class="text-sm">⚠️ Markah di bawah 60%</p>
+                <p>Cadangan: Sila ulang semula sesi Flashcard untuk mengukuhkan memori hafalan sebelum mencuba kuiz sekali lagi.</p>
+              </div>
+            ` : ''}
+
+            <!-- Action Buttons -->
+            <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+              <button onclick="startFlashcards('${activeTopic.id}')" class="w-full py-3 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> ${t('revise_flashcards')}
+              </button>
+              <button onclick="navigateTo('home')" class="w-full py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-house"></i> ${t('continue_learning')}
+              </button>
+            </div>
           </div>
         </div>
       `;
     }
 
-    function renderStatsView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Statistik Pembelajaran</div>`; }
-    function renderBadgesView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Lencana Pencapaian</div>`; }
-    function renderSearchView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Carian Subtopik</div>`; }
-    function renderBookmarksView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">${t('no_bookmarks')}</div>`; }
+    // STATS VIEW
+    function renderStatsView() {
+      const avgScore = userStats.quizzesCompleted > 0 ? Math.round(userStats.totalScore / userStats.quizzesCompleted) : 0;
+
+      return `
+        <div class="max-w-3xl mx-auto space-y-6">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-3">
+            <i class="fa-solid fa-chart-pie text-bio-600"></i> ${t('nav_stats')} Pembelajaran
+          </h2>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-check-circle text-bio-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_completed_topics')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.completedTopics.length}</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-clone text-blue-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_cards_read')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.cardsRead}</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-vial text-purple-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_quizzes')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.quizzesCompleted}</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-percent text-emerald-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_avg_score')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${avgScore}%</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-fire text-amber-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_streak')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.streak} Hari</h3>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-star text-yellow-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Kuiz Terakhir</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.lastScore !== null ? userStats.lastScore + '%' : '-'}</h3>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // BADGES VIEW
+    function renderBadgesView() {
+      return `
+        <div class="max-w-3xl mx-auto space-y-6">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-3">
+            <i class="fa-solid fa-award text-amber-500"></i> ${t('nav_badges')} Pencapaian
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            ${badgesList.map(b => {
+              const unlocked = b.req(userStats);
+              return `
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border ${unlocked ? 'border-amber-400/60 shadow-lg shadow-amber-500/10' : 'border-slate-200 dark:border-slate-700 opacity-60'} card-shadow flex flex-col items-center text-center">
+                  <div class="w-16 h-16 rounded-2xl ${unlocked ? b.color : 'bg-slate-300 dark:bg-slate-700'} text-white flex items-center justify-center text-2xl mb-3 shadow-md">
+                    <i class="fa-solid ${b.icon}"></i>
+                  </div>
+                  <h4 class="font-bold text-slate-800 dark:text-white text-sm">${b.name}</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${b.desc}</p>
+                  <span class="mt-3 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${unlocked ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' : 'bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400'}">
+                    ${unlocked ? t('badge_unlocked') : t('badge_locked')}
+                  </span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // SEARCH VIEW
+    function renderSearchView() {
+      return `
+        <div class="max-w-2xl mx-auto space-y-6">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-lg"></i>
+            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="${t('search_placeholder')}" class="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:border-bio-500 outline-none card-shadow transition">
+          </div>
+
+          <div id="searchResults" class="space-y-3">
+            <p class="text-center text-slate-400 text-xs py-8">Taip kata kunci untuk membuat carian bab, subtopik, atau istilah saintifik...</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResults');
+
+      if (!query) {
+        resultsContainer.innerHTML = `<p class="text-center text-slate-400 text-xs py-8">Taip kata kunci untuk membuat carian bab, subtopik, atau istilah saintifik...</p>`;
+        return;
+      }
+
+      let matches = [];
+      ['f4', 'f5'].forEach(form => {
+        syllabusData[form].forEach(ch => {
+          const titleBM = ch.title.bm.toLowerCase();
+          const titleEN = ch.title.en.toLowerCase();
+          if (titleBM.includes(query) || titleEN.includes(query) || `bab ${ch.num}`.includes(query)) {
+            matches.push({ ...ch, form });
+          }
+        });
+      });
+
+      if (matches.length === 0) {
+        resultsContainer.innerHTML = `<p class="text-center text-slate-400 text-xs py-8">Tiada padanan ditemui untuk "${query}".</p>`;
+        return;
+      }
+
+      resultsContainer.innerHTML = matches.map(m => `
+        <div onclick="startFlashcards('${m.id}')" class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow hover:border-bio-500 cursor-pointer transition flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-bio-100 dark:bg-bio-900/60 text-bio-600 dark:text-bio-400 flex items-center justify-center font-bold text-sm">
+              <i class="fa-solid ${m.icon}"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-bio-600">${m.form.toUpperCase()} - Bab ${m.num}</span>
+              <h4 class="text-sm font-bold text-slate-800 dark:text-white">${m.title[currentLang] || m.title.bm}</h4>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+        </div>
+      `).join('');
+    }
+
+    // BOOKMARKS VIEW & LOGIC
+    function toggleBookmark(topicId, cardIndex) {
+      const index = bookmarks.findIndex(b => b.topicId === topicId && b.cardIndex === cardIndex);
+      if (index > -1) {
+        bookmarks.splice(index, 1);
+      } else {
+        bookmarks.push({ topicId, cardIndex });
+      }
+      localStorage.setItem('pintarbio_bookmarks', JSON.stringify(bookmarks));
+      updateBookmarkBadge();
+      renderCurrentView(topicId);
+    }
 
     function updateBookmarkBadge() {
       const badge = document.getElementById('bookmarkBadge');
-      if (badge) {
-        if (bookmarks.length > 0) {
-          badge.textContent = bookmarks.length;
-          badge.classList.remove('hidden');
-        } else {
-          badge.classList.add('hidden');
-        }
+      if (bookmarks.length > 0) {
+        badge.textContent = bookmarks.length;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
       }
     }
+
+    function renderBookmarksView() {
+      if (bookmarks.length === 0) {
+        return `
+          <div class="max-w-md mx-auto text-center py-12 space-y-3">
+            <i class="fa-solid fa-bookmark text-4xl text-slate-300 dark:text-slate-600"></i>
+            <h3 class="text-lg font-bold text-slate-700 dark:text-slate-300">${t('no_bookmarks')}</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Tekan ikon bookmark semasa membaca flashcard untuk menyimpan nota penting di sini.</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="max-w-2xl mx-auto space-y-4">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-3">
+            <i class="fa-solid fa-bookmark text-amber-500"></i> Penanda Buku Simpanan (${bookmarks.length})
+          </h2>
+
+          <div class="space-y-3">
+            ${bookmarks.map(bm => {
+              const topicData = getTopicData(bm.topicId);
+              const card = topicData.cards[bm.cardIndex];
+              if (!card) return '';
+
+              return `
+                <div class="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase tracking-wider">${topicData.title[currentLang] || topicData.title.bm}</span>
+                    <button onclick="toggleBookmark('${bm.topicId}', ${bm.cardIndex})" class="text-xs text-red-500 hover:underline">Padam</button>
+                  </div>
+                  <h4 class="text-base font-bold text-slate-800 dark:text-white">${card.title}</h4>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">${card.desc}</p>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
   </script>
-</body>
-</html>
