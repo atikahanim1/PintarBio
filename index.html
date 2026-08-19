@@ -1,22 +1,807 @@
-// Tambah pemetaan data khusus bagi setiap bab yang belum ada
-const topicDetailsData = {
-  'f4_b2': { /* ...data sedia ada... */ },[cite: 9]
-  'f4_b5': { /* ...data sedia ada... */ },[cite: 9]
-  
-  // Contoh penambahan data bagi Bab 1 Tingkatan 4:
-  'f4_b1': {
-    title: { bm: "1.1 Bidang Biologi dan Kerjaya", en: "1.1 Fields of Biology and Careers" },
-    cards: [
-      {
-        title: "Peralatan Perlindungan Diri",
-        desc: "Stesen pencuci mata digunakan untuk membilas dan membersihkan mata yang terkena bahan kimia.",
-        keywords: ["Makmal", "Keselamatan", "Pencuci Mata"],
-        terms: ["Eyewash station", "Safety equipment"],
-        tip: "💡 Tip: Sentiasa tahu lokasi peralatan keselamatan di makmal."
+<!DOCTYPE html>
+<html lang="ms" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PintarBio - Aplikasi Pembelajaran Biologi SPM (KSSM)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bio: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            },
+            accent: {
+              blue: '#2563eb',
+              cyan: '#06b6d4',
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'Inter', 'sans-serif'],
+          }
+        }
       }
-    ],
-    quiz: [ /* Soalan khusus Bab 1 */ ]
-  },
+    }
+  </script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
-  // Tambah ID bab lain ('f4_b3', 'f4_b4', 'f5_b1', dan seterusnya)...
-};
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      user-select: none;
+    }
+    .card-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+    .no-select {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- TOP HEADER / NAVBAR -->
+  <header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-bio-600 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-bio-500/20">
+          <i class="fa-solid fa-dna text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold bg-gradient-to-r from-bio-700 via-bio-600 to-teal-500 bg-clip-text text-transparent leading-tight">PintarBio</h1>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Biologi KSSM Tingkatan 4 & 5</p>
+        </div>
+      </div>
+
+      <!-- Quick Nav Controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Switcher -->
+        <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-globe text-bio-600 dark:text-bio-400"></i>
+          <span id="langLabel">BM</span>
+        </button>
+
+        <!-- Search Button -->
+        <button onclick="navigateTo('search')" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
+          <i class="fa-solid fa-magnifying-glass text-sm"></i>
+        </button>
+
+        <!-- Bookmark Button -->
+        <button onclick="navigateTo('bookmarks')" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-amber-500 transition relative">
+          <i class="fa-solid fa-bookmark text-sm"></i>
+          <span id="bookmarkBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-bold">0</span>
+        </button>
+
+        <!-- Dark Mode Toggle -->
+        <button onclick="toggleDarkMode()" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-700/50 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-amber-400 transition">
+          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="appContainer" class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
+    <!-- Dynamic Content -->
+  </main>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <nav class="sticky bottom-0 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-700 z-40">
+    <div class="max-w-md mx-auto flex justify-around py-2 px-3">
+      <button onclick="navigateTo('home')" id="navHome" class="flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-medium">
+        <i class="fa-solid fa-house text-lg"></i>
+        <span class="text-[11px]" data-i18n="nav_home">Utama</span>
+      </button>
+      <button onclick="navigateTo('f4')" id="navF4" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
+        <i class="fa-solid fa-graduation-cap text-lg"></i>
+        <span class="text-[11px]" data-i18n="nav_f4">Ting. 4</span>
+      </button>
+      <button onclick="navigateTo('f5')" id="navF5" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
+        <i class="fa-solid fa-seedling text-lg"></i>
+        <span class="text-[11px]" data-i18n="nav_f5">Ting. 5</span>
+      </button>
+      <button onclick="navigateTo('stats')" id="navStats" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
+        <i class="fa-solid fa-chart-pie text-lg"></i>
+        <span class="text-[11px]" data-i18n="nav_stats">Statistik</span>
+      </button>
+      <button onclick="navigateTo('badges')" id="navBadges" class="flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition">
+        <i class="fa-solid fa-award text-lg"></i>
+        <span class="text-[11px]" data-i18n="nav_badges">Lencana</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- APPLICATION SCRIPT -->
+  <script>
+    // Global Application State
+    let currentLang = localStorage.getItem('pintarbio_lang') || 'bm';
+    let isDarkMode = localStorage.getItem('pintarbio_theme') === 'dark';
+    let currentView = 'home';
+    let bookmarks = JSON.parse(localStorage.getItem('pintarbio_bookmarks') || '[]');
+    let userStats = JSON.parse(localStorage.getItem('pintarbio_stats') || JSON.stringify({
+      cardsRead: 0,
+      quizzesCompleted: 0,
+      totalScore: 0,
+      lastScore: null,
+      streak: 1,
+      lastStudyDate: new Date().toDateString(),
+      completedTopics: []
+    }));
+
+    let activeTopic = null;
+    let activeCards = [];
+    let activeCardIndex = 0;
+    let activeQuiz = [];
+    let activeQuestionIndex = 0;
+    let quizUserAnswers = [];
+    let quizStartTime = 0;
+
+    const translations = {
+      bm: {
+        nav_home: "Utama",
+        nav_f4: "Ting. 4",
+        nav_f5: "Ting. 5",
+        nav_stats: "Statistik",
+        nav_badges: "Lencana",
+        welcome_title: "Selamat Datang ke PintarBio!",
+        welcome_sub: "Aplikasi pembelajaran Biologi KSSM berteraskan teknik Active Recall untuk persediaan cemerlang SPM.",
+        form4_title: "Tingkatan 4 (KSSM)",
+        form5_title: "Tingkatan 5 (KSSM)",
+        chapters_count: "Bab",
+        progress: "Kemajuan",
+        start_flashcard: "Mula Hafalan Flashcard",
+        start_quiz: "Terus ke Kuiz",
+        active_recall_notice: "⚠️ Mod Active Recall: Anda TIDAK Boleh kembali ke flashcard/soalan sebelumnya. Hafal fakta ini sepenuhnya!",
+        quiz_warning: "❌ Mod Kuiz Active Recall: Jawapan tidak boleh diubah selepas dihantar dan tiada butang Kembali!",
+        next_card: "Seterusnya ➔",
+        home_button: "Utama",
+        question: "Soalan",
+        submit: "Hantar Jawapan",
+        next_question: "Soalan Seterusnya ➔",
+        results_title: "Keputusan Kuiz",
+        score: "Markah",
+        time_taken: "Masa Diambil",
+        recommendation: "Cadangan Ulang Kaji",
+        revise_flashcards: "Ulang Semula Flashcard",
+        continue_learning: "Teruskan Pembelajaran",
+        search_placeholder: "Cari bab, subtopik, istilah saintifik...",
+        no_bookmarks: "Tiada penanda buku disimpan lagi.",
+        stats_completed_topics: "Subtopik Selesai",
+        stats_cards_read: "Flashcard Dibaca",
+        stats_quizzes: "Kuiz Diselesaikan",
+        stats_avg_score: "Purata Markah",
+        stats_streak: "Streak Belajar",
+        badge_locked: "Terkunci",
+        badge_unlocked: "Dibuka",
+        lbl_keywords: "Kata Kunci",
+        lbl_terms: "Istilah Saintifik"
+      },
+      en: {
+        nav_home: "Home",
+        nav_f4: "Form 4",
+        nav_f5: "Form 5",
+        nav_stats: "Statistics",
+        nav_badges: "Badges",
+        welcome_title: "Welcome to PintarBio!",
+        welcome_sub: "KSSM Biology learning app powered by Active Recall techniques for SPM excellence.",
+        form4_title: "Form 4 (KSSM)",
+        form5_title: "Form 5 (KSSM)",
+        chapters_count: "Chapters",
+        progress: "Progress",
+        start_flashcard: "Start Flashcard Memorization",
+        start_quiz: "Direct to Quiz",
+        active_recall_notice: "⚠️ Active Recall Mode: You CANNOT go back to previous flashcards or questions. Memorize carefully!",
+        quiz_warning: "❌ Active Recall Quiz Mode: Answers cannot be changed after submission!",
+        next_card: "Next ➔",
+        home_button: "Home",
+        question: "Question",
+        submit: "Submit Answer",
+        next_question: "Next Question ➔",
+        results_title: "Quiz Results",
+        score: "Score",
+        time_taken: "Time Taken",
+        recommendation: "Revision Advice",
+        revise_flashcards: "Revise Flashcards Again",
+        continue_learning: "Continue Learning",
+        search_placeholder: "Search chapters, subtopics, scientific terms...",
+        no_bookmarks: "No bookmarks saved yet.",
+        stats_completed_topics: "Topics Completed",
+        stats_cards_read: "Cards Read",
+        stats_quizzes: "Quizzes Solved",
+        stats_avg_score: "Average Score",
+        stats_streak: "Study Streak",
+        badge_locked: "Locked",
+        badge_unlocked: "Unlocked",
+        lbl_keywords: "Keywords",
+        lbl_terms: "Scientific Terms"
+      }
+    };
+
+    const syllabusData = {
+      f4: [
+        { id: 'f4_b1', num: 1, title: { bm: 'Pengenalan kepada Biologi dan Peraturan Makmal', en: 'Introduction to Biology and Laboratory Rules' }, icon: 'fa-vial' },
+        { id: 'f4_b2', num: 2, title: { bm: 'Biologi Sel dan Organisasi Sel', en: 'Cell Biology and Organisation' }, icon: 'fa-microscope' },
+        { id: 'f4_b3', num: 3, title: { bm: 'Pergerakan Bahan Merentasi Membran Plasma', en: 'Movement of Substances Across Plasma Membrane' }, icon: 'fa-arrows-split-up-and-left' },
+        { id: 'f4_b4', num: 4, title: { bm: 'Komposisi Kimia dalam Sel', en: 'Chemical Composition in Cells' }, icon: 'fa-flask-vial' },
+        { id: 'f4_b5', num: 5, title: { bm: 'Metabolisme dan Enzim', en: 'Metabolism and Enzymes' }, icon: 'fa-bolt' }
+      ],
+      f5: [
+        { id: 'f5_b1', num: 1, title: { bm: 'Organisasi Tisu Tumbuhan dan Tumbesaran', en: 'Organisation of Plant Tissues and Growth' }, icon: 'fa-seedling' },
+        { id: 'f5_b2', num: 2, title: { bm: 'Struktur dan Fungsi Daun', en: 'Leaf Structure and Function' }, icon: 'fa-leaf' }
+      ]
+    };
+
+    // FUNGSI SVG DIAGRAM DINAMIK DENGAN SOKONGAN TUKAR BAHASA
+    const svgDiagrams = {
+      mitochondria: (lang) => {
+        const outerMem = lang === 'en' ? "Outer Membrane" : "Membran Luar";
+        const innerMem = lang === 'en' ? "Inner Membrane" : "Membran Dalam";
+        const cristae = lang === 'en' ? "Cristae (Folds)" : "Krista (Lipatan)";
+        const matrix = lang === 'en' ? "Matrix" : "Matriks";
+        return `
+          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-emerald-500/30 p-2">
+            <ellipse cx="160" cy="80" rx="140" ry="65" fill="#15803d" stroke="#4ade80" stroke-width="3"/>
+            <ellipse cx="160" cy="80" rx="130" ry="55" fill="#166534" stroke="#86efac" stroke-width="2"/>
+            <path d="M 45 80 Q 65 50, 75 80 T 105 80 T 135 50 T 165 110 T 195 60 T 225 100 T 275 80" fill="none" stroke="#facc15" stroke-width="4" stroke-linecap="round"/>
+            <text x="160" y="28" fill="#ffffff" font-size="10" text-anchor="middle" font-weight="bold">${outerMem}</text>
+            <text x="60" y="142" fill="#86efac" font-size="9" text-anchor="middle">${innerMem}</text>
+            <text x="160" y="145" fill="#facc15" font-size="10" text-anchor="middle" font-weight="bold">${cristae}</text>
+            <text x="250" y="142" fill="#4ade80" font-size="9" text-anchor="middle">${matrix}</text>
+          </svg>
+        `;
+      },
+      golgi: (lang) => {
+        const labelSacs = lang === 'en' ? "Flattened Sacs" : "Kantung Pipih Selari";
+        const labelVesicle = lang === 'en' ? "Secretory Vesicles" : "Vesikel Rembesan";
+        return `
+          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-amber-500/30 p-2">
+            <path d="M 60 40 Q 160 20, 260 40" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round"/>
+            <path d="M 50 70 Q 160 50, 270 70" fill="none" stroke="#d97706" stroke-width="14" stroke-linecap="round"/>
+            <path d="M 60 100 Q 160 80, 260 100" fill="none" stroke="#b45309" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="35" cy="70" r="8" fill="#fbbf24"/>
+            <circle cx="285" cy="70" r="10" fill="#fbbf24"/>
+            <circle cx="295" cy="100" r="7" fill="#fbbf24"/>
+            <text x="160" y="140" fill="#fbbf24" font-size="10" text-anchor="middle" font-weight="bold">${labelSacs}</text>
+            <text x="280" y="45" fill="#f59e0b" font-size="9" text-anchor="middle">${labelVesicle}</text>
+          </svg>
+        `;
+      },
+      chloroplast: (lang) => {
+        const granum = lang === 'en' ? "Granum (Thylakoid Stack)" : "Granum (Timbunan Tilakoid)";
+        const stroma = lang === 'en' ? "Stroma (Fluid)" : "Stroma (Cairan)";
+        return `
+          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-green-500/30 p-2">
+            <ellipse cx="160" cy="80" rx="140" ry="65" fill="#14532d" stroke="#22c55e" stroke-width="3"/>
+            <g fill="#4ade80">
+              <rect x="75" y="50" width="30" height="8" rx="2"/><rect x="75" y="62" width="30" height="8" rx="2"/><rect x="75" y="74" width="30" height="8" rx="2"/><rect x="75" y="86" width="30" height="8" rx="2"/>
+              <rect x="145" y="45" width="30" height="8" rx="2"/><rect x="145" y="57" width="30" height="8" rx="2"/><rect x="145" y="69" width="30" height="8" rx="2"/><rect x="145" y="81" width="30" height="8" rx="2"/><rect x="145" y="93" width="30" height="8" rx="2"/>
+              <rect x="215" y="55" width="30" height="8" rx="2"/><rect x="215" y="67" width="30" height="8" rx="2"/><rect x="215" y="79" width="30" height="8" rx="2"/>
+            </g>
+            <line x1="105" y1="70" x2="145" y2="70" stroke="#86efac" stroke-width="2"/>
+            <line x1="175" y1="80" x2="215" y2="80" stroke="#86efac" stroke-width="2"/>
+            <text x="90" y="125" fill="#86efac" font-size="9" text-anchor="middle" font-weight="bold">${granum}</text>
+            <text x="230" y="125" fill="#86efac" font-size="9" text-anchor="middle" font-weight="bold">${stroma}</text>
+          </svg>
+        `;
+      }
+    };
+
+    // DATA FLASHCARD & KUIZ DWIBAHASA
+    const topicDetailsData = {
+      'f4_b2': {
+        title: { bm: "2.1 Biologi Sel & Organel", en: "2.1 Cell Biology & Organelles" },
+        cards: [
+          {
+            title: { bm: "Mitokondria", en: "Mitochondrion" },
+            image: svgDiagrams.mitochondria,
+            desc: {
+              bm: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
+              en: "Rod-shaped or spherical organelle bounded by two layers of membrane. The inner membrane is folded to form cristae."
+            },
+            keywords: {
+              bm: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
+              en: ["Site of energy production", "ATP", "Cellular respiration", "Aerobic"]
+            },
+            terms: {
+              bm: ["Mitokondria", "Krista", "Adenosina Trifosfat (ATP)"],
+              en: ["Mitochondrion", "Cristae", "Adenosine Triphosphate (ATP)"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Mitokondria = 'Powerhouse' sel! Tempat bakar glukosa hasilkan tenaga.",
+              en: "💡 Memory Tip: Mitochondria = 'Powerhouse' of the cell! Site of glucose breakdown to generate energy."
+            },
+            comparison: {
+              bm: "Sel otot & sel sperma mengandungi bilangan mitokondria yang sangat tinggi.",
+              en: "Muscle cells & sperm cells contain a very high number of mitochondria."
+            }
+          },
+          {
+            title: { bm: "Jasad Golgi", en: "Golgi Apparatus" },
+            image: svgDiagrams.golgi,
+            desc: {
+              bm: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal.",
+              en: "Consists of a stack of parallel flattened sacs bounded by a single membrane."
+            },
+            keywords: {
+              bm: ["Ubah suai protein", "Bungkus protein", "Rembesan vesikel"],
+              en: ["Modify proteins", "Package proteins", "Secretory vesicles"]
+            },
+            terms: {
+              bm: ["Jasad Golgi", "Vesikel Rembesan", "Glikoprotein"],
+              en: ["Golgi apparatus", "Secretory vesicle", "Glycoprotein"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Jasad Golgi umpama Pejabat Pos! Mengubah suai, membungkus dan mengangkut protein.",
+              en: "💡 Memory Tip: Golgi apparatus is like a Post Office! Modifies, packages, and transports proteins."
+            },
+            comparison: {
+              bm: "Sangat aktif dalam sel kelenjar perembesan.",
+              en: "Highly active in secretory gland cells."
+            }
+          },
+          {
+            title: { bm: "Kloroplas", en: "Chloroplast" },
+            image: svgDiagrams.chloroplast,
+            desc: {
+              bm: "Organel berbentuk bujur yang mengandungi pigmen klorofil untuk menyerap cahaya matahari bagi proses fotosintesis.",
+              en: "Oval-shaped organelle containing chlorophyll pigment to absorb sunlight for photosynthesis."
+            },
+            keywords: {
+              bm: ["Fotosintesis", "Klorofil", "Tilakoid", "Stroma"],
+              en: ["Photosynthesis", "Chlorophyll", "Thylakoid", "Stroma"]
+            },
+            terms: {
+              bm: ["Kloroplas", "Granum", "Stroma"],
+              en: ["Chloroplast", "Granum", "Stroma"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Kloroplas hanya wujud dalam sel tumbuhan!",
+              en: "💡 Memory Tip: Chloroplasts exist only in plant cells!"
+            },
+            comparison: {
+              bm: "Sel haiwan tidak mempunyai kloroplas.",
+              en: "Animal cells do not have chloroplasts."
+            }
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            image: svgDiagrams.mitochondria,
+            question: {
+              bm: "Berdasarkan gambar rajah di atas, apakah fungsi utama organel ini dalam sel haiwan dan tumbuhan?",
+              en: "Based on the diagram above, what is the primary function of this organelle in animal and plant cells?"
+            },
+            options: {
+              bm: [
+                "Menyintesis protein untuk pembentukan sel baru",
+                "Menjana tenaga dalam bentuk ATP melalui respirasi sel",
+                "Mengubah suai dan membungkus glikoprotein",
+                "Mengawal pergerakan bahan keluar dan masuk sel"
+              ],
+              en: [
+                "Synthesise proteins for new cell formation",
+                "Generate energy in the form of ATP via cellular respiration",
+                "Modify and package glycoproteins",
+                "Control the movement of substances into and out of the cell"
+              ]
+            },
+            answer: 1
+          },
+          {
+            type: 'mcq',
+            image: svgDiagrams.golgi,
+            question: {
+              bm: "Gambar rajah di atas menunjukkan Jasad Golgi. Apakah tugas utamanya?",
+              en: "The diagram above shows the Golgi apparatus. What is its main function?"
+            },
+            options: {
+              bm: [
+                "Mengubah suai, membungkus dan mengangkut protein",
+                "Membakar glukosa untuk menghasilkan tenaga",
+                "Menyerap tenaga cahaya matahari",
+                "Memecahkan organel yang rosak"
+              ],
+              en: [
+                "Modify, package, and transport proteins",
+                "Burn glucose to produce energy",
+                "Absorb sunlight energy",
+                "Break down damaged organelles"
+              ]
+            },
+            answer: 0
+          }
+        ]
+      }
+    };
+
+    function getTopicData(topicId) {
+      if (topicDetailsData[topicId]) return topicDetailsData[topicId];
+      return {
+        title: { bm: `Subtopik & Pembelajaran Utama`, en: `Subtopics & Core Knowledge` },
+        cards: [
+          {
+            title: { bm: "Konsep & Definisi Asas", en: "Basic Concepts & Definitions" },
+            desc: {
+              bm: "Subtopik ini merangkumi fakta-fakta penting KSSM yang direka khas untuk pemahaman pantas.",
+              en: "This subtopic covers essential KSSM facts tailored for quick understanding."
+            },
+            keywords: { bm: ["Fakta KSSM", "Konsep Kunci"], en: ["KSSM Facts", "Key Concepts"] },
+            terms: { bm: ["Istilah Saintifik"], en: ["Scientific Terms"] },
+            tip: { bm: "💡 Tip Ingat: Hafal setiap istilah saintifik.", en: "💡 Memory Tip: Memorize each scientific term." }
+          }
+        ],
+        quiz: [
+          {
+            type: 'tf',
+            question: { bm: "Teknik Active Recall terbukti meningkatkan ingatan jangka panjang.", en: "Active Recall is proven to enhance long-term memory." },
+            answer: true
+          }
+        ]
+      };
+    }
+
+    const badgesList = [
+      { id: 'b1', name: 'Biology Beginner', desc: 'Selesaikan 1 subtopik pertama', icon: 'fa-seedling', color: 'bg-green-500', req: stats => stats.completedTopics.length >= 1 },
+      { id: 'b2', name: 'Cell Master', desc: 'Selesaikan Bab 2 Tingkatan 4', icon: 'fa-microscope', color: 'bg-blue-500', req: stats => stats.completedTopics.includes('f4_b2') }
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyTheme();
+      updateBookmarkBadge();
+      navigateTo('home');
+    });
+
+    function toggleDarkMode() {
+      isDarkMode = !isDarkMode;
+      localStorage.setItem('pintarbio_theme', isDarkMode ? 'dark' : 'light');
+      applyTheme();
+    }
+
+    function applyTheme() {
+      const icon = document.getElementById('themeIcon');
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+        if (icon) icon.className = 'fa-solid fa-sun text-amber-400';
+      } else {
+        document.documentElement.classList.remove('dark');
+        if (icon) icon.className = 'fa-solid fa-moon text-slate-600';
+      }
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'bm' ? 'en' : 'bm';
+      localStorage.setItem('pintarbio_lang', currentLang);
+      document.getElementById('langLabel').textContent = currentLang.toUpperCase();
+      renderCurrentView();
+    }
+
+    function t(key) { return translations[currentLang][key] || key; }
+
+    function navigateTo(view, param = null) {
+      currentView = view;
+      renderCurrentView(param);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderCurrentView(param) {
+      const app = document.getElementById('appContainer');
+      switch (currentView) {
+        case 'home': app.innerHTML = renderHome(); break;
+        case 'f4': app.innerHTML = renderChapters('f4'); break;
+        case 'f5': app.innerHTML = renderChapters('f5'); break;
+        case 'flashcards': app.innerHTML = renderFlashcardView(param); break;
+        case 'quiz': app.innerHTML = renderQuizView(param); break;
+        case 'quiz_results': app.innerHTML = renderQuizResults(); break;
+        case 'stats': app.innerHTML = renderStatsView(); break;
+        case 'badges': app.innerHTML = renderBadgesView(); break;
+        case 'search': app.innerHTML = renderSearchView(); break;
+        case 'bookmarks': app.innerHTML = renderBookmarksView(); break;
+      }
+    }
+
+    function renderHome() {
+      return `
+        <div class="space-y-6">
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-bio-700 via-bio-600 to-teal-600 text-white p-6 sm:p-8 shadow-xl">
+            <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">${t('welcome_title')}</h2>
+            <p class="text-bio-50 text-sm opacity-95">${t('welcome_sub')}</p>
+            <div class="mt-6 flex gap-3">
+              <button onclick="navigateTo('f4')" class="px-5 py-2.5 bg-white text-bio-800 rounded-xl font-bold shadow-md hover:bg-bio-50 transition text-sm flex items-center gap-2">
+                <i class="fa-solid fa-book-open"></i> ${t('form4_title')}
+              </button>
+              <button onclick="navigateTo('f5')" class="px-5 py-2.5 bg-bio-900/40 border border-white/30 text-white rounded-xl font-bold shadow-md hover:bg-bio-900/60 transition text-sm flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap"></i> ${t('form5_title')}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderChapters(form) {
+      const chapters = syllabusData[form];
+      return `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+            <h2 class="text-2xl font-bold text-slate-800 dark:text-white">${form === 'f4' ? t('form4_title') : t('form5_title')}</h2>
+            <button onclick="navigateTo('home')" class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <i class="fa-solid fa-arrow-left"></i> Kembali
+            </button>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            ${chapters.map(ch => `
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 card-shadow">
+                <span class="text-[11px] font-semibold uppercase text-bio-600 dark:text-bio-400">Bab ${ch.num}</span>
+                <h3 class="font-bold text-base text-slate-800 dark:text-white mb-3">${ch.title[currentLang] || ch.title.bm}</h3>
+                <div class="flex gap-2">
+                  <button onclick="startFlashcards('${ch.id}')" class="flex-1 py-2 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-semibold shadow-sm transition">
+                    ${t('start_flashcard')}
+                  </button>
+                  <button onclick="startQuizDirect('${ch.id}')" class="py-2 px-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition">
+                    Kuiz
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function startFlashcards(topicId) {
+      const data = getTopicData(topicId);
+      activeTopic = { id: topicId, ...data };
+      activeCards = data.cards;
+      activeCardIndex = 0;
+      navigateTo('flashcards', topicId);
+    }
+
+    function renderFlashcardView(topicId) {
+      if (!activeCards || activeCards.length === 0) { startFlashcards(topicId); return ''; }
+      const card = activeCards[activeCardIndex];
+      const topicTitle = activeTopic.title[currentLang] || activeTopic.title.bm;
+
+      const cardTitle = typeof card.title === 'object' ? (card.title[currentLang] || card.title.bm) : card.title;
+      const cardDesc = typeof card.desc === 'object' ? (card.desc[currentLang] || card.desc.bm) : card.desc;
+      const cardTip = typeof card.tip === 'object' ? (card.tip[currentLang] || card.tip.bm) : card.tip;
+      const cardComp = card.comparison ? (typeof card.comparison === 'object' ? (card.comparison[currentLang] || card.comparison.bm) : card.comparison) : null;
+
+      const keywordsList = card.keywords ? (typeof card.keywords === 'object' && !Array.isArray(card.keywords) ? card.keywords[currentLang] : card.keywords) : [];
+      const termsList = card.terms ? (typeof card.terms === 'object' && !Array.isArray(card.terms) ? card.terms[currentLang] : card.terms) : [];
+
+      return `
+        <div class="max-w-2xl mx-auto space-y-4 no-select">
+          <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base flex-shrink-0"></i>
+            <span>${t('active_recall_notice')}</span>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase">${topicTitle}</span>
+            <p class="text-xs font-semibold text-slate-500">Flashcard ${activeCardIndex + 1} / ${activeCards.length}</p>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-bio-500/30 p-6 card-shadow space-y-4">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2">${cardTitle}</h3>
+
+            <!-- DYNAMIC SVG DIAGRAM (Passing currentLang into function) -->
+            ${card.image ? `<div class="my-2">${typeof card.image === 'function' ? card.image(currentLang) : card.image}</div>` : ''}
+
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">${cardDesc}</p>
+
+            <div class="space-y-2 pt-1">
+              ${keywordsList.length ? `
+                <div class="flex flex-wrap gap-1.5 items-center">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">${t('lbl_keywords')}:</span>
+                  ${keywordsList.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
+                </div>
+              ` : ''}
+              ${termsList.length ? `
+                <div class="flex flex-wrap gap-1.5 items-center">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">${t('lbl_terms')}:</span>
+                  ${termsList.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
+                </div>
+              ` : ''}
+            </div>
+
+            ${cardComp ? `
+              <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl text-xs text-slate-600 dark:text-slate-300 border-l-4 border-bio-500">
+                ${cardComp}
+              </div>
+            ` : ''}
+
+            <div class="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-200">
+              ${cardTip}
+            </div>
+
+            <div class="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-700">
+              <button onclick="navigateTo('home')" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">${t('home_button')}</button>
+              <button onclick="nextFlashcard()" class="px-6 py-2 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-bold shadow-md">${t('next_card')}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function nextFlashcard() {
+      userStats.cardsRead++;
+      localStorage.setItem('pintarbio_stats', JSON.stringify(userStats));
+      if (activeCardIndex < activeCards.length - 1) {
+        activeCardIndex++;
+        navigateTo('flashcards', activeTopic.id);
+      } else {
+        startQuizDirect(activeTopic.id);
+      }
+    }
+
+    function startQuizDirect(topicId) {
+      const data = getTopicData(topicId);
+      activeTopic = { id: topicId, ...data };
+      activeQuiz = data.quiz;
+      activeQuestionIndex = 0;
+      quizUserAnswers = [];
+      quizStartTime = Date.now();
+      navigateTo('quiz', topicId);
+    }
+
+    function renderQuizView(topicId) {
+      if (!activeQuiz || activeQuiz.length === 0) { startQuizDirect(topicId); return ''; }
+      const q = activeQuiz[activeQuestionIndex];
+      const qText = typeof q.question === 'object' ? (q.question[currentLang] || q.question.bm) : q.question;
+
+      return `
+        <div class="max-w-2xl mx-auto space-y-4 no-select">
+          <div class="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
+            <i class="fa-solid fa-lock text-red-500 text-base flex-shrink-0"></i>
+            <span>${t('quiz_warning')}</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 card-shadow space-y-4">
+            <!-- DYNAMIC QUIZ SVG DIAGRAM (Passing currentLang) -->
+            ${q.image ? `<div class="my-2">${typeof q.image === 'function' ? q.image(currentLang) : q.image}</div>` : ''}
+
+            <h3 class="text-base font-bold text-slate-800 dark:text-white leading-snug">${qText}</h3>
+            
+            <div id="quizOptionsContainer" class="space-y-2">
+              ${renderQuizOptions(q)}
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-end">
+              <button onclick="submitQuizAnswer()" id="btnSubmitAnswer" disabled class="px-6 py-2.5 bg-slate-300 dark:bg-slate-700 text-slate-500 rounded-xl font-bold text-xs transition cursor-not-allowed">
+                ${t('submit')}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderQuizOptions(q) {
+      const opts = typeof q.options === 'object' && !Array.isArray(q.options) ? (q.options[currentLang] || q.options.bm) : q.options;
+      return opts.map((opt, idx) => `
+        <label onclick="enableSubmit()" class="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-xs font-medium">
+          <input type="radio" name="quiz_opt" value="${idx}" class="w-4 h-4 text-bio-600">
+          <span class="text-slate-700 dark:text-slate-200">${opt}</span>
+        </label>
+      `).join('');
+    }
+
+    function enableSubmit() {
+      const btn = document.getElementById('btnSubmitAnswer');
+      if (btn) {
+        btn.disabled = false;
+        btn.className = "px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md cursor-pointer transition";
+      }
+    }
+
+    function submitQuizAnswer() {
+      const q = activeQuiz[activeQuestionIndex];
+      const checked = document.querySelector('input[name="quiz_opt"]:checked');
+      const selectedVal = checked ? parseInt(checked.value) : null;
+      
+      quizUserAnswers.push({ isCorrect: selectedVal === q.answer });
+
+      if (activeQuestionIndex < activeQuiz.length - 1) {
+        activeQuestionIndex++;
+        navigateTo('quiz', activeTopic.id);
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      const correctCount = quizUserAnswers.filter(a => a.isCorrect).length;
+      const total = quizUserAnswers.length;
+      const percentage = Math.round((correctCount / total) * 100);
+
+      userStats.quizzesCompleted++;
+      userStats.totalScore += percentage;
+      userStats.lastScore = percentage;
+
+      if (percentage >= 60 && !userStats.completedTopics.includes(activeTopic.id)) {
+        userStats.completedTopics.push(activeTopic.id);
+      }
+
+      localStorage.setItem('pintarbio_stats', JSON.stringify(userStats));
+      navigateTo('quiz_results');
+    }
+
+    function renderQuizResults() {
+      const correctCount = quizUserAnswers.filter(a => a.isCorrect).length;
+      const total = quizUserAnswers.length;
+      const percentage = Math.round((correctCount / total) * 100);
+
+      return `
+        <div class="max-w-xl mx-auto text-center space-y-6 p-8 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-shadow">
+          <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">${t('results_title')}</h2>
+          <div class="text-4xl font-black text-bio-600 dark:text-bio-400">${percentage}%</div>
+          <p class="text-sm text-slate-500">${correctCount} / ${total} Betul</p>
+          <div class="pt-2 flex gap-3">
+            <button onclick="startFlashcards('${activeTopic.id}')" class="flex-1 py-3 bg-bio-600 text-white rounded-xl font-bold text-xs shadow-md">
+              ${t('revise_flashcards')}
+            </button>
+            <button onclick="navigateTo('home')" class="flex-1 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs">
+              ${t('continue_learning')}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStatsView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Statistik Pembelajaran</div>`; }
+    function renderBadgesView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Lencana Pencapaian</div>`; }
+    function renderSearchView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Carian Subtopik</div>`; }
+    function renderBookmarksView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">${t('no_bookmarks')}</div>`; }
+
+    function updateBookmarkBadge() {
+      const badge = document.getElementById('bookmarkBadge');
+      if (badge) {
+        if (bookmarks.length > 0) {
+          badge.textContent = bookmarks.length;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
