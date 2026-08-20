@@ -119,7 +119,7 @@
 
   <!-- MAIN APP CONTAINER -->
   <main id="appContainer" class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
-    <!-- Dynamic Content -->
+    <!-- Views rendered dynamically here -->
   </main>
 
   <!-- BOTTOM NAVIGATION BAR -->
@@ -165,6 +165,7 @@
       completedTopics: []
     }));
 
+    // Active session state
     let activeTopic = null;
     let activeCards = [];
     let activeCardIndex = 0;
@@ -173,6 +174,7 @@
     let quizUserAnswers = [];
     let quizStartTime = 0;
 
+    // Translations Dictionary UI
     const translations = {
       bm: {
         nav_home: "Utama",
@@ -211,7 +213,10 @@
         badge_locked: "Terkunci",
         badge_unlocked: "Dibuka",
         lbl_keywords: "Kata Kunci",
-        lbl_terms: "Istilah Saintifik"
+        lbl_terms: "Istilah Saintifik",
+        true_lbl: "BENAR (TRUE)",
+        false_lbl: "SALAH (FALSE)",
+        type_placeholder: "Taip jawapan anda di sini..."
       },
       en: {
         nav_home: "Home",
@@ -228,7 +233,7 @@
         start_flashcard: "Start Flashcard Memorization",
         start_quiz: "Direct to Quiz",
         active_recall_notice: "⚠️ Active Recall Mode: You CANNOT go back to previous flashcards or questions. Memorize carefully!",
-        quiz_warning: "❌ Active Recall Quiz Mode: Answers cannot be changed after submission!",
+        quiz_warning: "❌ Active Recall Quiz Mode: Answers cannot be changed after submission and there is no Back button!",
         next_card: "Next ➔",
         home_button: "Home",
         question: "Question",
@@ -250,87 +255,54 @@
         badge_locked: "Locked",
         badge_unlocked: "Unlocked",
         lbl_keywords: "Keywords",
-        lbl_terms: "Scientific Terms"
+        lbl_terms: "Scientific Terms",
+        true_lbl: "TRUE",
+        false_lbl: "FALSE",
+        type_placeholder: "Type your answer here..."
       }
     };
 
+    // Syllabus Data
     const syllabusData = {
       f4: [
         { id: 'f4_b1', num: 1, title: { bm: 'Pengenalan kepada Biologi dan Peraturan Makmal', en: 'Introduction to Biology and Laboratory Rules' }, icon: 'fa-vial' },
         { id: 'f4_b2', num: 2, title: { bm: 'Biologi Sel dan Organisasi Sel', en: 'Cell Biology and Organisation' }, icon: 'fa-microscope' },
         { id: 'f4_b3', num: 3, title: { bm: 'Pergerakan Bahan Merentasi Membran Plasma', en: 'Movement of Substances Across Plasma Membrane' }, icon: 'fa-arrows-split-up-and-left' },
         { id: 'f4_b4', num: 4, title: { bm: 'Komposisi Kimia dalam Sel', en: 'Chemical Composition in Cells' }, icon: 'fa-flask-vial' },
-        { id: 'f4_b5', num: 5, title: { bm: 'Metabolisme dan Enzim', en: 'Metabolism and Enzymes' }, icon: 'fa-bolt' }
+        { id: 'f4_b5', num: 5, title: { bm: 'Metabolisme dan Enzim', en: 'Metabolism and Enzymes' }, icon: 'fa-bolt' },
+        { id: 'f4_b6', num: 6, title: { bm: 'Pembahagian Sel', en: 'Cell Division' }, icon: 'fa-dharmachakra' },
+        { id: 'f4_b7', num: 7, title: { bm: 'Respirasi Sel', en: 'Cellular Respiration' }, icon: 'fa-wind' },
+        { id: 'f4_b8', num: 8, title: { bm: 'Sistem Respirasi dalam Manusia dan Haiwan', en: 'Respiratory System in Humans and Animals' }, icon: 'fa-lungs' },
+        { id: 'f4_b9', num: 9, title: { bm: 'Nutrisi dan Sistem Pencernaan Manusia', en: 'Nutrition and Human Digestive System' }, icon: 'fa-utensils' },
+        { id: 'f4_b10', num: 10, title: { bm: 'Pengangkutan dalam Manusia dan Haiwan', en: 'Transport in Humans and Animals' }, icon: 'fa-heart-pulse' },
+        { id: 'f4_b11', num: 11, title: { bm: 'Keimunan dalam Manusia', en: 'Immunity in Humans' }, icon: 'fa-shield-halved' },
+        { id: 'f4_b12', num: 12, title: { bm: 'Koordinasi dan Gerak Balas', en: 'Coordination and Response' }, icon: 'fa-brain' },
+        { id: 'f4_b13', num: 13, title: { bm: 'Homeostasis dan Sistem Keapungan', en: 'Homeostasis' }, icon: 'fa-scale-balanced' },
+        { id: 'f4_b14', num: 14, title: { bm: 'Sokongan dan Pergerakan dalam Manusia dan Haiwan', en: 'Support and Movement' }, icon: 'fa-bone' },
+        { id: 'f4_b15', num: 15, title: { bm: 'Pembiakan Seks, Kehamilan dan Tumbesaran', en: 'Sexual Reproduction, Pregnancy and Growth' }, icon: 'fa-baby' }
       ],
       f5: [
         { id: 'f5_b1', num: 1, title: { bm: 'Organisasi Tisu Tumbuhan dan Tumbesaran', en: 'Organisation of Plant Tissues and Growth' }, icon: 'fa-seedling' },
-        { id: 'f5_b2', num: 2, title: { bm: 'Struktur dan Fungsi Daun', en: 'Leaf Structure and Function' }, icon: 'fa-leaf' }
+        { id: 'f5_b2', num: 2, title: { bm: 'Struktur dan Fungsi Daun', en: 'Leaf Structure and Function' }, icon: 'fa-leaf' },
+        { id: 'f5_b3', num: 3, title: { bm: 'Nutrisi dalam Tumbuhan', en: 'Nutrition in Plants' }, icon: 'fa-sun' },
+        { id: 'f5_b4', num: 4, title: { bm: 'Pengangkutan dalam Tumbuhan', en: 'Transport in Plants' }, icon: 'fa-droplet' },
+        { id: 'f5_b5', num: 5, title: { bm: 'Variasi', en: 'Variation' }, icon: 'fa-fingerprint' },
+        { id: 'f5_b6', num: 6, title: { bm: 'Pewarisan', en: 'Inheritance' }, icon: 'fa-dna' },
+        { id: 'f5_b7', num: 7, title: { bm: 'Adaptasi Tumbuhan', en: 'Adaptation' }, icon: 'fa-tree' },
+        { id: 'f5_b8', num: 8, title: { bm: 'Teknologi dalam Genetik', en: 'Technology in Genetics' }, icon: 'fa-atom' },
+        { id: 'f5_b9', num: 9, title: { bm: 'Ekosistem', en: 'Ecosystem' }, icon: 'fa-earth-americas' },
+        { id: 'f5_b10', num: 10, title: { bm: 'Kelestarian Alam Sekitar', en: 'Environmental Sustainability' }, icon: 'fa-recycle' },
+        { id: 'f5_b11', num: 11, title: { bm: 'Impak Manusia terhadap Alam Sekitar', en: 'Human Impact on Environment' }, icon: 'fa-smog' }
       ]
     };
 
-    // FUNGSI SVG DIAGRAM DINAMIK DENGAN SOKONGAN TUKAR BAHASA
-    const svgDiagrams = {
-      mitochondria: (lang) => {
-        const outerMem = lang === 'en' ? "Outer Membrane" : "Membran Luar";
-        const innerMem = lang === 'en' ? "Inner Membrane" : "Membran Dalam";
-        const cristae = lang === 'en' ? "Cristae (Folds)" : "Krista (Lipatan)";
-        const matrix = lang === 'en' ? "Matrix" : "Matriks";
-        return `
-          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-emerald-500/30 p-2">
-            <ellipse cx="160" cy="80" rx="140" ry="65" fill="#15803d" stroke="#4ade80" stroke-width="3"/>
-            <ellipse cx="160" cy="80" rx="130" ry="55" fill="#166534" stroke="#86efac" stroke-width="2"/>
-            <path d="M 45 80 Q 65 50, 75 80 T 105 80 T 135 50 T 165 110 T 195 60 T 225 100 T 275 80" fill="none" stroke="#facc15" stroke-width="4" stroke-linecap="round"/>
-            <text x="160" y="28" fill="#ffffff" font-size="10" text-anchor="middle" font-weight="bold">${outerMem}</text>
-            <text x="60" y="142" fill="#86efac" font-size="9" text-anchor="middle">${innerMem}</text>
-            <text x="160" y="145" fill="#facc15" font-size="10" text-anchor="middle" font-weight="bold">${cristae}</text>
-            <text x="250" y="142" fill="#4ade80" font-size="9" text-anchor="middle">${matrix}</text>
-          </svg>
-        `;
-      },
-      golgi: (lang) => {
-        const labelSacs = lang === 'en' ? "Flattened Sacs" : "Kantung Pipih Selari";
-        const labelVesicle = lang === 'en' ? "Secretory Vesicles" : "Vesikel Rembesan";
-        return `
-          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-amber-500/30 p-2">
-            <path d="M 60 40 Q 160 20, 260 40" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round"/>
-            <path d="M 50 70 Q 160 50, 270 70" fill="none" stroke="#d97706" stroke-width="14" stroke-linecap="round"/>
-            <path d="M 60 100 Q 160 80, 260 100" fill="none" stroke="#b45309" stroke-width="12" stroke-linecap="round"/>
-            <circle cx="35" cy="70" r="8" fill="#fbbf24"/>
-            <circle cx="285" cy="70" r="10" fill="#fbbf24"/>
-            <circle cx="295" cy="100" r="7" fill="#fbbf24"/>
-            <text x="160" y="140" fill="#fbbf24" font-size="10" text-anchor="middle" font-weight="bold">${labelSacs}</text>
-            <text x="280" y="45" fill="#f59e0b" font-size="9" text-anchor="middle">${labelVesicle}</text>
-          </svg>
-        `;
-      },
-      chloroplast: (lang) => {
-        const granum = lang === 'en' ? "Granum (Thylakoid Stack)" : "Granum (Timbunan Tilakoid)";
-        const stroma = lang === 'en' ? "Stroma (Fluid)" : "Stroma (Cairan)";
-        return `
-          <svg viewBox="0 0 320 160" class="w-full h-40 mx-auto my-2 rounded-xl bg-slate-900 border border-green-500/30 p-2">
-            <ellipse cx="160" cy="80" rx="140" ry="65" fill="#14532d" stroke="#22c55e" stroke-width="3"/>
-            <g fill="#4ade80">
-              <rect x="75" y="50" width="30" height="8" rx="2"/><rect x="75" y="62" width="30" height="8" rx="2"/><rect x="75" y="74" width="30" height="8" rx="2"/><rect x="75" y="86" width="30" height="8" rx="2"/>
-              <rect x="145" y="45" width="30" height="8" rx="2"/><rect x="145" y="57" width="30" height="8" rx="2"/><rect x="145" y="69" width="30" height="8" rx="2"/><rect x="145" y="81" width="30" height="8" rx="2"/><rect x="145" y="93" width="30" height="8" rx="2"/>
-              <rect x="215" y="55" width="30" height="8" rx="2"/><rect x="215" y="67" width="30" height="8" rx="2"/><rect x="215" y="79" width="30" height="8" rx="2"/>
-            </g>
-            <line x1="105" y1="70" x2="145" y2="70" stroke="#86efac" stroke-width="2"/>
-            <line x1="175" y1="80" x2="215" y2="80" stroke="#86efac" stroke-width="2"/>
-            <text x="90" y="125" fill="#86efac" font-size="9" text-anchor="middle" font-weight="bold">${granum}</text>
-            <text x="230" y="125" fill="#86efac" font-size="9" text-anchor="middle" font-weight="bold">${stroma}</text>
-          </svg>
-        `;
-      }
-    };
-
-    // DATA FLASHCARD & KUIZ DWIBAHASA
+    // Bilingual Flashcards & Quiz Data
     const topicDetailsData = {
       'f4_b2': {
         title: { bm: "2.1 Biologi Sel & Organel", en: "2.1 Cell Biology & Organelles" },
         cards: [
           {
             title: { bm: "Mitokondria", en: "Mitochondrion" },
-            image: svgDiagrams.mitochondria,
             desc: {
               bm: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
               en: "Rod-shaped or spherical organelle bounded by two layers of membrane. The inner membrane is folded to form cristae."
@@ -348,13 +320,12 @@
               en: "💡 Memory Tip: Mitochondria = 'Powerhouse' of the cell! Site of glucose breakdown to generate energy."
             },
             comparison: {
-              bm: "Sel otot & sel sperma mengandungi bilangan mitokondria yang sangat tinggi.",
-              en: "Muscle cells & sperm cells contain a very high number of mitochondria."
+              bm: "Sel otot & sel sperma ada bilangan mitokondria yang sangat tinggi.",
+              en: "Muscle cells & sperm cells contain a very high density of mitochondria."
             }
           },
           {
             title: { bm: "Jasad Golgi", en: "Golgi Apparatus" },
-            image: svgDiagrams.golgi,
             desc: {
               bm: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal.",
               en: "Consists of a stack of parallel flattened sacs bounded by a single membrane."
@@ -375,39 +346,14 @@
               bm: "Sangat aktif dalam sel kelenjar perembesan.",
               en: "Highly active in secretory gland cells."
             }
-          },
-          {
-            title: { bm: "Kloroplas", en: "Chloroplast" },
-            image: svgDiagrams.chloroplast,
-            desc: {
-              bm: "Organel berbentuk bujur yang mengandungi pigmen klorofil untuk menyerap cahaya matahari bagi proses fotosintesis.",
-              en: "Oval-shaped organelle containing chlorophyll pigment to absorb sunlight for photosynthesis."
-            },
-            keywords: {
-              bm: ["Fotosintesis", "Klorofil", "Tilakoid", "Stroma"],
-              en: ["Photosynthesis", "Chlorophyll", "Thylakoid", "Stroma"]
-            },
-            terms: {
-              bm: ["Kloroplas", "Granum", "Stroma"],
-              en: ["Chloroplast", "Granum", "Stroma"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Kloroplas hanya wujud dalam sel tumbuhan!",
-              en: "💡 Memory Tip: Chloroplasts exist only in plant cells!"
-            },
-            comparison: {
-              bm: "Sel haiwan tidak mempunyai kloroplas.",
-              en: "Animal cells do not have chloroplasts."
-            }
           }
         ],
         quiz: [
           {
             type: 'mcq',
-            image: svgDiagrams.mitochondria,
             question: {
-              bm: "Berdasarkan gambar rajah di atas, apakah fungsi utama organel ini dalam sel haiwan dan tumbuhan?",
-              en: "Based on the diagram above, what is the primary function of this organelle in animal and plant cells?"
+              bm: "Apakah fungsi utama mitokondria dalam sel haiwan dan tumbuhan?",
+              en: "What is the primary function of mitochondria in animal and plant cells?"
             },
             options: {
               bm: [
@@ -427,68 +373,179 @@
           },
           {
             type: 'mcq',
-            image: svgDiagrams.golgi,
             question: {
-              bm: "Gambar rajah di atas menunjukkan Jasad Golgi. Apakah tugas utamanya?",
-              en: "The diagram above shows the Golgi apparatus. What is its main function?"
+              bm: "Organel manakah yang bertindak mengangkut dan mengubah suai protein yang disintesis oleh ribosom?",
+              en: "Which organelle functions to transport and modify proteins synthesized by ribosomes?"
+            },
+            options: {
+              bm: ["Jasad Golgi", "Lisosom", "Sentriol", "Vakuol"],
+              en: ["Golgi apparatus", "Lysosome", "Centriole", "Vacuole"]
+            },
+            answer: 0
+          },
+          {
+            type: 'tf',
+            question: {
+              bm: "Jalinan Endoplasma Licin (JEL) mengandungi ribosom pada permukaannya untuk menyintesis lipid.",
+              en: "Smooth Endoplasmic Reticulum (SER) has ribosomes attached to its surface to synthesize lipids."
+            },
+            answer: false
+          },
+          {
+            type: 'blank',
+            question: {
+              bm: "Pigmen hijau dalam kloroplas yang menyerap tenaga cahaya matahari dinamakan __________.",
+              en: "The green pigment in chloroplasts that absorbs sunlight energy is called __________."
+            },
+            answer: { bm: "klorofil", en: "chlorophyll" }
+          }
+        ]
+      },
+      'f4_b5': {
+        title: { bm: "5.1 Mekanisme Tindakan Enzim", en: "5.1 Mechanism of Enzyme Action" },
+        cards: [
+          {
+            title: { bm: "Definisi Enzim", en: "Enzyme Definition" },
+            desc: {
+              bm: "Mangkin organik yang terdiri daripada protein dan dihasilkan oleh sel hidup untuk mempercepatkan tindak balas biokimia.",
+              en: "Organic catalyst composed of protein produced by living cells to speed up biochemical reactions."
+            },
+            keywords: {
+              bm: ["Mangkin organik", "Spesifik", "Tenaga pengaktifan"],
+              en: ["Organic catalyst", "Specific", "Activation energy"]
+            },
+            terms: {
+              bm: ["Enzim", "Substrat", "Tapak aktif"],
+              en: ["Enzyme", "Substrate", "Active site"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Model 'Mangga dan Kunci' (Lock and Key Hypothesis). Substrat = Kunci, Enzim = Mangga.",
+              en: "💡 Memory Tip: 'Lock and Key' Hypothesis. Substrate = Key, Enzyme = Lock."
+            },
+            comparison: {
+              bm: "Enzim tidak musnah dalam tindak balas dan boleh digunakan semula.",
+              en: "Enzymes are not destroyed in reactions and can be reused."
+            }
+          }
+        ],
+        quiz: [
+          {
+            type: 'mcq',
+            question: {
+              bm: "Hipotesis manakah yang digunakan untuk menerangkan spesifisiti tindakan enzim dengan substrat?",
+              en: "Which hypothesis is used to explain the specificity of enzyme action with a substrate?"
             },
             options: {
               bm: [
-                "Mengubah suai, membungkus dan mengangkut protein",
-                "Membakar glukosa untuk menghasilkan tenaga",
-                "Menyerap tenaga cahaya matahari",
-                "Memecahkan organel yang rosak"
+                "Hipotesis Induksi",
+                "Hipotesis Mangga dan Kunci",
+                "Hipotesis Rantaian Makanan",
+                "Hipotesis Resapan Terbimbing"
               ],
               en: [
-                "Modify, package, and transport proteins",
-                "Burn glucose to produce energy",
-                "Absorb sunlight energy",
-                "Break down damaged organelles"
+                "Induced Fit Hypothesis",
+                "Lock and Key Hypothesis",
+                "Food Chain Hypothesis",
+                "Facilitated Diffusion Hypothesis"
               ]
             },
-            answer: 0
+            answer: 1
+          },
+          {
+            type: 'tf',
+            question: {
+              bm: "Enzim dinyahaslikan (denatured) apabila didedahkan pada suhu yang sangat rendah (0°C).",
+              en: "Enzymes are denatured when exposed to very low temperatures (0°C)."
+            },
+            answer: false
           }
         ]
       }
     };
 
+    // Generic fallback for chapters
     function getTopicData(topicId) {
-      if (topicDetailsData[topicId]) return topicDetailsData[topicId];
+      if (topicDetailsData[topicId]) {
+        return topicDetailsData[topicId];
+      }
       return {
         title: { bm: `Subtopik & Pembelajaran Utama`, en: `Subtopics & Core Knowledge` },
         cards: [
           {
             title: { bm: "Konsep & Definisi Asas", en: "Basic Concepts & Definitions" },
             desc: {
-              bm: "Subtopik ini merangkumi fakta-fakta penting KSSM yang direka khas untuk pemahaman pantas.",
-              en: "This subtopic covers essential KSSM facts tailored for quick understanding."
+              bm: "Subtopik ini merangkumi fakta-fakta penting KSSM yang direka khas untuk pemahaman pantas dan daya ingatan active recall.",
+              en: "This subtopic covers essential KSSM facts tailored for quick understanding and active recall memorization."
             },
-            keywords: { bm: ["Fakta KSSM", "Konsep Kunci"], en: ["KSSM Facts", "Key Concepts"] },
-            terms: { bm: ["Istilah Saintifik"], en: ["Scientific Terms"] },
-            tip: { bm: "💡 Tip Ingat: Hafal setiap istilah saintifik.", en: "💡 Memory Tip: Memorize each scientific term." }
+            keywords: {
+              bm: ["Fakta KSSM", "Konsep Kunci", "Istilah SPM"],
+              en: ["KSSM Facts", "Key Concepts", "SPM Terms"]
+            },
+            terms: {
+              bm: ["Istilah Saintifik", "Prinsip Utama"],
+              en: ["Scientific Terms", "Key Principles"]
+            },
+            tip: {
+              bm: "💡 Tip Ingat: Hafal setiap istilah saintifik dan perkaitannya dengan proses biologi.",
+              en: "💡 Memory Tip: Memorize each scientific term and its relation to biological processes."
+            },
+            comparison: {
+              bm: "Bandingkan struktur dan fungsi untuk kefahaman menyeluruh.",
+              en: "Compare structures and functions for a comprehensive understanding."
+            }
           }
         ],
         quiz: [
           {
+            type: 'mcq',
+            question: {
+              bm: "Apakah keutamaan utama pembelajaran tajuk ini mengikut silibus KSSM?",
+              en: "What is the main priority when studying this topic according to the KSSM syllabus?"
+            },
+            options: {
+              bm: [
+                "Menguasai istilah saintifik dan mekanisme fungsi",
+                "Menghafal soalan tanpa memahami fakta",
+                "Abaikan gambar rajah dan tumpukan pada jawapan ringkas",
+                "Membaca sekali sahaja tanpa latihan Active Recall"
+              ],
+              en: [
+                "Mastering scientific terms and functional mechanisms",
+                "Memorizing questions without understanding facts",
+                "Ignoring diagrams and focusing on short answers",
+                "Reading once without Active Recall practice"
+              ]
+            },
+            answer: 0
+          },
+          {
             type: 'tf',
-            question: { bm: "Teknik Active Recall terbukti meningkatkan ingatan jangka panjang.", en: "Active Recall is proven to enhance long-term memory." },
+            question: {
+              bm: "Teknik Active Recall terbukti meningkatkan ingatan jangka panjang bagi mata pelajaran Biologi.",
+              en: "The Active Recall technique is proven to enhance long-term memory for Biology."
+            },
             answer: true
           }
         ]
       };
     }
 
+    // Badges definitions
     const badgesList = [
       { id: 'b1', name: 'Biology Beginner', desc: 'Selesaikan 1 subtopik pertama', icon: 'fa-seedling', color: 'bg-green-500', req: stats => stats.completedTopics.length >= 1 },
-      { id: 'b2', name: 'Cell Master', desc: 'Selesaikan Bab 2 Tingkatan 4', icon: 'fa-microscope', color: 'bg-blue-500', req: stats => stats.completedTopics.includes('f4_b2') }
+      { id: 'b2', name: 'Cell Master', desc: 'Selesaikan Bab 2 Tingkatan 4', icon: 'fa-microscope', color: 'bg-blue-500', req: stats => stats.completedTopics.includes('f4_b2') },
+      { id: 'b3', name: 'Enzyme Expert', desc: 'Selesaikan Bab 5 Tingkatan 4', icon: 'fa-bolt', color: 'bg-amber-500', req: stats => stats.completedTopics.includes('f4_b5') },
+      { id: 'b4', name: 'SPM Ready', desc: 'Selesaikan sekurang-kurangnya 10 subtopik', icon: 'fa-trophy', color: 'bg-amber-400', req: stats => stats.completedTopics.length >= 10 }
     ];
 
+    // Initialization Function
     window.addEventListener('DOMContentLoaded', () => {
       applyTheme();
       updateBookmarkBadge();
       navigateTo('home');
     });
 
+    // Theme Switcher
     function toggleDarkMode() {
       isDarkMode = !isDarkMode;
       localStorage.setItem('pintarbio_theme', isDarkMode ? 'dark' : 'light');
@@ -499,13 +556,14 @@
       const icon = document.getElementById('themeIcon');
       if (isDarkMode) {
         document.documentElement.classList.add('dark');
-        if (icon) icon.className = 'fa-solid fa-sun text-amber-400';
+        if(icon) icon.className = 'fa-solid fa-sun text-amber-400';
       } else {
         document.documentElement.classList.remove('dark');
-        if (icon) icon.className = 'fa-solid fa-moon text-slate-600';
+        if(icon) icon.className = 'fa-solid fa-moon text-slate-600';
       }
     }
 
+    // Language Toggle
     function toggleLanguage() {
       currentLang = currentLang === 'bm' ? 'en' : 'bm';
       localStorage.setItem('pintarbio_lang', currentLang);
@@ -513,10 +571,24 @@
       renderCurrentView();
     }
 
-    function t(key) { return translations[currentLang][key] || key; }
+    function t(key) {
+      return translations[currentLang][key] || key;
+    }
 
+    // Navigation Router
     function navigateTo(view, param = null) {
       currentView = view;
+      ['navHome', 'navF4', 'navF5', 'navStats', 'navBadges'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.className = 'flex flex-col items-center gap-1 text-slate-500 hover:text-bio-600 dark:text-slate-400 dark:hover:text-bio-400 transition';
+      });
+
+      if (view === 'home' && document.getElementById('navHome')) document.getElementById('navHome').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'f4' && document.getElementById('navF4')) document.getElementById('navF4').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'f5' && document.getElementById('navF5')) document.getElementById('navF5').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'stats' && document.getElementById('navStats')) document.getElementById('navStats').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+      if (view === 'badges' && document.getElementById('navBadges')) document.getElementById('navBadges').className = 'flex flex-col items-center gap-1 text-bio-600 dark:text-bio-400 font-semibold';
+
       renderCurrentView(param);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -524,68 +596,163 @@
     function renderCurrentView(param) {
       const app = document.getElementById('appContainer');
       switch (currentView) {
-        case 'home': app.innerHTML = renderHome(); break;
-        case 'f4': app.innerHTML = renderChapters('f4'); break;
-        case 'f5': app.innerHTML = renderChapters('f5'); break;
-        case 'flashcards': app.innerHTML = renderFlashcardView(param); break;
-        case 'quiz': app.innerHTML = renderQuizView(param); break;
-        case 'quiz_results': app.innerHTML = renderQuizResults(); break;
-        case 'stats': app.innerHTML = renderStatsView(); break;
-        case 'badges': app.innerHTML = renderBadgesView(); break;
-        case 'search': app.innerHTML = renderSearchView(); break;
-        case 'bookmarks': app.innerHTML = renderBookmarksView(); break;
+        case 'home':
+          app.innerHTML = renderHome();
+          break;
+        case 'f4':
+          app.innerHTML = renderChapters('f4');
+          break;
+        case 'f5':
+          app.innerHTML = renderChapters('f5');
+          break;
+        case 'flashcards':
+          app.innerHTML = renderFlashcardView(param);
+          break;
+        case 'quiz':
+          app.innerHTML = renderQuizView(param);
+          break;
+        case 'quiz_results':
+          app.innerHTML = renderQuizResults();
+          break;
+        case 'stats':
+          app.innerHTML = renderStatsView();
+          break;
+        case 'badges':
+          app.innerHTML = renderBadgesView();
+          break;
+        case 'search':
+          app.innerHTML = renderSearchView();
+          break;
+        case 'bookmarks':
+          app.innerHTML = renderBookmarksView();
+          break;
       }
     }
 
+    // HOME VIEW
     function renderHome() {
+      const totalF4 = syllabusData.f4.length;
+      const totalF5 = syllabusData.f5.length;
+      const completedCount = userStats.completedTopics.length;
+
       return `
         <div class="space-y-6">
           <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-bio-700 via-bio-600 to-teal-600 text-white p-6 sm:p-8 shadow-xl">
-            <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">${t('welcome_title')}</h2>
-            <p class="text-bio-50 text-sm opacity-95">${t('welcome_sub')}</p>
-            <div class="mt-6 flex gap-3">
-              <button onclick="navigateTo('f4')" class="px-5 py-2.5 bg-white text-bio-800 rounded-xl font-bold shadow-md hover:bg-bio-50 transition text-sm flex items-center gap-2">
-                <i class="fa-solid fa-book-open"></i> ${t('form4_title')}
-              </button>
-              <button onclick="navigateTo('f5')" class="px-5 py-2.5 bg-bio-900/40 border border-white/30 text-white rounded-xl font-bold shadow-md hover:bg-bio-900/60 transition text-sm flex items-center gap-2">
-                <i class="fa-solid fa-graduation-cap"></i> ${t('form5_title')}
-              </button>
+            <div class="relative z-10 max-w-2xl">
+              <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider text-bio-100 mb-3 inline-block">
+                ✨ Teknik Active Recall
+              </span>
+              <h2 class="text-2xl sm:text-4xl font-extrabold mb-2 leading-tight">${t('welcome_title')}</h2>
+              <p class="text-bio-50 text-sm sm:text-base leading-relaxed opacity-95">${t('welcome_sub')}</p>
+              
+              <div class="mt-6 flex flex-wrap gap-3">
+                <button onclick="navigateTo('f4')" class="px-5 py-2.5 bg-white text-bio-800 rounded-xl font-bold shadow-md hover:bg-bio-50 transition flex items-center gap-2 text-sm">
+                  <i class="fa-solid fa-book-open"></i> ${t('form4_title')}
+                </button>
+                <button onclick="navigateTo('f5')" class="px-5 py-2.5 bg-bio-900/40 backdrop-blur-md border border-white/30 text-white rounded-xl font-bold shadow-md hover:bg-bio-900/60 transition flex items-center gap-2 text-sm">
+                  <i class="fa-solid fa-graduation-cap"></i> ${t('form5_title')}
+                </button>
+              </div>
+            </div>
+            <i class="fa-solid fa-dna absolute -right-10 -bottom-10 text-[180px] text-white/10 pointer-events-none"></i>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-bio-100 dark:bg-bio-900/50 text-bio-600 dark:text-bio-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-check-double"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('stats_completed_topics')}</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${completedCount} / ${totalF4 + totalF5}</h4>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-fire"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('stats_streak')}</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${userStats.streak} Hari</h4>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-clone"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('stats_cards_read')}</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${userStats.cardsRead}</h4>
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-700 card-shadow flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">${t('nav_badges')}</p>
+                <h4 class="text-lg font-bold text-slate-800 dark:text-white">${badgesList.filter(b => b.req(userStats)).length} / ${badgesList.length}</h4>
+              </div>
             </div>
           </div>
         </div>
       `;
     }
 
+    // CHAPTERS VIEW
     function renderChapters(form) {
       const chapters = syllabusData[form];
+      const title = form === 'f4' ? t('form4_title') : t('form5_title');
+
       return `
-        <div class="space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
-            <h2 class="text-2xl font-bold text-slate-800 dark:text-white">${form === 'f4' ? t('form4_title') : t('form5_title')}</h2>
+        <div class="space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-4">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800 dark:text-white">${title}</h2>
+            </div>
             <button onclick="navigateTo('home')" class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
               <i class="fa-solid fa-arrow-left"></i> Kembali
             </button>
           </div>
+
           <div class="grid gap-4 sm:grid-cols-2">
-            ${chapters.map(ch => `
-              <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 card-shadow">
-                <span class="text-[11px] font-semibold uppercase text-bio-600 dark:text-bio-400">Bab ${ch.num}</span>
-                <h3 class="font-bold text-base text-slate-800 dark:text-white mb-3">${ch.title[currentLang] || ch.title.bm}</h3>
-                <div class="flex gap-2">
-                  <button onclick="startFlashcards('${ch.id}')" class="flex-1 py-2 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-semibold shadow-sm transition">
-                    ${t('start_flashcard')}
-                  </button>
-                  <button onclick="startQuizDirect('${ch.id}')" class="py-2 px-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition">
-                    Kuiz
-                  </button>
+            ${chapters.map(ch => {
+              const isDone = userStats.completedTopics.includes(ch.id);
+              const chapterTitle = ch.title[currentLang] || ch.title.bm;
+              return `
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700 p-5 card-shadow hover:border-bio-500 dark:hover:border-bio-400 transition">
+                  <div class="flex items-start justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-bio-100 dark:bg-bio-900/60 text-bio-600 dark:text-bio-400 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid ${ch.icon}"></i>
+                      </div>
+                      <div>
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-bio-600 dark:text-bio-400">${t('chapters_count')} ${ch.num}</span>
+                        <h3 class="text-base font-bold text-slate-800 dark:text-white leading-snug">${chapterTitle}</h3>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center gap-2">
+                    <button onclick="startFlashcards('${ch.id}')" class="flex-1 py-2 px-3 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-clone"></i> ${t('start_flashcard')}
+                    </button>
+                    <button onclick="startQuizDirect('${ch.id}')" class="py-2 px-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-semibold transition">
+                      <i class="fa-solid fa-vial"></i> ${t('start_quiz')}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </div>
       `;
     }
 
+    // FLASHCARD VIEW (Bilingual fix for keywords, terms, tip & comparison)
     function startFlashcards(topicId) {
       const data = getTopicData(topicId);
       activeTopic = { id: topicId, ...data };
@@ -595,66 +762,89 @@
     }
 
     function renderFlashcardView(topicId) {
-      if (!activeCards || activeCards.length === 0) { startFlashcards(topicId); return ''; }
+      if (!activeCards || activeCards.length === 0) {
+        startFlashcards(topicId);
+        return '';
+      }
+
       const card = activeCards[activeCardIndex];
+      const total = activeCards.length;
       const topicTitle = activeTopic.title[currentLang] || activeTopic.title.bm;
+      const isBookmarked = bookmarks.some(b => b.topicId === activeTopic.id && b.cardIndex === activeCardIndex);
 
       const cardTitle = typeof card.title === 'object' ? (card.title[currentLang] || card.title.bm) : card.title;
       const cardDesc = typeof card.desc === 'object' ? (card.desc[currentLang] || card.desc.bm) : card.desc;
       const cardTip = typeof card.tip === 'object' ? (card.tip[currentLang] || card.tip.bm) : card.tip;
-      const cardComp = card.comparison ? (typeof card.comparison === 'object' ? (card.comparison[currentLang] || card.comparison.bm) : card.comparison) : null;
+      const cardComp = card.comparison ? (typeof card.comparison === 'object' ? (card.comparison[currentLang] || card.comparison.bm) : card.comparison) : '';
 
-      const keywordsList = card.keywords ? (typeof card.keywords === 'object' && !Array.isArray(card.keywords) ? card.keywords[currentLang] : card.keywords) : [];
-      const termsList = card.terms ? (typeof card.terms === 'object' && !Array.isArray(card.terms) ? card.terms[currentLang] : card.terms) : [];
+      const cardKeywords = typeof card.keywords === 'object' && !Array.isArray(card.keywords) 
+        ? (card.keywords[currentLang] || card.keywords.bm) 
+        : card.keywords;
+
+      const cardTerms = typeof card.terms === 'object' && !Array.isArray(card.terms) 
+        ? (card.terms[currentLang] || card.terms.bm) 
+        : card.terms;
 
       return `
-        <div class="max-w-2xl mx-auto space-y-4 no-select">
-          <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
+        <div class="max-w-2xl mx-auto space-y-6 no-select">
+          <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 text-amber-800 dark:text-amber-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base flex-shrink-0"></i>
             <span>${t('active_recall_notice')}</span>
           </div>
 
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase">${topicTitle}</span>
-            <p class="text-xs font-semibold text-slate-500">Flashcard ${activeCardIndex + 1} / ${activeCards.length}</p>
+            <div>
+              <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase tracking-wider">${topicTitle}</span>
+              <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">Flashcard ${activeCardIndex + 1} / ${total}</p>
+            </div>
+            <button onclick="toggleBookmark('${activeTopic.id}', ${activeCardIndex})" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-amber-500 hover:scale-105 transition">
+              <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark text-lg"></i>
+            </button>
           </div>
 
-          <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-bio-500/30 p-6 card-shadow space-y-4">
-            <h3 class="text-xl font-bold text-slate-800 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-2">${cardTitle}</h3>
+          <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+            <div class="bg-bio-500 h-full transition-all duration-300" style="width: ${((activeCardIndex + 1) / total) * 100}%"></div>
+          </div>
 
-            <!-- DYNAMIC SVG DIAGRAM (Passing currentLang into function) -->
-            ${card.image ? `<div class="my-2">${typeof card.image === 'function' ? card.image(currentLang) : card.image}</div>` : ''}
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border-2 border-bio-500/30 p-6 sm:p-8 card-shadow space-y-6 min-h-[360px] flex flex-col justify-between">
+            <div class="space-y-4">
+              <h3 class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-100 dark:border-slate-700/80 pb-3 flex items-center justify-between">
+                <span>${cardTitle}</span>
+                <i class="fa-solid fa-lightbulb text-amber-400 text-xl"></i>
+              </h3>
 
-            <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">${cardDesc}</p>
+              <p class="text-slate-600 dark:text-slate-300 text-base leading-relaxed">${cardDesc}</p>
 
-            <div class="space-y-2 pt-1">
-              ${keywordsList.length ? `
-                <div class="flex flex-wrap gap-1.5 items-center">
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">${t('lbl_keywords')}:</span>
-                  ${keywordsList.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
+              <div class="space-y-2 pt-2">
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">${t('lbl_keywords')}:</span>
+                  ${cardKeywords.map(kw => `<span class="px-2.5 py-0.5 rounded-full bg-bio-50 text-bio-700 dark:bg-bio-950 dark:text-bio-300 text-xs font-semibold border border-bio-200 dark:border-bio-800">${kw}</span>`).join('')}
                 </div>
-              ` : ''}
-              ${termsList.length ? `
-                <div class="flex flex-wrap gap-1.5 items-center">
-                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400">${t('lbl_terms')}:</span>
-                  ${termsList.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">${t('lbl_terms')}:</span>
+                  ${cardTerms.map(tm => `<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 italic">${tm}</span>`).join('')}
                 </div>
-              ` : ''}
-            </div>
-
-            ${cardComp ? `
-              <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl text-xs text-slate-600 dark:text-slate-300 border-l-4 border-bio-500">
-                ${cardComp}
               </div>
-            ` : ''}
 
-            <div class="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-200">
-              ${cardTip}
+              ${cardComp ? `
+                <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl text-xs text-slate-600 dark:text-slate-300 border-l-4 border-bio-500">
+                  ${cardComp}
+                </div>
+              ` : ''}
+
+              <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl text-amber-900 dark:text-amber-200 text-xs sm:text-sm font-medium">
+                ${cardTip}
+              </div>
             </div>
 
-            <div class="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-700">
-              <button onclick="navigateTo('home')" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold">${t('home_button')}</button>
-              <button onclick="nextFlashcard()" class="px-6 py-2 bg-bio-600 hover:bg-bio-700 text-white rounded-xl text-xs font-bold shadow-md">${t('next_card')}</button>
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between gap-4">
+              <button onclick="navigateTo('home')" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-semibold text-xs hover:bg-slate-100 dark:hover:bg-slate-700 transition flex items-center gap-2">
+                <i class="fa-solid fa-house"></i> ${t('home_button')}
+              </button>
+
+              <button onclick="nextFlashcard()" class="px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2">
+                ${t('next_card')}
+              </button>
             </div>
           </div>
         </div>
@@ -664,6 +854,7 @@
     function nextFlashcard() {
       userStats.cardsRead++;
       localStorage.setItem('pintarbio_stats', JSON.stringify(userStats));
+
       if (activeCardIndex < activeCards.length - 1) {
         activeCardIndex++;
         navigateTo('flashcards', activeTopic.id);
@@ -672,6 +863,7 @@
       }
     }
 
+    // QUIZ VIEW
     function startQuizDirect(topicId) {
       const data = getTopicData(topicId);
       activeTopic = { id: topicId, ...data };
@@ -683,30 +875,45 @@
     }
 
     function renderQuizView(topicId) {
-      if (!activeQuiz || activeQuiz.length === 0) { startQuizDirect(topicId); return ''; }
+      if (!activeQuiz || activeQuiz.length === 0) {
+        startQuizDirect(topicId);
+        return '';
+      }
+
       const q = activeQuiz[activeQuestionIndex];
-      const qText = typeof q.question === 'object' ? (q.question[currentLang] || q.question.bm) : q.question;
+      const total = activeQuiz.length;
+      const topicTitle = activeTopic.title[currentLang] || activeTopic.title.bm;
+
+      const questionText = typeof q.question === 'object' ? (q.question[currentLang] || q.question.bm) : q.question;
 
       return `
-        <div class="max-w-2xl mx-auto space-y-4 no-select">
+        <div class="max-w-2xl mx-auto space-y-6 no-select">
           <div class="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 p-3 rounded-xl text-xs font-medium flex items-center gap-2">
             <i class="fa-solid fa-lock text-red-500 text-base flex-shrink-0"></i>
             <span>${t('quiz_warning')}</span>
           </div>
 
-          <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 card-shadow space-y-4">
-            <!-- DYNAMIC QUIZ SVG DIAGRAM (Passing currentLang) -->
-            ${q.image ? `<div class="my-2">${typeof q.image === 'function' ? q.image(currentLang) : q.image}</div>` : ''}
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-bio-600 dark:text-bio-400 uppercase tracking-wider">${topicTitle}</span>
+              <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">${t('question')} ${activeQuestionIndex + 1} / ${total}</p>
+            </div>
+          </div>
 
-            <h3 class="text-base font-bold text-slate-800 dark:text-white leading-snug">${qText}</h3>
-            
-            <div id="quizOptionsContainer" class="space-y-2">
+          <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+            <div class="bg-teal-500 h-full transition-all duration-300" style="width: ${((activeQuestionIndex + 1) / total) * 100}%"></div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 card-shadow space-y-6">
+            <h3 class="text-lg sm:text-xl font-bold text-slate-800 dark:text-white leading-snug">${questionText}</h3>
+
+            <div id="quizOptionsContainer" class="space-y-3">
               ${renderQuizOptions(q)}
             </div>
 
             <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-end">
-              <button onclick="submitQuizAnswer()" id="btnSubmitAnswer" disabled class="px-6 py-2.5 bg-slate-300 dark:bg-slate-700 text-slate-500 rounded-xl font-bold text-xs transition cursor-not-allowed">
-                ${t('submit')}
+              <button onclick="submitQuizAnswer()" id="btnSubmitAnswer" disabled class="px-6 py-2.5 bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-xl font-bold text-xs transition cursor-not-allowed flex items-center gap-2">
+                ${t('submit')} <i class="fa-solid fa-check"></i>
               </button>
             </div>
           </div>
@@ -715,29 +922,77 @@
     }
 
     function renderQuizOptions(q) {
-      const opts = typeof q.options === 'object' && !Array.isArray(q.options) ? (q.options[currentLang] || q.options.bm) : q.options;
-      return opts.map((opt, idx) => `
-        <label onclick="enableSubmit()" class="flex items-center gap-3 p-3.5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-xs font-medium">
-          <input type="radio" name="quiz_opt" value="${idx}" class="w-4 h-4 text-bio-600">
-          <span class="text-slate-700 dark:text-slate-200">${opt}</span>
-        </label>
-      `).join('');
+      if (q.type === 'mcq') {
+        const optionsList = typeof q.options === 'object' && !Array.isArray(q.options) 
+          ? (q.options[currentLang] || q.options.bm) 
+          : q.options;
+
+        return optionsList.map((opt, idx) => `
+          <label onclick="enableSubmit()" class="flex items-center gap-3 p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 dark:hover:border-bio-400 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition">
+            <input type="radio" name="quiz_opt" value="${idx}" class="w-4 h-4 text-bio-600 focus:ring-bio-500">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-200">${opt}</span>
+          </label>
+        `).join('');
+      } else if (q.type === 'tf') {
+        return `
+          <div class="grid grid-cols-2 gap-4">
+            <label onclick="enableSubmit()" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-bio-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-center">
+              <input type="radio" name="quiz_opt" value="true" class="mb-2 w-4 h-4 text-bio-600">
+              <span class="text-base font-bold text-bio-600 dark:text-bio-400">${t('true_lbl')}</span>
+            </label>
+            <label onclick="enableSubmit()" class="flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-red-500 bg-slate-50 dark:bg-slate-900/50 cursor-pointer transition text-center">
+              <input type="radio" name="quiz_opt" value="false" class="mb-2 w-4 h-4 text-red-600">
+              <span class="text-base font-bold text-red-600 dark:text-red-400">${t('false_lbl')}</span>
+            </label>
+          </div>
+        `;
+      } else if (q.type === 'blank') {
+        return `
+          <div class="space-y-2">
+            <input type="text" id="blankAnswerInput" oninput="enableSubmit()" placeholder="${t('type_placeholder')}" class="w-full p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm focus:border-bio-500 outline-none transition">
+          </div>
+        `;
+      }
     }
 
     function enableSubmit() {
       const btn = document.getElementById('btnSubmitAnswer');
       if (btn) {
         btn.disabled = false;
-        btn.className = "px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md cursor-pointer transition";
+        btn.className = "px-6 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition cursor-pointer flex items-center gap-2";
       }
     }
 
     function submitQuizAnswer() {
       const q = activeQuiz[activeQuestionIndex];
-      const checked = document.querySelector('input[name="quiz_opt"]:checked');
-      const selectedVal = checked ? parseInt(checked.value) : null;
-      
-      quizUserAnswers.push({ isCorrect: selectedVal === q.answer });
+      let selectedVal = null;
+
+      if (q.type === 'mcq') {
+        const checked = document.querySelector('input[name="quiz_opt"]:checked');
+        if (checked) selectedVal = parseInt(checked.value);
+      } else if (q.type === 'tf') {
+        const checked = document.querySelector('input[name="quiz_opt"]:checked');
+        if (checked) selectedVal = checked.value === 'true';
+      } else if (q.type === 'blank') {
+        const val = document.getElementById('blankAnswerInput').value.trim();
+        selectedVal = val.toLowerCase();
+      }
+
+      let isCorrect = false;
+      if (q.type === 'mcq') {
+        isCorrect = selectedVal === q.answer;
+      } else if (q.type === 'tf') {
+        isCorrect = selectedVal === q.answer;
+      } else if (q.type === 'blank') {
+        const targetAns = typeof q.answer === 'object' ? (q.answer[currentLang] || q.answer.bm) : q.answer;
+        isCorrect = selectedVal === targetAns.toLowerCase();
+      }
+
+      quizUserAnswers.push({
+        question: typeof q.question === 'object' ? q.question[currentLang] : q.question,
+        userAnswer: selectedVal,
+        isCorrect: isCorrect
+      });
 
       if (activeQuestionIndex < activeQuiz.length - 1) {
         activeQuestionIndex++;
@@ -764,32 +1019,159 @@
       navigateTo('quiz_results');
     }
 
+    // QUIZ RESULTS VIEW
     function renderQuizResults() {
       const correctCount = quizUserAnswers.filter(a => a.isCorrect).length;
       const total = quizUserAnswers.length;
       const percentage = Math.round((correctCount / total) * 100);
+      const timeSpentSec = Math.round((Date.now() - quizStartTime) / 1000);
 
       return `
-        <div class="max-w-xl mx-auto text-center space-y-6 p-8 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 card-shadow">
-          <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">${t('results_title')}</h2>
-          <div class="text-4xl font-black text-bio-600 dark:text-bio-400">${percentage}%</div>
-          <p class="text-sm text-slate-500">${correctCount} / ${total} Betul</p>
-          <div class="pt-2 flex gap-3">
-            <button onclick="startFlashcards('${activeTopic.id}')" class="flex-1 py-3 bg-bio-600 text-white rounded-xl font-bold text-xs shadow-md">
-              ${t('revise_flashcards')}
-            </button>
-            <button onclick="navigateTo('home')" class="flex-1 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs">
-              ${t('continue_learning')}
-            </button>
+        <div class="max-w-xl mx-auto space-y-6 text-center">
+          <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-8 card-shadow space-y-6">
+            <div class="w-20 h-20 mx-auto rounded-3xl bg-bio-100 dark:bg-bio-950 text-bio-600 dark:text-bio-400 flex items-center justify-center text-3xl shadow-inner">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <div>
+              <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">${t('results_title')}</h2>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl">
+              <div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">${t('score')}</p>
+                <h4 class="text-2xl font-black text-slate-800 dark:text-white">${percentage}%</h4>
+              </div>
+              <div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Betul</p>
+                <h4 class="text-2xl font-black text-bio-600 dark:text-bio-400">${correctCount} / ${total}</h4>
+              </div>
+              <div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">${t('time_taken')}</p>
+                <h4 class="text-2xl font-black text-slate-800 dark:text-white">${timeSpentSec}s</h4>
+              </div>
+            </div>
+
+            <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+              <button onclick="startFlashcards('${activeTopic.id}')" class="w-full py-3 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> ${t('revise_flashcards')}
+              </button>
+              <button onclick="navigateTo('home')" class="w-full py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl font-bold text-xs transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-house"></i> ${t('continue_learning')}
+              </button>
+            </div>
           </div>
         </div>
       `;
     }
 
-    function renderStatsView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Statistik Pembelajaran</div>`; }
-    function renderBadgesView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Lencana Pencapaian</div>`; }
-    function renderSearchView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">Carian Subtopik</div>`; }
-    function renderBookmarksView() { return `<div class="text-center py-12 font-bold text-slate-600 dark:text-slate-300">${t('no_bookmarks')}</div>`; }
+    // STATS VIEW
+    function renderStatsView() {
+      const avgScore = userStats.quizzesCompleted > 0 ? Math.round(userStats.totalScore / userStats.quizzesCompleted) : 0;
+
+      return `
+        <div class="max-w-3xl mx-auto space-y-6">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-3">
+            <i class="fa-solid fa-chart-pie text-bio-600"></i> ${t('nav_stats')}
+          </h2>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-check-circle text-bio-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_completed_topics')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.completedTopics.length}</h3>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-clone text-blue-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_cards_read')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.cardsRead}</h3>
+            </div>
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow text-center">
+              <i class="fa-solid fa-vial text-purple-500 text-2xl mb-2"></i>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${t('stats_quizzes')}</p>
+              <h3 class="text-2xl font-black text-slate-800 dark:text-white mt-1">${userStats.quizzesCompleted}</h3>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // BADGES VIEW
+    function renderBadgesView() {
+      return `
+        <div class="max-w-3xl mx-auto space-y-6">
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-3">
+            <i class="fa-solid fa-award text-amber-500"></i> ${t('nav_badges')}
+          </h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            ${badgesList.map(b => {
+              const unlocked = b.req(userStats);
+              return `
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border ${unlocked ? 'border-amber-400/60 shadow-lg shadow-amber-500/10' : 'border-slate-200 dark:border-slate-700 opacity-60'} card-shadow flex flex-col items-center text-center">
+                  <div class="w-16 h-16 rounded-2xl ${unlocked ? b.color : 'bg-slate-300 dark:bg-slate-700'} text-white flex items-center justify-center text-2xl mb-3 shadow-md">
+                    <i class="fa-solid ${b.icon}"></i>
+                  </div>
+                  <h4 class="font-bold text-slate-800 dark:text-white text-sm">${b.name}</h4>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${b.desc}</p>
+                  <span class="mt-3 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${unlocked ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' : 'bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400'}">
+                    ${unlocked ? t('badge_unlocked') : t('badge_locked')}
+                  </span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // SEARCH VIEW
+    function renderSearchView() {
+      return `
+        <div class="max-w-2xl mx-auto space-y-6">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-lg"></i>
+            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="${t('search_placeholder')}" class="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm focus:border-bio-500 outline-none card-shadow transition">
+          </div>
+          <div id="searchResults" class="space-y-3"></div>
+        </div>
+      `;
+    }
+
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResults');
+      if (!query) { resultsContainer.innerHTML = ''; return; }
+
+      let matches = [];
+      ['f4', 'f5'].forEach(form => {
+        syllabusData[form].forEach(ch => {
+          if (ch.title.bm.toLowerCase().includes(query) || ch.title.en.toLowerCase().includes(query)) {
+            matches.push({ ...ch, form });
+          }
+        });
+      });
+
+      resultsContainer.innerHTML = matches.map(m => `
+        <div onclick="startFlashcards('${m.id}')" class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 card-shadow hover:border-bio-500 cursor-pointer transition flex items-center justify-between">
+          <h4 class="text-sm font-bold text-slate-800 dark:text-white">${m.title[currentLang] || m.title.bm}</h4>
+          <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+        </div>
+      `).join('');
+    }
+
+    // BOOKMARKS
+    function toggleBookmark(topicId, cardIndex) {
+      const index = bookmarks.findIndex(b => b.topicId === topicId && b.cardIndex === cardIndex);
+      if (index > -1) {
+        bookmarks.splice(index, 1);
+      } else {
+        bookmarks.push({ topicId, cardIndex });
+      }
+      localStorage.setItem('pintarbio_bookmarks', JSON.stringify(bookmarks));
+      updateBookmarkBadge();
+      renderCurrentView(topicId);
+    }
 
     function updateBookmarkBadge() {
       const badge = document.getElementById('bookmarkBadge');
@@ -801,6 +1183,13 @@
           badge.classList.add('hidden');
         }
       }
+    }
+
+    function renderBookmarksView() {
+      if (bookmarks.length === 0) {
+        return `<div class="text-center py-12">${t('no_bookmarks')}</div>`;
+      }
+      return `<div class="max-w-2xl mx-auto space-y-4">Bookmarks Saved: ${bookmarks.length}</div>`;
     }
   </script>
 </body>
