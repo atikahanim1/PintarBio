@@ -343,343 +343,411 @@
 
     // Detailed Database for Flashcards & Quizzes (FULLY BILINGUAL SUPPORT)
     const topicDetailsData = {
-      'f4_b2': {
-        title: { bm: "2.1 Biologi Sel & Organel", en: "2.1 Cell Biology & Organelles" },
-        cards: [
-          {
-            title: { bm: "Mitokondria", en: "Mitochondrion" },
-            desc: { 
-              bm: "Organel berbentuk rod atau sfera yang mempunyai dua lapisan membran. Membran dalam berlipat-lipat dipanggil krista.",
-              en: "Rod-shaped or spherical organelle with two layers of membrane. The inner membrane is folded into cristae."
-            },
-            keywords: {
-              bm: ["Tapak penjanaan tenaga", "ATP", "Respirasi sel", "Aerob"],
-              en: ["Energy site", "ATP", "Cellular respiration", "Aerobic"]
-            },
-            terms: {
-              bm: ["Mitokondria", "Krista", "Adenosina Trifosfat (ATP)"],
-              en: ["Mitochondria", "Cristae", "Adenosine Triphosphate (ATP)"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Mitokondria = 'Powerhouse' sel! Tempat membakar glukosa untuk menghasilkan tenaga.",
-              en: "💡 Memory Tip: Mitochondria = 'Powerhouse' of the cell! Burns glucose to generate ATP energy."
-            },
-            comparison: {
-              bm: "Sel otot dan sel sperma mempunyai bilangan mitokondria yang sangat tinggi.",
-              en: "Muscle cells and sperm cells contain a very high density of mitochondria."
-            }
-          },
-          {
-            title: { bm: "Jasad Golgi", en: "Golgi Apparatus" },
-            desc: {
-              bm: "Terdiri daripada satu timbunan kantung pipih selari yang dibatasi oleh membran tunggal. Memproses dan membungkus bahan.",
-              en: "Consists of a stack of parallel flattened sacs enclosed by single membranes. Processes and packages substances."
-            },
-            keywords: {
-              bm: ["Ubah suai protein", "Bungkus protein", "Vesikel rembesan"],
-              en: ["Modify proteins", "Package proteins", "Secretory vesicles"]
-            },
-            terms: {
-              bm: ["Jasad Golgi", "Vesikel Rembesan", "Glikoprotein"],
-              en: ["Golgi body", "Secretory vesicle", "Glycoprotein"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Jasad Golgi umpama Pejabat Pos! Mengubah suai, membungkus dan mengangkut protein.",
-              en: "💡 Memory Tip: Golgi apparatus is like a Post Office! Modifies, packages, and transports proteins."
-            },
-            comparison: {
-              bm: "Sangat aktif dan banyak ditemui dalam sel kelenjar perembesan.",
-              en: "Highly active and abundant in secretory gland cells."
-            }
-          },
-          {
-            title: { bm: "Jalinan Endoplasma Kasar (JEK)", en: "Rough Endoplasmic Reticulum (RER)" },
-            desc: {
-              bm: "Sistem membran berlipat yang mempunyai ribosom melekat pada permukaannya untuk menyintesis protein.",
-              en: "System of folded membranes with ribosomes attached to its surface for protein synthesis."
-            },
-            keywords: {
-              bm: ["Sintesis protein", "Pengangkutan protein", "Ribosom"],
-              en: ["Protein synthesis", "Protein transport", "Ribosomes"]
-            },
-            terms: {
-              bm: ["Jalinan Endoplasma Kasar", "Ribosom"],
-              en: ["Rough Endoplasmic Reticulum", "Ribosome"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Kasar (Rough) sebab ada bintik-bintik Ribosom!",
-              en: "💡 Memory Tip: 'Rough' because it is studded with Ribosomes!"
-            },
-            comparison: {
-              bm: "JEK mempunyai ribosom manakala JEL (Jalinan Endoplasma Licin) tiada ribosom dan menyintesis lipid.",
-              en: "RER has ribosomes whereas SER (Smooth Endoplasmic Reticulum) lacks ribosomes and synthesises lipids."
-            }
-          },
-          {
-            title: { bm: "Kloroplas", en: "Chloroplast" },
-            desc: {
-              bm: "Organel berbentuk bujur yang mengandungi pigmen klorofil untuk menyerap cahaya matahari semasa fotosintesis.",
-              en: "Oval-shaped organelle containing chlorophyll pigments to absorb sunlight during photosynthesis."
-            },
-            keywords: {
-              bm: ["Fotosintesis", "Klorofil", "Tilakoid", "Stroma"],
-              en: ["Photosynthesis", "Chlorophyll", "Thylakoid", "Stroma"]
-            },
-            terms: {
-              bm: ["Kloroplas", "Tilakoid", "Stroma", "Granum"],
-              en: ["Chloroplast", "Thylakoid", "Stroma", "Granum"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Kloroplas hanya terdapat pada sel tumbuhan untuk membuat makanan sendiri.",
-              en: "💡 Memory Tip: Chloroplasts are found in plant cells to produce food independently."
-            },
-            comparison: {
-              bm: "Sel haiwan TIDAK mempunyai kloroplas.",
-              en: "Animal cells DO NOT possess chloroplasts."
-            }
-          }
-        ],
-        quiz: [
-          {
-            type: 'mcq',
-            question: {
-              bm: "Apakah fungsi utama mitokondria dalam sel haiwan dan tumbuhan?",
-              en: "What is the primary function of mitochondria in animal and plant cells?"
-            },
-            options: {
-              bm: [
-                "Menyintesis protein untuk pembentukan sel baru",
-                "Menjana tenaga dalam bentuk ATP melalui respirasi sel",
-                "Mengubah suai dan membungkus glikoprotein",
-                "Mengawal pergerakan bahan keluar dan masuk sel"
-              ],
-              en: [
-                "Synthesise proteins for new cell formation",
-                "Generate energy in the form of ATP via cellular respiration",
-                "Modify and package glycoproteins",
-                "Control movement of substances in and out of the cell"
-              ]
-            },
-            answer: 1
-          },
-          {
-            type: 'mcq',
-            question: {
-              bm: "Organel manakah yang bertindak mengangkut dan mengubah suai protein yang disintesis oleh ribosom?",
-              en: "Which organelle functions to modify and package proteins synthesised by ribosomes?"
-            },
-            options: {
-              bm: [
-                "Jasad Golgi",
-                "Lisosom",
-                "Sentriol",
-                "Vakuol"
-              ],
-              en: [
-                "Golgi apparatus",
-                "Lysosome",
-                "Centriole",
-                "Vacuole"
-              ]
-            },
-            answer: 0
-          },
-          {
-            type: 'tf',
-            question: {
-              bm: "Jalinan Endoplasma Licin (JEL) mengandungi ribosom pada permukaannya untuk menyintesis lipid.",
-              en: "Smooth Endoplasmic Reticulum (SER) contains ribosomes on its surface to synthesise lipids."
-            },
-            answer: false
-          },
-          {
-            type: 'blank',
-            question: {
-              bm: "Pigmen hijau dalam kloroplas yang menyerap tenaga cahaya matahari dinamakan __________.",
-              en: "The green pigment in chloroplasts that absorbs sunlight energy is called __________."
-            },
-            answer: "klorofil"
-          }
-        ]
-      },
-      'f4_b3': {
-        title: { bm: "3.1 Struktur Membran Plasma", en: "3.1 Plasma Membrane Structure" },
-        cards: [
-          {
-            title: { bm: "Model Mozek Bendalir", en: "Fluid Mosaic Model" },
-            desc: {
-              bm: "Membran plasma terdiri daripada dwilapisan fosfolipid dengan molekul protein yang terapung atau terbenam di dalamnya.",
-              en: "The plasma membrane consists of a phospholipid bilayer with protein molecules embedded or floating in it."
-            },
-            keywords: {
-              bm: ["Dwilapisan fosfolipid", "Protein pembawa", "Protein liang", "Ketelapan memilih"],
-              en: ["Phospholipid bilayer", "Carrier protein", "Pore protein", "Selective permeability"]
-            },
-            terms: {
-              bm: ["Hidrofilik", "Hidrofobik", "Glikolipid"],
-              en: ["Hydrophilic", "Hydrophobic", "Glycolipid"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Kepala fosfolipid suka air (hidrofilik), ekor takut air (hidrofobik).",
-              en: "💡 Memory Tip: Phospholipid head loves water (hydrophilic), tail fears water (hydrophobic)."
-            },
-            comparison: {
-              bm: "Bahan tidak larut lipid memerlukan protein pembawa/liang untuk merentasi membran.",
-              en: "Lipid-insoluble substances require carrier/pore proteins to cross the membrane."
-            }
-          }
-        ],
-        quiz: [
-          {
-            type: 'mcq',
-            question: {
-              bm: "Apakah sifat bahagian kepala fosfolipid pada membran plasma?",
-              en: "What is the characteristic of the phospholipid head in the plasma membrane?"
-            },
-            options: {
-              bm: [
-                "Hidrofilik (Suka air)",
-                "Hidrofobik (Benci air)",
-                "Tidak bertindak balas dengan air",
-                "Larut dalam lipid sahaja"
-              ],
-              en: [
-                "Hydrophilic (Water-attracting)",
-                "Hydrophobic (Water-repelling)",
-                "Non-reactive to water",
-                "Soluble only in lipids"
-              ]
-            },
-            answer: 0
-          }
-        ]
-      },
-      'f4_b5': {
-        title: { bm: "5.1 Mekanisme Tindakan Enzim", en: "5.1 Mechanism of Enzyme Action" },
-        cards: [
-          {
-            title: { bm: "Definisi Enzim", en: "Enzyme Definition" },
-            desc: {
-              bm: "Mangkin organik yang terdiri daripada protein dan dihasilkan oleh sel hidup untuk mempercepatkan tindak balas biokimia.",
-              en: "Organic catalysts consisting of proteins produced by living cells to speed up biochemical reactions."
-            },
-            keywords: {
-              bm: ["Mangkin organik", "Spesifik", "Tenaga pengaktifan"],
-              en: ["Organic catalyst", "Specific", "Activation energy"]
-            },
-            terms: {
-              bm: ["Enzim", "Substrat", "Tapak Aktif"],
-              en: ["Enzyme", "Substrate", "Active site"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Model 'Mangga dan Kunci' (Lock and Key Hypothesis). Substrat = Kunci, Enzim = Mangga.",
-              en: "💡 Memory Tip: 'Lock and Key' Hypothesis. Substrate = Key, Enzyme = Lock."
-            },
-            comparison: {
-              bm: "Enzim tidak musnah dalam tindak balas dan boleh digunakan semula.",
-              en: "Enzymes are not destroyed in the reaction and can be reused."
-            }
-          },
-          {
-            title: { bm: "Faktor Mempengaruhi Enzim: Suhu", en: "Factors Affecting Enzymes: Temperature" },
-            desc: {
-              bm: "Kadar tindak balas enzim meningkat dengan suhu sehingga mencapai suhu optimum (~37°C bagi manusia). Suhu terlalu tinggi merosakkan enzim.",
-              en: "Reaction rate increases with temperature up to an optimum (~37°C in humans). Excessive heat denatures the enzyme."
-            },
-            keywords: {
-              bm: ["Suhu optimum", "Penyahaslian (Denaturation)", "Tenaga kinetik"],
-              en: ["Optimum temperature", "Denaturation", "Kinetic energy"]
-            },
-            terms: {
-              bm: ["Suhu optimum", "Nyahasli"],
-              en: ["Optimum temperature", "Denatured"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Di atas suhu optimum (>60°C), ikatan enzim terputus dan Tapak Aktif terurai (Nyahasli).",
-              en: "💡 Memory Tip: Above optimum temp (>60°C), bonds break and the Active Site unravels (Denatures)."
-            },
-            comparison: {
-              bm: "Pada suhu 0°C, enzim tidak aktif tetapi TIDAK rosak.",
-              en: "At 0°C, enzymes become inactive but ARE NOT damaged."
-            }
-          }
-        ],
-        quiz: [
-          {
-            type: 'mcq',
-            question: {
-              bm: "Hipotesis manakah yang digunakan untuk menerangkan spesifisiti tindakan enzim dengan substrat?",
-              en: "Which hypothesis is used to explain the specificity of enzyme-substrate action?"
-            },
-            options: {
-              bm: [
-                "Hipotesis Induksi",
-                "Hipotesis Mangga dan Kunci",
-                "Hipotesis Rantaian Makanan",
-                "Hipotesis Resapan Terbimbing"
-              ],
-              en: [
-                "Induced Fit Hypothesis",
-                "Lock and Key Hypothesis",
-                "Food Chain Hypothesis",
-                "Facilitated Diffusion Hypothesis"
-              ]
-            },
-            answer: 1
-          },
-          {
-            type: 'tf',
-            question: {
-              bm: "Enzim dinyahaslikan (denatured) apabila didedahkan pada suhu yang sangat rendah (0°C).",
-              en: "Enzymes are denatured when exposed to extremely low temperatures (0°C)."
-            },
-            answer: false
-          }
-        ]
-      },
-      'f5_b6': {
-        title: { bm: "6.1 Hukum Mendel & Pewarisan", en: "6.1 Mendel's Law & Inheritance" },
-        cards: [
-          {
-            title: { bm: "Hukum Mendel Pertama", en: "Mendel's First Law" },
-            desc: {
-              bm: "Hukum Segregasi: Ciri sesuatu organisma dikawal oleh sepasang alel yang berasing semasa pembentukan gamet.",
-              en: "Law of Segregation: Characteristics of an organism are controlled by pairs of alleles that segregate during gamete formation."
-            },
-            keywords: {
-              bm: ["Dominan", "Resesif", "Alel", "Gamet"],
-              en: ["Dominant", "Recessive", "Allele", "Gamete"]
-            },
-            terms: {
-              bm: ["Fenotip", "Genotip", "Homozigot", "Heterozigot"],
-              en: ["Phenotype", "Genotype", "Homozygous", "Heterozygous"]
-            },
-            tip: {
-              bm: "💡 Tip Ingat: Alel dominan diwakili huruf BESAR (T), alel resesif huruf kecil (t).",
-              en: "💡 Memory Tip: Dominant allele uses CAPITAL letters (T), recessive uses lowercase (t)."
-            },
-            comparison: {
-              bm: "Homozigot = Alel sama (TT/tt). Heterozigot = Alel berbeza (Tt).",
-              en: "Homozygous = Same alleles (TT/tt). Heterozygous = Different alleles (Tt)."
-            }
-          }
-        ],
-        quiz: [
-          {
-            type: 'mcq',
-            question: {
-              bm: "Apakah nisbah fenotip bagi kacukan monohibrid F2 mengikut Hukum Mendel Pertama?",
-              en: "What is the phenotypic ratio of an F2 monohybrid cross according to Mendel's First Law?"
-            },
-            options: {
-              bm: ["1:1", "3:1", "9:3:3:1", "1:2:1"],
-              en: ["1:1", "3:1", "9:3:3:1", "1:2:1"]
-            },
-            answer: 1
-          }
-        ]
-      }
-    };
+    // ============================================================
+// 🧠 PINTARBIO QUESTION BANK
+// Semua soalan quiz disimpan secara berpusat di sini.
+// ============================================================
+
+const questionBank = [
+
+  // ==========================================================
+  // TINGKATAN 4 — BAB 2 — BIOLOGI SEL
+  // ==========================================================
+
+  {
+    id: "F4-B2-2.1-Q001",
+    form: 4,
+    chapter: 2,
+    subtopic: "2.1 Biologi Sel & Organel",
+    type: "mcq",
+
+    question: "Apakah fungsi utama mitokondria dalam sel haiwan dan tumbuhan?",
+
+    options: [
+      "Menyintesis protein untuk pembentukan sel baru",
+      "Menjana tenaga dalam bentuk ATP melalui respirasi sel",
+      "Mengubah suai dan membungkus glikoprotein",
+      "Mengawal pergerakan bahan keluar dan masuk sel"
+    ],
+
+    answer: 1,
+
+    explanation:
+      "Mitokondria merupakan organel yang menjalankan respirasi aerob untuk menghasilkan ATP.",
+
+    difficulty: "easy",
+
+    tags: [
+      "mitokondria",
+      "ATP",
+      "respirasi sel",
+      "organel"
+    ]
+  },
+
+  {
+    id: "F4-B2-2.1-Q002",
+    form: 4,
+    chapter: 2,
+    subtopic: "2.1 Biologi Sel & Organel",
+    type: "mcq",
+
+    question:
+      "Organel manakah yang mengangkut dan mengubah suai protein yang disintesis oleh ribosom?",
+
+    options: [
+      "Jasad Golgi",
+      "Lisosom",
+      "Sentriol",
+      "Vakuol"
+    ],
+
+    answer: 0,
+
+    explanation:
+      "Jasad Golgi mengubah suai, membungkus dan mengangkut protein yang dihasilkan oleh ribosom.",
+
+    difficulty: "easy",
+
+    tags: [
+      "jasad Golgi",
+      "protein",
+      "organel"
+    ]
+  },
+
+  {
+    id: "F4-B2-2.1-Q003",
+    form: 4,
+    chapter: 2,
+    subtopic: "2.1 Biologi Sel & Organel",
+    type: "tf",
+
+    question:
+      "Jalinan Endoplasma Licin mempunyai ribosom pada permukaannya untuk menyintesis lipid.",
+
+    answer: false,
+
+    explanation:
+      "Pernyataan ini salah. Jalinan Endoplasma Kasar mempunyai ribosom, manakala Jalinan Endoplasma Licin tidak mempunyai ribosom.",
+
+    difficulty: "medium",
+
+    tags: [
+      "JEL",
+      "JER",
+      "ribosom"
+    ]
+  },
+
+  {
+    id: "F4-B2-2.1-Q004",
+    form: 4,
+    chapter: 2,
+    subtopic: "2.1 Biologi Sel & Organel",
+    type: "blank",
+
+    question:
+      "Pigmen hijau dalam kloroplas yang menyerap tenaga cahaya matahari dinamakan __________.",
+
+    answer: "klorofil",
+
+    explanation:
+      "Klorofil ialah pigmen hijau yang menyerap tenaga cahaya untuk fotosintesis.",
+
+    difficulty: "easy",
+
+    tags: [
+      "kloroplas",
+      "klorofil",
+      "fotosintesis"
+    ]
+  },
+
+  {
+    id: "F4-B2-2.1-Q005",
+    form: 4,
+    chapter: 2,
+    subtopic: "2.1 Biologi Sel & Organel",
+    type: "mcq",
+
+    question:
+      "Apakah fungsi utama ribosom?",
+
+    options: [
+      "Menghasilkan ATP",
+      "Mensintesis protein",
+      "Mengawal kandungan air",
+      "Menjalankan fotosintesis"
+    ],
+
+    answer: 1,
+
+    explanation:
+      "Ribosom merupakan tapak sintesis protein dalam sel.",
+
+    difficulty: "easy",
+
+    tags: [
+      "ribosom",
+      "protein",
+      "sintesis protein"
+    ]
+  },
+
+  {
+    id: "F4-B2-2.1-Q006",
+    form: 4,
+    chapter: 2,
+    subtopic: "2.1 Biologi Sel & Organel",
+    type: "mcq",
+
+    question:
+      "Apakah struktur yang terdapat dalam sel tumbuhan tetapi tidak terdapat dalam sel haiwan?",
+
+    options: [
+      "Nukleus",
+      "Ribosom",
+      "Kloroplas",
+      "Mitokondria"
+    ],
+
+    answer: 2,
+
+    explanation:
+      "Kloroplas ialah organel yang terdapat dalam sel tumbuhan dan menjalankan fotosintesis.",
+
+    difficulty: "easy",
+
+    tags: [
+      "sel tumbuhan",
+      "sel haiwan",
+      "kloroplas"
+    ]
+  },
+
+
+  // ==========================================================
+  // TINGKATAN 4 — BAB 5 — ENZIM
+  // ==========================================================
+
+  {
+    id: "F4-B5-5.1-Q001",
+    form: 4,
+    chapter: 5,
+    subtopic: "5.1 Mekanisme Tindakan Enzim",
+    type: "mcq",
+
+    question:
+      "Hipotesis manakah yang digunakan untuk menerangkan spesifisiti tindakan enzim dengan substrat?",
+
+    options: [
+      "Hipotesis Induksi",
+      "Hipotesis Mangga dan Kunci",
+      "Hipotesis Rantaian Makanan",
+      "Hipotesis Resapan Terbimbing"
+    ],
+
+    answer: 1,
+
+    explanation:
+      "Hipotesis Mangga dan Kunci menerangkan bahawa tapak aktif enzim mempunyai bentuk yang sepadan dengan substrat tertentu.",
+
+    difficulty: "easy",
+
+    tags: [
+      "enzim",
+      "substrat",
+      "mangga dan kunci"
+    ]
+  },
+
+  {
+    id: "F4-B5-5.1-Q002",
+    form: 4,
+    chapter: 5,
+    subtopic: "5.1 Mekanisme Tindakan Enzim",
+    type: "tf",
+
+    question:
+      "Enzim dinyahaslikan apabila didedahkan pada suhu yang sangat rendah seperti 0°C.",
+
+    answer: false,
+
+    explanation:
+      "Pada suhu rendah, aktiviti enzim menjadi perlahan tetapi enzim biasanya tidak dinyahaslikan. Suhu terlalu tinggi boleh menyebabkan penyahaslian.",
+
+    difficulty: "medium",
+
+    tags: [
+      "enzim",
+      "suhu",
+      "penyahaslian"
+    ]
+  },
+
+  {
+    id: "F4-B5-5.1-Q003",
+    form: 4,
+    chapter: 5,
+    subtopic: "5.1 Mekanisme Tindakan Enzim",
+    type: "mcq",
+
+    question:
+      "Apakah yang berlaku kepada kadar tindak balas enzim apabila suhu meningkat sehingga suhu optimum?",
+
+    options: [
+      "Kadar tindak balas meningkat",
+      "Kadar tindak balas sentiasa menurun",
+      "Enzim terus dinyahaslikan",
+      "Tiada perubahan"
+    ],
+
+    answer: 0,
+
+    explanation:
+      "Peningkatan suhu sehingga suhu optimum meningkatkan tenaga kinetik dan perlanggaran berkesan antara enzim dengan substrat.",
+
+    difficulty: "medium",
+
+    tags: [
+      "enzim",
+      "suhu optimum",
+      "kadar tindak balas"
+    ]
+  },
+
+  {
+    id: "F4-B5-5.1-Q004",
+    form: 4,
+    chapter: 5,
+    subtopic: "5.1 Mekanisme Tindakan Enzim",
+    type: "blank",
+
+    question:
+      "Bahan yang bertindak balas dengan enzim pada tapak aktif dinamakan __________.",
+
+    answer: "substrat",
+
+    explanation:
+      "Substrat ialah bahan yang mengikat pada tapak aktif enzim dan mengalami tindak balas.",
+
+    difficulty: "easy",
+
+    tags: [
+      "substrat",
+      "tapak aktif",
+      "enzim"
+    ]
+  },
+
+
+  // ==========================================================
+  // CONTOH UNTUK BAB LAIN
+  // ==========================================================
+
+  {
+    id: "F4-B3-3.1-Q001",
+    form: 4,
+    chapter: 3,
+    subtopic: "3.1 Struktur Membran Plasma",
+    type: "mcq",
+
+    question:
+      "Apakah model yang menerangkan struktur membran plasma?",
+
+    options: [
+      "Model mozek bendalir",
+      "Model mangga dan kunci",
+      "Model DNA berganda",
+      "Model membran pepejal"
+    ],
+
+    answer: 0,
+
+    explanation:
+      "Struktur membran plasma diterangkan menggunakan model mozek bendalir.",
+
+    difficulty: "easy",
+
+    tags: [
+      "membran plasma",
+      "mozek bendalir"
+    ]
+  },
+
+  {
+    id: "F4-B3-3.1-Q002",
+    form: 4,
+    chapter: 3,
+    subtopic: "3.1 Pergerakan Bahan Merentasi Membran Plasma",
+    type: "blank",
+
+    question:
+      "Pergerakan molekul dari kawasan berkepekatan tinggi ke kawasan berkepekatan rendah dinamakan __________.",
+
+    answer: "resapan",
+
+    explanation:
+      "Resapan ialah pergerakan bersih molekul dari kawasan berkepekatan tinggi ke kawasan berkepekatan rendah.",
+
+    difficulty: "easy",
+
+    tags: [
+      "resapan",
+      "membran plasma"
+    ]
+  }
+
+];
+
+
+// ============================================================
+// 🔎 FUNGSI QUESTION BANK
+// ============================================================
+
+function getQuestionsFromBank(topicId) {
+
+  // Contoh topicId = f4_b2
+  const match = topicId.match(/^f(4|5)_b(\d+)$/);
+
+  if (!match) return [];
+
+  const form = parseInt(match[1]);
+  const chapter = parseInt(match[2]);
+
+  return questionBank.filter(q =>
+    q.form === form &&
+    q.chapter === chapter
+  );
+}
+
+
+// ============================================================
+// 🧠 DAPATKAN SOALAN UNTUK SESI QUIZ
+// ============================================================
+
+function getQuizQuestions(topicId) {
+
+  const bankQuestions = getQuestionsFromBank(topicId);
+
+  // Jika Question Bank sudah mempunyai soalan,
+  // gunakan soalan daripada Question Bank.
+  if (bankQuestions.length > 0) {
+    return bankQuestions;
+  }
+
+  // Jika belum ada Question Bank untuk bab tersebut,
+  // gunakan quiz lama daripada topicDetailsData.
+  if (
+    topicDetailsData[topicId] &&
+    topicDetailsData[topicId].quiz
+  ) {
+    return topicDetailsData[topicId].quiz;
+  }
+
+  return [];
+}
 
     // Generic fallback helper generator for any chapter without custom flashcards/quizzes
     function getTopicData(topicId) {
@@ -1193,13 +1261,23 @@
 
     // QUIZ LOGIC
     function startQuizDirect(topicId) {
-      const data = getTopicData(topicId);
-      activeTopic = { id: topicId, ...data };
-      activeQuiz = data.quiz;
-      activeQuestionIndex = 0;
-      quizUserAnswers = [];
-      quizStartTime = Date.now();
-      navigateTo('quiz', topicId);
+
+  const data = getTopicData(topicId);
+
+  activeTopic = {
+    id: topicId,
+    ...data
+  };
+
+  // 🧠 Ambil soalan daripada Question Bank
+  activeQuiz = getQuizQuestions(topicId);
+
+  activeQuestionIndex = 0;
+  quizUserAnswers = [];
+  quizStartTime = Date.now();
+
+  navigateTo('quiz', topicId);
+}
     }
 
     function renderQuizView(topicId) {
