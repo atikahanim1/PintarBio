@@ -1695,6 +1695,1855 @@ function getQuizQuestions(topicId) {
         </div>
       `;
     }
+    /* ============================================================
+   🧠 PINTARBIO QUESTION BANK
+   ============================================================ */
+
+let pintarbioQuestionBank = JSON.parse(
+  localStorage.getItem('pintarbio_question_bank') || '[]'
+);
+
+
+/* ============================================================
+   1. SIMPAN QUESTION BANK
+   ============================================================ */
+
+function savePintarBioQuestionBank() {
+  localStorage.setItem(
+    'pintarbio_question_bank',
+    JSON.stringify(pintarbioQuestionBank)
+  );
+}
+
+
+/* ============================================================
+   2. SECURITY / TEXT HELPER
+   ============================================================ */
+
+function escapeQB(text) {
+  if (text === null || text === undefined) return '';
+
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+
+/* ============================================================
+   3. GENERATE QUESTION ID
+   ============================================================ */
+
+function generateQuestionId(form, chapter) {
+
+  const prefix = `F${form}-B${chapter}-`;
+
+  let number = pintarbioQuestionBank.length + 1;
+
+  let id =
+    `${prefix}Q${String(number).padStart(3, '0')}`;
+
+  while (
+    pintarbioQuestionBank.some(q => q.id === id)
+  ) {
+    number++;
+
+    id =
+      `${prefix}Q${String(number).padStart(3, '0')}`;
+  }
+
+  return id;
+}
+
+
+/* ============================================================
+   4. DAPATKAN NAMA BAB
+   ============================================================ */
+
+function getChapterTitleQB(form, chapter) {
+
+  const syllabus =
+    syllabusData[`f${form}`];
+
+  if (!syllabus) {
+    return `Bab ${chapter}`;
+  }
+
+  const found =
+    syllabus.find(
+      ch => Number(ch.num) === Number(chapter)
+    );
+
+  if (!found) {
+    return `Bab ${chapter}`;
+  }
+
+  return found.title.bm ||
+         `Bab ${chapter}`;
+}
+
+
+/* ============================================================
+   5. DAPATKAN SOALAN QUESTION BANK UNTUK QUIZ
+   ============================================================ */
+
+function getQuestionBankQuestions(topicId) {
+
+  const match =
+    topicId.match(/^f(4|5)_b(\d+)$/);
+
+  if (!match) return [];
+
+  const form =
+    Number(match[1]);
+
+  const chapter =
+    Number(match[2]);
+
+  return pintarbioQuestionBank.filter(q =>
+    Number(q.form) === form &&
+    Number(q.chapter) === chapter
+  );
+}
+
+
+/* ============================================================
+   6. QUESTION BANK MAIN VIEW
+   ============================================================ */
+
+function renderQuestionBankView() {
+
+  const f4Count =
+    pintarbioQuestionBank.filter(
+      q => Number(q.form) === 4
+    ).length;
+
+  const f5Count =
+    pintarbioQuestionBank.filter(
+      q => Number(q.form) === 5
+    ).length;
+
+
+  return `
+
+    <div class="space-y-6">
+
+      <!-- HEADER -->
+
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-700 via-purple-600 to-fuchsia-600 text-white p-6 sm:p-8 shadow-xl">
+
+        <div class="relative z-10">
+
+          <div class="flex items-center gap-3 mb-3">
+
+            <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
+
+              <i class="fa-solid fa-brain text-2xl"></i>
+
+            </div>
+
+            <div>
+
+              <h2 class="text-2xl sm:text-3xl font-extrabold">
+                Question Bank
+              </h2>
+
+              <p class="text-purple-100 text-sm">
+                Bank soalan PintarBio
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <p class="text-sm text-white/90 max-w-2xl">
+
+            Urus soalan mengikut Tingkatan,
+            Bab dan Subtopik.
+
+            Soalan yang ditambah di sini
+            boleh digunakan dalam Quiz PintarBio.
+
+          </p>
+
+        </div>
+
+
+        <i class="fa-solid fa-database absolute -right-8 -bottom-10 text-[170px] text-white/10"></i>
+
+      </div>
+
+
+      <!-- STATISTICS -->
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 card-shadow">
+
+          <div class="flex items-center gap-3">
+
+            <div class="w-11 h-11 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center">
+
+              <i class="fa-solid fa-database"></i>
+
+            </div>
+
+            <div>
+
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                Jumlah Soalan
+              </p>
+
+              <p class="text-xl font-bold">
+                ${pintarbioQuestionBank.length}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 card-shadow">
+
+          <div class="flex items-center gap-3">
+
+            <div class="w-11 h-11 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center">
+
+              <i class="fa-solid fa-graduation-cap"></i>
+
+            </div>
+
+            <div>
+
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                Tingkatan 4
+              </p>
+
+              <p class="text-xl font-bold">
+                ${f4Count}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 card-shadow">
+
+          <div class="flex items-center gap-3">
+
+            <div class="w-11 h-11 rounded-xl bg-teal-100 dark:bg-teal-900/40 text-teal-600 flex items-center justify-center">
+
+              <i class="fa-solid fa-seedling"></i>
+
+            </div>
+
+            <div>
+
+              <p class="text-xs text-slate-500 dark:text-slate-400">
+                Tingkatan 5
+              </p>
+
+              <p class="text-xl font-bold">
+                ${f5Count}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORM SELECTION -->
+
+      <div class="grid sm:grid-cols-2 gap-5">
+
+        <button
+          onclick="openQuestionBankChapter(4)"
+          class="text-left bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-purple-500 transition card-shadow group">
+
+          <div class="flex items-center justify-between">
+
+            <div class="flex items-center gap-4">
+
+              <div class="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+              </div>
+
+              <div>
+
+                <p class="text-xs font-bold uppercase tracking-wider text-purple-600">
+                  Tingkatan
+                </p>
+
+                <h3 class="text-xl font-bold">
+                  Tingkatan 4
+                </h3>
+
+              </div>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-right text-slate-400"></i>
+
+          </div>
+
+        </button>
+
+
+        <button
+          onclick="openQuestionBankChapter(5)"
+          class="text-left bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 hover:border-teal-500 transition card-shadow group">
+
+          <div class="flex items-center justify-between">
+
+            <div class="flex items-center gap-4">
+
+              <div class="w-14 h-14 rounded-2xl bg-teal-100 dark:bg-teal-900/40 text-teal-600 flex items-center justify-center text-xl group-hover:scale-110 transition">
+
+                <i class="fa-solid fa-seedling"></i>
+
+              </div>
+
+              <div>
+
+                <p class="text-xs font-bold uppercase tracking-wider text-teal-600">
+                  Tingkatan
+                </p>
+
+                <h3 class="text-xl font-bold">
+                  Tingkatan 5
+                </h3>
+
+              </div>
+
+            </div>
+
+            <i class="fa-solid fa-chevron-right text-slate-400"></i>
+
+          </div>
+
+        </button>
+
+      </div>
+
+
+      <!-- BACK -->
+
+      <div>
+
+        <button
+          onclick="navigateTo('home')"
+          class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold hover:bg-slate-100 dark:hover:bg-slate-800">
+
+          <i class="fa-solid fa-arrow-left mr-1"></i>
+
+          Kembali ke Utama
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* ============================================================
+   7. PILIH BAB
+   ============================================================ */
+
+function openQuestionBankChapter(form) {
+
+  currentView =
+    'question_bank_chapters';
+
+  document.getElementById(
+    'appContainer'
+  ).innerHTML =
+    renderQuestionBankChapters(form);
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+
+function renderQuestionBankChapters(form) {
+
+  const chapters =
+    syllabusData[`f${form}`] || [];
+
+
+  return `
+
+    <div class="space-y-6">
+
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-4">
+
+        <div>
+
+          <p class="text-xs font-bold uppercase tracking-wider text-purple-600">
+            Question Bank
+          </p>
+
+          <h2 class="text-2xl font-bold">
+            Tingkatan ${form}
+          </h2>
+
+          <p class="text-xs text-slate-500 mt-1">
+            Pilih bab untuk melihat dan mengurus soalan.
+          </p>
+
+        </div>
+
+
+        <button
+          onclick="navigateTo('question_bank')"
+          class="px-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-700">
+
+          <i class="fa-solid fa-arrow-left"></i>
+
+          Kembali
+
+        </button>
+
+      </div>
+
+
+      <div class="grid gap-4 sm:grid-cols-2">
+
+        ${chapters.map(ch => {
+
+          const count =
+            pintarbioQuestionBank.filter(q =>
+              Number(q.form) === Number(form) &&
+              Number(q.chapter) === Number(ch.num)
+            ).length;
+
+
+          return `
+
+            <button
+              onclick="openQuestionBankList(${form}, ${ch.num})"
+              class="text-left bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 hover:border-purple-500 transition card-shadow">
+
+              <div class="flex items-start justify-between gap-3">
+
+                <div class="flex items-center gap-3">
+
+                  <div class="w-11 h-11 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center">
+
+                    <i class="fa-solid ${ch.icon || 'fa-book'}"></i>
+
+                  </div>
+
+                  <div>
+
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-purple-600">
+
+                      Bab ${ch.num}
+
+                    </span>
+
+                    <h3 class="text-sm font-bold leading-snug">
+
+                      ${escapeQB(ch.title.bm)}
+
+                    </h3>
+
+                  </div>
+
+                </div>
+
+
+                <span class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-bold">
+
+                  ${count} soalan
+
+                </span>
+
+              </div>
+
+            </button>
+
+          `;
+
+        }).join('')}
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* ============================================================
+   8. SENARAI SOALAN
+   ============================================================ */
+
+function openQuestionBankList(form, chapter) {
+
+  currentView =
+    'question_bank_list';
+
+  document.getElementById(
+    'appContainer'
+  ).innerHTML =
+    renderQuestionBankList(form, chapter);
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+
+function renderQuestionBankList(form, chapter) {
+
+  const questions =
+    pintarbioQuestionBank.filter(q =>
+      Number(q.form) === Number(form) &&
+      Number(q.chapter) === Number(chapter)
+    );
+
+
+  const chapterTitle =
+    getChapterTitleQB(form, chapter);
+
+
+  return `
+
+    <div class="space-y-6">
+
+
+      <!-- HEADER -->
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4">
+
+        <div>
+
+          <p class="text-xs font-bold uppercase tracking-wider text-purple-600">
+
+            Question Bank • Tingkatan ${form}
+
+          </p>
+
+          <h2 class="text-xl sm:text-2xl font-bold">
+
+            Bab ${chapter}
+
+          </h2>
+
+          <p class="text-sm text-slate-500 mt-1">
+
+            ${escapeQB(chapterTitle)}
+
+          </p>
+
+        </div>
+
+
+        <button
+          onclick="showAddQuestionForm(${form}, ${chapter})"
+          class="px-5 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2">
+
+          <i class="fa-solid fa-plus"></i>
+
+          Tambah Soalan
+
+        </button>
+
+      </div>
+
+
+      <!-- EMPTY -->
+
+      ${questions.length === 0 ? `
+
+        <div class="bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-slate-300 dark:border-slate-600 p-10 text-center">
+
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center text-2xl mb-4">
+
+            <i class="fa-solid fa-database"></i>
+
+          </div>
+
+          <h3 class="text-lg font-bold mb-2">
+
+            Belum ada soalan tambahan
+
+          </h3>
+
+          <p class="text-sm text-slate-500 mb-5">
+
+            Tambahkan soalan pertama untuk bab ini.
+
+          </p>
+
+          <button
+            onclick="showAddQuestionForm(${form}, ${chapter})"
+            class="px-5 py-2.5 bg-purple-600 text-white rounded-xl text-sm font-bold">
+
+            <i class="fa-solid fa-plus mr-1"></i>
+
+            Tambah Soalan
+
+          </button>
+
+        </div>
+
+      ` : `
+
+
+        <!-- QUESTION CARDS -->
+
+        <div class="space-y-4">
+
+          ${questions.map((q, index) => `
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-5 card-shadow">
+
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+
+
+                <div class="flex-1">
+
+
+                  <div class="flex flex-wrap items-center gap-2 mb-3">
+
+                    <span class="px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 text-[10px] font-bold uppercase">
+
+                      ${
+                        q.type === 'mcq'
+                          ? 'MCQ'
+                          : q.type === 'tf'
+                          ? 'BENAR / SALAH'
+                          : 'ISI TEMPAT KOSONG'
+                      }
+
+                    </span>
+
+
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase
+                      ${
+                        q.difficulty === 'easy'
+                          ? 'bg-green-100 text-green-700'
+                          : q.difficulty === 'hard'
+                          ? 'bg-red-100 text-red-700'
+                          : 'bg-amber-100 text-amber-700'
+                      }">
+
+                      ${
+                        q.difficulty === 'easy'
+                          ? 'Mudah'
+                          : q.difficulty === 'hard'
+                          ? 'Sukar'
+                          : 'Sederhana'
+                      }
+
+                    </span>
+
+
+                    <span class="text-[10px] text-slate-400">
+
+                      ${escapeQB(q.id)}
+
+                    </span>
+
+                  </div>
+
+
+                  <h3 class="font-bold text-slate-800 dark:text-white leading-relaxed mb-3">
+
+                    ${index + 1}. ${escapeQB(q.question)}
+
+                  </h3>
+
+
+                  ${
+                    q.type === 'mcq' && q.options
+                      ? `
+
+                        <div class="grid sm:grid-cols-2 gap-2 mb-3">
+
+                          ${q.options.map((opt, i) => `
+
+                            <div class="text-xs p-2.5 rounded-lg
+                              ${
+                                i === Number(q.answer)
+                                  ? 'bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 font-semibold'
+                                  : 'bg-slate-50 dark:bg-slate-700/40 text-slate-600 dark:text-slate-300'
+                              }">
+
+                              ${String.fromCharCode(65 + i)}.
+                              ${escapeQB(opt)}
+
+                              ${
+                                i === Number(q.answer)
+                                  ? ' ✓'
+                                  : ''
+                              }
+
+                            </div>
+
+                          `).join('')}
+
+                        </div>
+
+                      `
+                      : ''
+                  }
+
+
+                  ${
+                    q.type === 'tf'
+                      ? `
+
+                        <div class="text-xs mb-3">
+
+                          Jawapan:
+
+                          <strong class="${
+                            q.answer
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          }">
+
+                            ${q.answer ? 'BENAR' : 'SALAH'}
+
+                          </strong>
+
+                        </div>
+
+                      `
+                      : ''
+                  }
+
+
+                  ${
+                    q.type === 'blank'
+                      ? `
+
+                        <div class="text-xs mb-3">
+
+                          Jawapan:
+
+                          <strong class="text-green-600">
+
+                            ${escapeQB(q.answer)}
+
+                          </strong>
+
+                        </div>
+
+                      `
+                      : ''
+                  }
+
+
+                  <div class="text-xs text-slate-500 dark:text-slate-400">
+
+                    <strong>Subtopik:</strong>
+
+                    ${escapeQB(q.subtopic || '-')}
+
+                  </div>
+
+
+                  ${
+                    q.explanation
+                      ? `
+
+                        <div class="mt-3 p-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900 text-xs text-blue-800 dark:text-blue-200">
+
+                          <strong>💡 Penerangan:</strong>
+
+                          ${escapeQB(q.explanation)}
+
+                        </div>
+
+                      `
+                      : ''
+                  }
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="flex sm:flex-col gap-2">
+
+                  <button
+                    onclick="editQuestionBankQuestion('${q.id}')"
+                    class="px-3 py-2 rounded-lg bg-blue-50 dark:bg-blue-950/30 text-blue-600 text-xs font-bold">
+
+                    <i class="fa-solid fa-pen"></i>
+
+                    <span class="sm:hidden ml-1">
+                      Edit
+                    </span>
+
+                  </button>
+
+
+                  <button
+                    onclick="deleteQuestionBankQuestion('${q.id}')"
+                    class="px-3 py-2 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-600 text-xs font-bold">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                    <span class="sm:hidden ml-1">
+                      Delete
+                    </span>
+
+                  </button>
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+          `).join('')}
+
+        </div>
+
+      `}
+
+
+      <button
+        onclick="openQuestionBankChapter(${form})"
+        class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+
+        <i class="fa-solid fa-arrow-left mr-1"></i>
+
+        Kembali ke Bab
+
+      </button>
+
+    </div>
+
+  `;
+}
+
+
+/* ============================================================
+   9. BORANG TAMBAH / EDIT SOALAN
+   ============================================================ */
+
+function showAddQuestionForm(
+  form,
+  chapter,
+  editId = null
+) {
+
+  currentView =
+    'question_bank_form';
+
+
+  let question = null;
+
+
+  if (editId) {
+
+    question =
+      pintarbioQuestionBank.find(
+        q => q.id === editId
+      );
+
+  }
+
+
+  document.getElementById(
+    'appContainer'
+  ).innerHTML =
+    renderQuestionBankForm(
+      form,
+      chapter,
+      question
+    );
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+
+function renderQuestionBankForm(
+  form,
+  chapter,
+  q = null
+) {
+
+  const isEdit =
+    !!q;
+
+  const type =
+    q?.type || 'mcq';
+
+  const options =
+    q?.options || [
+      '',
+      '',
+      '',
+      ''
+    ];
+
+
+  return `
+
+    <div class="max-w-3xl mx-auto space-y-6">
+
+
+      <!-- HEADER -->
+
+      <div>
+
+        <button
+          onclick="openQuestionBankList(${form}, ${chapter})"
+          class="text-xs font-semibold text-slate-500 hover:text-purple-600 mb-4">
+
+          <i class="fa-solid fa-arrow-left mr-1"></i>
+
+          Kembali ke Question Bank
+
+        </button>
+
+
+        <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-3xl p-6 shadow-xl">
+
+          <div class="flex items-center gap-3">
+
+            <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center">
+
+              <i class="fa-solid ${
+                isEdit
+                  ? 'fa-pen'
+                  : 'fa-plus'
+              } text-xl"></i>
+
+            </div>
+
+
+            <div>
+
+              <h2 class="text-2xl font-bold">
+
+                ${
+                  isEdit
+                    ? 'Edit Soalan'
+                    : 'Tambah Soalan'
+                }
+
+              </h2>
+
+              <p class="text-purple-100 text-xs">
+
+                Tingkatan ${form}
+                • Bab ${chapter}
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORM -->
+
+      <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 card-shadow space-y-5">
+
+
+        <!-- SUBTOPIC -->
+
+        <div>
+
+          <label class="block text-xs font-bold mb-2">
+            Subtopik
+          </label>
+
+          <input
+            id="qbSubtopic"
+            value="${escapeQB(q?.subtopic || '')}"
+            placeholder="Contoh: 2.1 Biologi Sel & Organel"
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm outline-none focus:border-purple-500">
+
+        </div>
+
+
+        <!-- TYPE -->
+
+        <div>
+
+          <label class="block text-xs font-bold mb-2">
+            Jenis Soalan
+          </label>
+
+          <select
+            id="qbType"
+            onchange="toggleQuestionTypeFields()"
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm">
+
+            <option value="mcq"
+              ${type === 'mcq' ? 'selected' : ''}>
+
+              Pilihan Jawapan (MCQ)
+
+            </option>
+
+            <option value="tf"
+              ${type === 'tf' ? 'selected' : ''}>
+
+              Benar / Salah
+
+            </option>
+
+            <option value="blank"
+              ${type === 'blank' ? 'selected' : ''}>
+
+              Isi Tempat Kosong
+
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- QUESTION -->
+
+        <div>
+
+          <label class="block text-xs font-bold mb-2">
+            Soalan
+          </label>
+
+          <textarea
+            id="qbQuestion"
+            rows="4"
+            placeholder="Tulis soalan di sini..."
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm outline-none focus:border-purple-500"
+          >${escapeQB(q?.question || '')}</textarea>
+
+        </div>
+
+
+        <!-- MCQ -->
+
+        <div
+          id="qbMCQFields"
+          class="${
+            type === 'mcq'
+              ? ''
+              : 'hidden'
+          } space-y-3">
+
+
+          <label class="block text-xs font-bold">
+            Pilihan Jawapan
+          </label>
+
+
+          ${[0,1,2,3].map(i => `
+
+            <div class="flex items-center gap-2">
+
+              <span class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-bold">
+
+                ${String.fromCharCode(65 + i)}
+
+              </span>
+
+
+              <input
+                id="qbOption${i}"
+                value="${escapeQB(options[i] || '')}"
+                placeholder="Pilihan ${String.fromCharCode(65 + i)}"
+                class="flex-1 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm">
+
+            </div>
+
+          `).join('')}
+
+
+          <div>
+
+            <label class="block text-xs font-bold mb-2">
+              Jawapan Betul
+            </label>
+
+
+            <select
+              id="qbMCQAnswer"
+              class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm">
+
+              ${[0,1,2,3].map(i => `
+
+                <option
+                  value="${i}"
+                  ${
+                    Number(q?.answer) === i
+                      ? 'selected'
+                      : ''
+                  }>
+
+                  ${String.fromCharCode(65 + i)}
+
+                </option>
+
+              `).join('')}
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- TRUE / FALSE -->
+
+        <div
+          id="qbTFFields"
+          class="${
+            type === 'tf'
+              ? ''
+              : 'hidden'
+          }">
+
+
+          <label class="block text-xs font-bold mb-2">
+            Jawapan Betul
+          </label>
+
+
+          <select
+            id="qbTFAnswer"
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm">
+
+            <option
+              value="true"
+              ${q?.answer === true ? 'selected' : ''}>
+
+              Benar
+
+            </option>
+
+            <option
+              value="false"
+              ${q?.answer === false ? 'selected' : ''}>
+
+              Salah
+
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- FILL BLANK -->
+
+        <div
+          id="qbBlankFields"
+          class="${
+            type === 'blank'
+              ? ''
+              : 'hidden'
+          }">
+
+
+          <label class="block text-xs font-bold mb-2">
+            Jawapan
+          </label>
+
+
+          <input
+            id="qbBlankAnswer"
+            value="${escapeQB(q?.answer || '')}"
+            placeholder="Contoh: klorofil"
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm">
+
+        </div>
+
+
+        <!-- DIFFICULTY -->
+
+        <div>
+
+          <label class="block text-xs font-bold mb-2">
+            Tahap Kesukaran
+          </label>
+
+
+          <select
+            id="qbDifficulty"
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm">
+
+            <option
+              value="easy"
+              ${q?.difficulty === 'easy' ? 'selected' : ''}>
+
+              🟢 Mudah
+
+            </option>
+
+            <option
+              value="medium"
+              ${
+                !q ||
+                q?.difficulty === 'medium'
+                  ? 'selected'
+                  : ''
+              }>
+
+              🟡 Sederhana
+
+            </option>
+
+            <option
+              value="hard"
+              ${q?.difficulty === 'hard' ? 'selected' : ''}>
+
+              🔴 Sukar
+
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- EXPLANATION -->
+
+        <div>
+
+          <label class="block text-xs font-bold mb-2">
+            Penerangan Jawapan
+          </label>
+
+
+          <textarea
+            id="qbExplanation"
+            rows="4"
+            placeholder="Terangkan kenapa jawapan tersebut betul..."
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm"
+          >${escapeQB(q?.explanation || '')}</textarea>
+
+        </div>
+
+
+        <!-- TAGS -->
+
+        <div>
+
+          <label class="block text-xs font-bold mb-2">
+            Kata Kunci / Tags
+          </label>
+
+
+          <input
+            id="qbTags"
+            value="${escapeQB(
+              (q?.tags || []).join(', ')
+            )}"
+            placeholder="Contoh: mitokondria, ATP, respirasi"
+            class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-sm">
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="pt-4 border-t border-slate-200 dark:border-slate-700 flex gap-3">
+
+
+          <button
+            onclick="openQuestionBankList(${form}, ${chapter})"
+            class="flex-1 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-semibold">
+
+            Batal
+
+          </button>
+
+
+          <button
+            onclick="saveQuestionBankForm(${form}, ${chapter}, ${
+              isEdit
+                ? `'${q.id}'`
+                : 'null'
+            })"
+            class="flex-1 py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold shadow-md">
+
+            <i class="fa-solid fa-floppy-disk mr-1"></i>
+
+            ${
+              isEdit
+                ? 'Simpan Perubahan'
+                : 'Simpan Soalan'
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* ============================================================
+   10. TOGGLE JENIS SOALAN
+   ============================================================ */
+
+function toggleQuestionTypeFields() {
+
+  const type =
+    document.getElementById(
+      'qbType'
+    ).value;
+
+
+  document
+    .getElementById('qbMCQFields')
+    .classList
+    .toggle(
+      'hidden',
+      type !== 'mcq'
+    );
+
+
+  document
+    .getElementById('qbTFFields')
+    .classList
+    .toggle(
+      'hidden',
+      type !== 'tf'
+    );
+
+
+  document
+    .getElementById('qbBlankFields')
+    .classList
+    .toggle(
+      'hidden',
+      type !== 'blank'
+    );
+}
+
+
+/* ============================================================
+   11. SIMPAN SOALAN
+   ============================================================ */
+
+function saveQuestionBankForm(
+  form,
+  chapter,
+  editId = null
+) {
+
+  const type =
+    document.getElementById(
+      'qbType'
+    ).value;
+
+
+  const question =
+    document.getElementById(
+      'qbQuestion'
+    ).value.trim();
+
+
+  const subtopic =
+    document.getElementById(
+      'qbSubtopic'
+    ).value.trim();
+
+
+  const explanation =
+    document.getElementById(
+      'qbExplanation'
+    ).value.trim();
+
+
+  const difficulty =
+    document.getElementById(
+      'qbDifficulty'
+    ).value;
+
+
+  const tags =
+    document
+      .getElementById('qbTags')
+      .value
+      .split(',')
+      .map(t => t.trim())
+      .filter(Boolean);
+
+
+  if (!question) {
+
+    alert(
+      'Sila masukkan soalan.'
+    );
+
+    return;
+  }
+
+
+  let answer = null;
+
+  let options = [];
+
+
+  /* MCQ */
+
+  if (type === 'mcq') {
+
+    options =
+      [0,1,2,3].map(i =>
+        document
+          .getElementById(
+            `qbOption${i}`
+          )
+          .value
+          .trim()
+      );
+
+
+    if (
+      options.some(
+        o => !o
+      )
+    ) {
+
+      alert(
+        'Sila lengkapkan semua 4 pilihan jawapan.'
+      );
+
+      return;
+    }
+
+
+    answer =
+      Number(
+        document
+          .getElementById(
+            'qbMCQAnswer'
+          )
+          .value
+      );
+
+  }
+
+
+  /* TRUE / FALSE */
+
+  else if (type === 'tf') {
+
+    answer =
+      document
+        .getElementById(
+          'qbTFAnswer'
+        )
+        .value === 'true';
+
+  }
+
+
+  /* FILL BLANK */
+
+  else if (type === 'blank') {
+
+    answer =
+      document
+        .getElementById(
+          'qbBlankAnswer'
+        )
+        .value
+        .trim();
+
+
+    if (!answer) {
+
+      alert(
+        'Sila masukkan jawapan.'
+      );
+
+      return;
+    }
+
+  }
+
+
+  /* EDIT */
+
+  if (editId) {
+
+    const index =
+      pintarbioQuestionBank.findIndex(
+        q => q.id === editId
+      );
+
+
+    if (index !== -1) {
+
+      pintarbioQuestionBank[index] = {
+
+        ...pintarbioQuestionBank[index],
+
+        form:
+          Number(form),
+
+        chapter:
+          Number(chapter),
+
+        subtopic,
+
+        type,
+
+        question,
+
+        options:
+          type === 'mcq'
+            ? options
+            : undefined,
+
+        answer,
+
+        explanation,
+
+        difficulty,
+
+        tags
+
+      };
+
+    }
+
+  }
+
+
+  /* NEW QUESTION */
+
+  else {
+
+    const newQuestion = {
+
+      id:
+        generateQuestionId(
+          form,
+          chapter
+        ),
+
+      form:
+        Number(form),
+
+      chapter:
+        Number(chapter),
+
+      subtopic,
+
+      type,
+
+      question,
+
+      options:
+        type === 'mcq'
+          ? options
+          : undefined,
+
+      answer,
+
+      explanation,
+
+      difficulty,
+
+      tags
+
+    };
+
+
+    pintarbioQuestionBank.push(
+      newQuestion
+    );
+
+  }
+
+
+  savePintarBioQuestionBank();
+
+
+  alert(
+    editId
+      ? 'Soalan berjaya dikemaskini! ✅'
+      : 'Soalan berjaya ditambah! ✅'
+  );
+
+
+  openQuestionBankList(
+    Number(form),
+    Number(chapter)
+  );
+}
+
+
+/* ============================================================
+   12. EDIT SOALAN
+   ============================================================ */
+
+function editQuestionBankQuestion(id) {
+
+  const q =
+    pintarbioQuestionBank.find(
+      question =>
+        question.id === id
+    );
+
+
+  if (!q) return;
+
+
+  showAddQuestionForm(
+    Number(q.form),
+    Number(q.chapter),
+    id
+  );
+}
+
+
+/* ============================================================
+   13. DELETE SOALAN
+   ============================================================ */
+
+function deleteQuestionBankQuestion(id) {
+
+  const q =
+    pintarbioQuestionBank.find(
+      question =>
+        question.id === id
+    );
+
+
+  if (!q) return;
+
+
+  const confirmDelete =
+    confirm(
+      `Padam soalan ini?\n\n"${q.question}"`
+    );
+
+
+  if (!confirmDelete) return;
+
+
+  pintarbioQuestionBank =
+    pintarbioQuestionBank.filter(
+      question =>
+        question.id !== id
+    );
+
+
+  savePintarBioQuestionBank();
+
+
+  openQuestionBankList(
+    Number(q.form),
+    Number(q.chapter)
+  );
+}
+
+
+/* ============================================================
+   14. NAVIGATE QUESTION BANK
+   ============================================================ */
+
+function openQuestionBank() {
+
+  navigateTo(
+    'question_bank'
+  );
+
+}
+
+
+/* ============================================================
+   15. TAMBAH BUTTON "SOALAN" PADA NAVBAR
+   ============================================================ */
+
+function installQuestionBankButton() {
+
+  const nav =
+    document.querySelector(
+      'nav .max-w-md'
+    );
+
+
+  if (!nav) return;
+
+
+  if (
+    document.getElementById(
+      'navQuestionBank'
+    )
+  ) return;
+
+
+  const button =
+    document.createElement(
+      'button'
+    );
+
+
+  button.id =
+    'navQuestionBank';
+
+
+  button.onclick =
+    () =>
+      navigateTo(
+        'question_bank'
+      );
+
+
+  button.className =
+    'flex flex-col items-center gap-1 text-slate-500 hover:text-purple-600 dark:text-slate-400 dark:hover:text-purple-400 transition';
+
+
+  button.innerHTML = `
+
+    <i class="fa-solid fa-brain text-lg"></i>
+
+    <span class="text-[11px]">
+      Soalan
+    </span>
+
+  `;
+
+
+  nav.appendChild(
+    button
+  );
+
+}
+
+
+/* ============================================================
+   16. SUPPORT QUESTION BANK DALAM NAVIGATION
+   ============================================================ */
+
+const pintarbioOriginalNavigateTo =
+  navigateTo;
+
+
+navigateTo =
+  function(
+    view,
+    param = null
+  ) {
+
+
+    if (
+      view === 'question_bank'
+    ) {
+
+      currentView =
+        'question_bank';
+
+
+      document.getElementById(
+        'appContainer'
+      ).innerHTML =
+        renderQuestionBankView();
+
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+
+      return;
+
+    }
+
+
+    if (
+      view ===
+      'question_bank_chapters'
+    ) {
+
+      currentView =
+        'question_bank_chapters';
+
+
+      document.getElementById(
+        'appContainer'
+      ).innerHTML =
+        renderQuestionBankChapters(
+          Number(param)
+        );
+
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+
+      return;
+
+    }
+
+
+    pintarbioOriginalNavigateTo(
+      view,
+      param
+    );
+
+  };
+
+
+/* ============================================================
+   17. PASANG BUTTON SELEPAS APP LOAD
+   ============================================================ */
+
+window.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    setTimeout(
+      installQuestionBankButton,
+      500
+    );
+
+  }
+);
   </script>
 </body>
 </html>
