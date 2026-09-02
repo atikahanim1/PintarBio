@@ -149,7 +149,19 @@
         <i class="fa-solid fa-brain"></i>
         <span>${t('nav_qbank')}</span>
       </button>
-    </div>
+      <div class="flex items-center gap-2">
+  <!-- Butang Flashcard -->
+  <button onclick="openAddFlashcardModal()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2">
+    <i class="fa-solid fa-plus"></i>
+    <span>${t('add_flashcard')}</span>
+  </button>
+
+  <!-- Butang Soalan -->
+  <button onclick="openAddQuestionModal()" class="px-4 py-2.5 bg-bio-600 hover:bg-bio-700 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center gap-2">
+    <i class="fa-solid fa-plus"></i>
+    <span>${t('add_question')}</span>
+  </button>
+</div>
   </nav>
 
   <!-- APPLICATION SCRIPT -->
@@ -230,7 +242,12 @@
         type: "Jenis",
         level: "Tahap",
         save_question: "Simpan Soalan"
-      },
+        add_flashcard: "Tambah Flashcard",
+        card_term: "Istilah / Tajuk Kad",
+        card_desc: "Penerangan / Definisi",
+        card_tip: "Tip Mengingat",
+        card_keywords: "Kata Kunci (asingkan dengan koma)"      
+    },
       en: {
         nav_home: "Home",
         nav_f4: "Form 4",
@@ -281,7 +298,12 @@
         type: "Type",
         level: "Difficulty",
         save_question: "Save Question"
-  }      }
+        add_flashcard: "Add Flashcard",
+        card_term: "Card Term / Title",
+        card_desc: "Description / Definition",
+        card_tip: "Memory Tip",
+        card_keywords: "Keywords (comma separated)"        
+      }
     };
 
     // Syllabus Data
@@ -1432,6 +1454,82 @@ function saveNewQuestion(e) {
   topicData.quiz.push(newQ);
 
   closeAddQuestionModal();
+  renderCurrentView();
+}  
+  // ==========================================
+// ADD FLASHCARD LOGIC
+// ==========================================
+
+function openAddFlashcardModal() {
+  const modalHTML = `
+    <div id="fcModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-3xl p-6 border border-slate-200 dark:border-slate-700 card-shadow space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+          <h3 class="font-bold text-lg text-slate-800 dark:text-white">🗂️ ${t('add_flashcard')}</h3>
+          <button onclick="closeAddFlashcardModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+
+        <form onsubmit="saveNewFlashcard(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">${t('card_term')}</label>
+            <input type="text" id="fcTitle" required placeholder="Contoh: Mitokondria" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none font-semibold">
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">${t('card_desc')}</label>
+            <textarea id="fcDesc" required placeholder="Penerangan ringkas konsep..." class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none" rows="3"></textarea>
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">${t('card_keywords')}</label>
+            <input type="text" id="fcKeywords" placeholder="ATP, Respirasi sel, Tenaga" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none">
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 dark:text-slate-300 block mb-1">${t('card_tip')}</label>
+            <input type="text" id="fcTip" placeholder="💡 Tip Ingat: Mitokondria = Powerhouse!" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 outline-none">
+          </div>
+
+          <div class="pt-3 flex justify-end gap-2">
+            <button type="button" onclick="closeAddFlashcardModal()" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-xl font-bold">Batal</button>
+            <button type="submit" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold shadow-md">→ Simpan Flashcard</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+function closeAddFlashcardModal() {
+  const modal = document.getElementById('fcModal');
+  if (modal) modal.remove();
+}
+
+function saveNewFlashcard(e) {
+  e.preventDefault();
+  
+  const titleText = document.getElementById('fcTitle').value.trim();
+  const descText = document.getElementById('fcDesc').value.trim();
+  const keywordsText = document.getElementById('fcKeywords').value.trim();
+  const tipText = document.getElementById('fcTip').value.trim();
+
+  const keywordsArr = keywordsText ? keywordsText.split(',').map(k => k.trim()) : [];
+
+  const newCard = {
+    title: titleText,
+    desc: descText,
+    keywords: keywordsArr,
+    terms: [titleText],
+    tip: tipText || `💡 Tip Ingat: ${titleText}`
+  };
+
+  const topicData = getTopicData(qbankChapter);
+  if (!topicData.cards) topicData.cards = [];
+  topicData.cards.push(newCard);
+
+  closeAddFlashcardModal();
+  alert('Flashcard berjaya ditambah!');
   renderCurrentView();
 }  
   </script>
